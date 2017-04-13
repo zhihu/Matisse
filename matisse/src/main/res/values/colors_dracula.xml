@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Zhihu Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+    <color name="dracula_primary">#263237</color>
+    <color name="dracula_primary_dark">#1D282C</color>
+
+    <color name="dracula_album_popup_bg">#34474E</color>
+    <color name="dracula_album_title_text">#DEFFFFFF</color>
+    <color name="dracula_album_count_text">#89FFFFFF</color>
+    <color name="dracula_album_placeholder">#455A64</color>
+    <color name="dracula_empty_view">#4DFFFFFF</color>
+
+    <color name="dracula_item_placeholder">#37474F</color>
+    <color name="dracula_capture">#FFFFFF</color>
+
+    <color name="dracula_page_bg">#232E32</color>
+    <color name="dracula_bottom_toolbar_bg">#34474E</color>
+
+    <color name="dracula_bottom_toolbar_preview_text">#DEFFFFFF</color>
+    <color name="dracula_bottom_toolbar_preview_text_disable">#4DFFFFFF</color>
+    <color name="dracula_bottom_toolbar_apply_text">#03A9F4</color>
+    <color name="dracula_bottom_toolbar_apply_text_disable">#4D03A9F4</color>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Zhihu Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+    <color name="zhihu_primary">#1E8AE8</color>
+    <color name="zhihu_primary_dark">#176EB9</color>
+
+    <color name="zhihu_album_popup_bg">#FFFFFF</color>
+    <color name="zhihu_album_title_text">#DE000000</color>
+    <color name="zhihu_album_count_text">#999999</color>
+    <color name="zhihu_album_placeholder">#EAEEF4</color>
+    <color name="zhihu_empty_view">#4D000000</color>
+
+    <color name="zhihu_item_placeholder">#EAEEF4</color>
+    <color name="zhihu_capture">#424242</color>
+
+    <color name="zhihu_page_bg">#FFFFFF</color>
+    <color name="zhihu_bottom_toolbar_bg">#FFFFFF</color>
+
+    <color name="zhihu_bottom_toolbar_preview_text">#DE000000</color>
+    <color name="zhihu_bottom_toolbar_preview_text_disable">#4D000000</color>
+    <color name="zhihu_bottom_toolbar_apply_text">#0077D9</color>
+    <color name="zhihu_bottom_toolbar_apply_text_disable">#4D0077D9</color>
+</resources>

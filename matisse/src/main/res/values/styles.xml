@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Zhihu Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+
+    //====================================== Theme Zhihu ===========================================
+
+    <style name="Matisse.Zhihu" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/zhihu_primary</item>
+        <item name="colorPrimaryDark">@color/zhihu_primary_dark</item>
+        <item name="toolbar">@style/Toolbar.Zhihu</item>
+        <item name="album.title.color">@color/zhihu_album_title_text</item>
+        <item name="album.count.color">@color/zhihu_album_count_text</item>
+        <item name="album.selected">@android:color/white</item>
+        <item name="album.placeholder">@color/zhihu_album_placeholder</item>
+        <item name="album.emptyView">@drawable/ic_empty_zhihu</item>
+        <item name="album.emptyView.color">@color/zhihu_empty_view</item>
+        <item name="item.placeholder">@color/zhihu_item_placeholder</item>
+        <item name="page.bg">@color/zhihu_page_bg</item>
+        <item name="bottomToolbar.bg">@color/zhihu_bottom_toolbar_bg</item>
+        <item name="bottomToolbar.preview.color">@color/zhihu_bottom_toolbar_preview</item>
+        <item name="bottomToolbar.apply.color">@color/zhihu_bottom_toolbar_apply</item>
+        <item name="listPopupWindowStyle">@style/Popup.Zhihu</item>
+        <item name="capture.color">@color/zhihu_capture</item>
+    </style>
+
+    <style name="Toolbar.Zhihu" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="Popup.Zhihu" parent="Widget.AppCompat.Light.ListPopupWindow">
+        <item name="android:popupBackground">@color/zhihu_album_popup_bg</item>
+    </style>
+
+    //===================================== Theme Dracula ==========================================
+
+    <style name="Matisse.Dracula" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/dracula_primary</item>
+        <item name="colorPrimaryDark">@color/dracula_primary_dark</item>
+        <item name="toolbar">@style/Toolbar.Dracula</item>
+        <item name="album.title.color">@color/dracula_album_title_text</item>
+        <item name="album.count.color">@color/dracula_album_count_text</item>
+        <item name="album.selected">@android:color/white</item>
+        <item name="album.placeholder">@color/dracula_album_placeholder</item>
+        <item name="album.emptyView">@drawable/ic_empty_dracula</item>
+        <item name="album.emptyView.color">@color/dracula_empty_view</item>
+        <item name="item.placeholder">@color/dracula_item_placeholder</item>
+        <item name="page.bg">@color/dracula_page_bg</item>
+        <item name="bottomToolbar.bg">@color/dracula_bottom_toolbar_bg</item>
+        <item name="bottomToolbar.preview.color">@color/dracula_bottom_toolbar_preview</item>
+        <item name="bottomToolbar.apply.color">@color/dracula_bottom_toolbar_apply</item>
+        <item name="android:listPopupWindowStyle">@style/Popup.Dracula</item>
+        <item name="listPopupWindowStyle">@style/Popup.Dracula</item>
+        <item name="capture.color">@color/dracula_capture</item>
+    </style>
+
+    <style name="Toolbar.Dracula" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="Popup.Dracula" parent="Widget.AppCompat.ListPopupWindow">
+        <item name="android:popupBackground">@color/dracula_album_popup_bg</item>
+    </style>
+
+</resources>
