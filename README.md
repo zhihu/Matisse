@@ -1,6 +1,7 @@
 ![Image](/image/banner.png)
 
 # Matisse
+[![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse)  
 Matisse is a well-designed local image selector for Android. You can  
 - Use it in Activity or Fragment
 - Select JPEG, PNG and GIF
