@@ -4,8 +4,9 @@
 Matisse is a well-designed local image selector for Android. You can  
 - Use it in Activity or Fragment
 - Select JPEG, PNG and GIF
-- Choose different themes, including two built-in themes and custom themes
+- Apply different themes, including two built-in themes and custom themes
 - Different image loaders
+- Define custom filter rules
 - More to find out yourself
 
 | Zhihu Style                    | Dracula Style                     | Preview                          |
@@ -74,7 +75,7 @@ There are two built-in themes you can use to start `MatisseActivity`:
 
 And Also you can define your own theme as you wish.
 
-#### Receive result
+#### Receive Result
 In `onActivityResult()` callback of the starting `Activity` or `Fragment`:
 
 ```java
@@ -89,6 +90,9 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 ```
+
+#### More
+Find more details about Matisse in wiki.
 
 ## Contributing
  - To contribute with a small fix, simply create a pull request.
