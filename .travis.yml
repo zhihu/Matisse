@@ -11,4 +11,7 @@ android:
 jdk:
   - oraclejdk8
 
+notifications:
+  email: false
+
 script: ./gradlew assemble check
