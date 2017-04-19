@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
-        findViewById(R.id.custom).setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,8 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             .maxSelectable(9)
                                             .imageEngine(new GlideEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
-                                    break;
-                                case R.id.custom:
                                     break;
                             }
                             mAdapter.setData(null);
