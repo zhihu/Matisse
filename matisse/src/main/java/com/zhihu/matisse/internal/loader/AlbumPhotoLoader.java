@@ -24,17 +24,40 @@ import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
-import android.util.Log;
 
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 
 public class AlbumPhotoLoader extends CursorLoader {
-    private static final String TAG = AlbumPhotoLoader.class.getSimpleName();
-    private static final String[] PROJECTION = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.MIME_TYPE, MediaStore.Images.Media.SIZE};
-    private static final String ORDER_BY = MediaStore.Images.Media._ID + " DESC";
+    private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
+    private static final String[] PROJECTION = {
+            MediaStore.Files.FileColumns._ID,
+            MediaStore.MediaColumns.DISPLAY_NAME,
+            MediaStore.MediaColumns.MIME_TYPE,
+            MediaStore.MediaColumns.SIZE};
+    private static final String SELECTION_ALL =
+            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR "
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?";
+    private static final String[] SELECTION_ALL_ARGS = {
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
+    };
+    private static final String SELECTION_ALBUM =
+            "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR "
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND "
+            + " bucket_id=?";
+    private static String[] getSelectionAlbumArgs(String albumId) {
+        return new String[] {
+                String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
+                String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
+                albumId
+        };
+    }
+    private static final String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
     private final boolean mEnableCapture;
 
     private AlbumPhotoLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
@@ -45,14 +68,21 @@ public class AlbumPhotoLoader extends CursorLoader {
 
     public static CursorLoader newInstance(Context context, Album album, boolean capture) {
         if (album.isAll()) {
-            return new AlbumPhotoLoader(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PROJECTION, null, null,
-                    ORDER_BY, capture);
-        } else {
-            return new AlbumPhotoLoader(context,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            return new AlbumPhotoLoader(
+                    context,
+                    QUERY_URI,
                     PROJECTION,
-                    MediaStore.Images.Media.BUCKET_ID + " = ?",
-                    new String[]{album.getId()},
+                    SELECTION_ALL,
+                    SELECTION_ALL_ARGS,
+                    ORDER_BY,
+                    capture);
+        } else {
+            return new AlbumPhotoLoader(
+                    context,
+                    QUERY_URI,
+                    PROJECTION,
+                    SELECTION_ALBUM,
+                    getSelectionAlbumArgs(album.getId()),
                     ORDER_BY,
                     false);
         }

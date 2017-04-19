@@ -61,9 +61,9 @@ public class Item implements Parcelable {
     }
 
     public static Item valueOf(Cursor cursor) {
-        return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID)),
-                cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.SIZE)));
+        return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
+                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)));
     }
 
     @Override
