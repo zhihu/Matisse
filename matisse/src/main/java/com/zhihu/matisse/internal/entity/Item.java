@@ -49,7 +49,16 @@ public class Item implements Parcelable {
     Item(long id, String mimeType, long size) {
         this.id = id;
         this.mimeType = mimeType;
-        this.uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+        Uri contentUri;
+        if (isImage()) {
+            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        } else if (isVideo()) {
+            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        } else {
+            // ?
+            contentUri = MediaStore.Files.getContentUri("external");
+        }
+        this.uri = ContentUris.withAppendedId(contentUri, id);
         this.size = size;
     }
 
@@ -87,8 +96,19 @@ public class Item implements Parcelable {
         return id == ITEM_ID_CAPTURE;
     }
 
+    public boolean isImage() {
+        return mimeType.equals(MimeType.JPEG.toString())
+                || mimeType.equals(MimeType.PNG.toString())
+                || mimeType.equals(MimeType.GIF);
+    }
+
     public boolean isGif() {
         return mimeType.equals(MimeType.GIF.toString());
+    }
+
+    public boolean isVideo() {
+        return mimeType.equals(MimeType.MPEG.toString())
+                || mimeType.equals(MimeType.MP4.toString());
     }
 
     @Override
