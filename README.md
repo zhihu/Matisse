@@ -93,11 +93,11 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 ```
 
 #### More
-Find more details about Matisse in wiki.
+Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).
 
 ## Contributing
  - To contribute with a small fix, simply create a pull request.
- - Better to open an issue to discuss with the team and the community if you're intended to work on something BIG.
+ - Better to open an issue to discuss with the team and the community if you're intended to work on something BIG. Also you can check our [roadmap](https://github.com/zhihu/Matisse/wiki/Roadmap).
  - Please follow [Code Style for Contributors](https://source.android.com/source/code-style) of AOSP.
 
 ## Thanks
