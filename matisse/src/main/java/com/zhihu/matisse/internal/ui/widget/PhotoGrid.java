@@ -18,10 +18,12 @@ package com.zhihu.matisse.internal.ui.widget;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
@@ -32,6 +34,7 @@ public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener
     private ImageView mThumbnail;
     private CheckView mCheckView;
     private ImageView mGifTag;
+    private TextView mVideoDuration;
 
     private Item mPhoto;
     private PreBindInfo mPreBindInfo;
@@ -53,6 +56,7 @@ public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener
         mThumbnail = (ImageView) findViewById(R.id.photo_thumbnail);
         mCheckView = (CheckView) findViewById(R.id.check_view);
         mGifTag = (ImageView) findViewById(R.id.gif);
+        mVideoDuration = (TextView) findViewById(R.id.video_duration);
 
         mThumbnail.setOnClickListener(this);
         mCheckView.setOnClickListener(this);
@@ -78,6 +82,7 @@ public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener
         setGifTag();
         initCheckView();
         setImage();
+        setVideoDuration();
     }
 
     public Item getPhoto() {
@@ -111,6 +116,15 @@ public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener
         } else {
             SelectionSpec.getInstance().imageEngine.loadThumbnail(getContext(), mPreBindInfo.mResize,
                     mPreBindInfo.mPlaceholder, mThumbnail, mPhoto.getContentUri());
+        }
+    }
+
+    private void setVideoDuration() {
+        if (mPhoto.isVideo()) {
+            mVideoDuration.setVisibility(VISIBLE);
+            mVideoDuration.setText(DateUtils.formatElapsedTime(mPhoto.duration / 1000));
+        } else {
+            mVideoDuration.setVisibility(GONE);
         }
     }
 

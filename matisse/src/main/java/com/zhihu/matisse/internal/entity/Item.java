@@ -45,8 +45,9 @@ public class Item implements Parcelable {
     public final String mimeType;
     public final Uri uri;
     public final long size;
+    public final long duration; // only for video, in ms
 
-    Item(long id, String mimeType, long size) {
+    Item(long id, String mimeType, long size, long duration) {
         this.id = id;
         this.mimeType = mimeType;
         Uri contentUri;
@@ -60,6 +61,7 @@ public class Item implements Parcelable {
         }
         this.uri = ContentUris.withAppendedId(contentUri, id);
         this.size = size;
+        this.duration = duration;
     }
 
     Item(Parcel source) {
@@ -67,12 +69,14 @@ public class Item implements Parcelable {
         mimeType = source.readString();
         uri = source.readParcelable(Uri.class.getClassLoader());
         size = source.readLong();
+        duration = source.readLong();
     }
 
     public static Item valueOf(Cursor cursor) {
         return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)));
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
+                cursor.getLong(cursor.getColumnIndex("duration")));
     }
 
     @Override
@@ -86,6 +90,7 @@ public class Item implements Parcelable {
         dest.writeString(mimeType);
         dest.writeParcelable(uri, 0);
         dest.writeLong(size);
+        dest.writeLong(duration);
     }
 
     public Uri getContentUri() {
@@ -128,6 +133,7 @@ public class Item implements Parcelable {
         result = 31 * result + mimeType.hashCode();
         result = 31 * result + uri.hashCode();
         result = 31 * result + Long.valueOf(size).hashCode();
+        result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
     }
 }

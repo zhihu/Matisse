@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
+import com.zhihu.matisse.BuildConfig;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
@@ -35,7 +36,8 @@ public class AlbumPhotoLoader extends CursorLoader {
             MediaStore.Files.FileColumns._ID,
             MediaStore.MediaColumns.DISPLAY_NAME,
             MediaStore.MediaColumns.MIME_TYPE,
-            MediaStore.MediaColumns.SIZE};
+            MediaStore.MediaColumns.SIZE,
+            "duration"};
     private static final String SELECTION_ALL =
             MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
             + " OR "
@@ -91,6 +93,7 @@ public class AlbumPhotoLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         Cursor result = super.loadInBackground();
+        DatabaseUtils.dumpCursor(result);
         if (!mEnableCapture || !MediaStoreCompat.hasCameraFeature(getContext())) {
             return result;
         }
