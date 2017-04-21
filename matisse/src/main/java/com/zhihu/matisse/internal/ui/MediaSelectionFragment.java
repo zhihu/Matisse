@@ -30,27 +30,27 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.model.AlbumPhotoCollection;
+import com.zhihu.matisse.internal.model.AlbumMediaCollection;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
-import com.zhihu.matisse.internal.ui.adapter.AlbumPhotosAdapter;
-import com.zhihu.matisse.internal.ui.widget.PhotoGridInset;
+import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
+import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
 import com.zhihu.matisse.internal.utils.UIUtils;
 
-public class PhotoSelectionFragment extends Fragment implements
-        AlbumPhotoCollection.AlbumPhotoCallbacks, AlbumPhotosAdapter.CheckStateListener,
-        AlbumPhotosAdapter.OnPhotoClickListener {
+public class MediaSelectionFragment extends Fragment implements
+        AlbumMediaCollection.AlbumMediaCallbacks, AlbumMediaAdapter.CheckStateListener,
+        AlbumMediaAdapter.OnMediaClickListener {
 
     public static final String EXTRA_ALBUM = "extra_album";
 
-    private final AlbumPhotoCollection mPhotoCollection = new AlbumPhotoCollection();
+    private final AlbumMediaCollection mAlbumMediaCollection = new AlbumMediaCollection();
     private RecyclerView mRecyclerView;
-    private AlbumPhotosAdapter mAdapter;
+    private AlbumMediaAdapter mAdapter;
     private SelectionProvider mSelectionProvider;
-    private AlbumPhotosAdapter.CheckStateListener mCheckStateListener;
-    private AlbumPhotosAdapter.OnPhotoClickListener mOnPhotoClickListener;
+    private AlbumMediaAdapter.CheckStateListener mCheckStateListener;
+    private AlbumMediaAdapter.OnMediaClickListener mOnMediaClickListener;
 
-    public static PhotoSelectionFragment newInstance(Album album) {
-        PhotoSelectionFragment fragment = new PhotoSelectionFragment();
+    public static MediaSelectionFragment newInstance(Album album) {
+        MediaSelectionFragment fragment = new MediaSelectionFragment();
         Bundle args = new Bundle();
         args.putParcelable(EXTRA_ALBUM, album);
         fragment.setArguments(args);
@@ -65,11 +65,11 @@ public class PhotoSelectionFragment extends Fragment implements
         } else {
             throw new IllegalStateException("Context must implement SelectionProvider.");
         }
-        if (context instanceof AlbumPhotosAdapter.CheckStateListener) {
-            mCheckStateListener = (AlbumPhotosAdapter.CheckStateListener) context;
+        if (context instanceof AlbumMediaAdapter.CheckStateListener) {
+            mCheckStateListener = (AlbumMediaAdapter.CheckStateListener) context;
         }
-        if (context instanceof AlbumPhotosAdapter.OnPhotoClickListener) {
-            mOnPhotoClickListener = (AlbumPhotosAdapter.OnPhotoClickListener) context;
+        if (context instanceof AlbumMediaAdapter.OnMediaClickListener) {
+            mOnMediaClickListener = (AlbumMediaAdapter.OnMediaClickListener) context;
         }
     }
 
@@ -77,7 +77,7 @@ public class PhotoSelectionFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_photo_selection, container, false);
+        return inflater.inflate(R.layout.fragment_media_selection, container, false);
     }
 
     @Override
@@ -91,10 +91,10 @@ public class PhotoSelectionFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         Album album = getArguments().getParcelable(EXTRA_ALBUM);
 
-        mAdapter = new AlbumPhotosAdapter(getContext(),
+        mAdapter = new AlbumMediaAdapter(getContext(),
                 mSelectionProvider.provideSelectedItemCollection(), mRecyclerView);
         mAdapter.registerCheckStateListener(this);
-        mAdapter.registerOnPhotoClickListener(this);
+        mAdapter.registerOnMediaClickListener(this);
         mRecyclerView.setHasFixedSize(true);
 
         int spanCount;
@@ -106,20 +106,20 @@ public class PhotoSelectionFragment extends Fragment implements
         }
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
 
-        int spacing = getResources().getDimensionPixelSize(R.dimen.photo_grid_spacing);
-        mRecyclerView.addItemDecoration(new PhotoGridInset(spanCount, spacing, false));
+        int spacing = getResources().getDimensionPixelSize(R.dimen.media_grid_spacing);
+        mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
         mRecyclerView.setAdapter(mAdapter);
-        mPhotoCollection.onCreate(getActivity(), this);
-        mPhotoCollection.load(album, selectionSpec.capture);
+        mAlbumMediaCollection.onCreate(getActivity(), this);
+        mAlbumMediaCollection.load(album, selectionSpec.capture);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPhotoCollection.onDestroy();
+        mAlbumMediaCollection.onDestroy();
     }
 
-    public void refreshPhotoGrid() {
+    public void refreshMediaGrid() {
         mAdapter.notifyDataSetChanged();
     }
 
@@ -128,12 +128,12 @@ public class PhotoSelectionFragment extends Fragment implements
     }
 
     @Override
-    public void onLoad(Cursor cursor) {
+    public void onAlbumMediaLoad(Cursor cursor) {
         mAdapter.swapCursor(cursor);
     }
 
     @Override
-    public void onReset() {
+    public void onAlbumMediaReset() {
         mAdapter.swapCursor(null);
     }
 
@@ -146,9 +146,9 @@ public class PhotoSelectionFragment extends Fragment implements
     }
 
     @Override
-    public void onPhotoClick(Album album, Item item, int adapterPosition) {
-        if (mOnPhotoClickListener != null) {
-            mOnPhotoClickListener.onPhotoClick((Album) getArguments().getParcelable(EXTRA_ALBUM),
+    public void onMediaClick(Album album, Item item, int adapterPosition) {
+        if (mOnMediaClickListener != null) {
+            mOnMediaClickListener.onMediaClick((Album) getArguments().getParcelable(EXTRA_ALBUM),
                     item, adapterPosition);
         }
     }

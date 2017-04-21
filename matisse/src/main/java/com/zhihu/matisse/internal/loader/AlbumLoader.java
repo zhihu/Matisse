@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
@@ -27,19 +28,34 @@ import com.zhihu.matisse.internal.entity.Album;
 
 public class AlbumLoader extends CursorLoader {
     public static final String COLUMN_COUNT = "count";
-    private static final String[] COLUMNS = {MediaStore.Images.Media.BUCKET_ID,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media._ID, COLUMN_COUNT};
-    private static final String[] PROJECTION = {MediaStore.Images.Media.BUCKET_ID,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media._ID, "COUNT(*) AS " + COLUMN_COUNT};
-    private static final String BUCKET_GROUP_BY = "1) GROUP BY 1,(2";
-    private static final String BUCKET_ORDER_BY = "MAX(" + MediaStore.Images.Media.DATE_TAKEN + ") DESC";
+    private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
+    private static final String[] COLUMNS = {
+            MediaStore.Files.FileColumns._ID,
+            "bucket_id",
+            "bucket_display_name",
+            MediaStore.MediaColumns.DATA,
+            COLUMN_COUNT};
+    private static final String[] PROJECTION = {
+            MediaStore.Files.FileColumns._ID,
+            "bucket_id",
+            "bucket_display_name",
+            MediaStore.MediaColumns.DATA,
+            "COUNT(*) AS " + COLUMN_COUNT};
+    private static final String SELECTION =
+            "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + " OR "
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
+            + ") GROUP BY (bucket_id";
+    private static final String[] SELECTION_ARGS = {
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
+    };
+    private static final String BUCKET_ORDER_BY = "datetaken DESC";
     private static final String MEDIA_ID_DUMMY = String.valueOf(-1);
 
     public AlbumLoader(Context context) {
-        // SELECT bucket_id, bucket_display_name, _id, COUNT(*) AS count FROM images WHERE (1)
-        // GROUP BY 1,(2) ORDER BY MAX(datetaken) DESC
-        super(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, PROJECTION, BUCKET_GROUP_BY, null,
-                BUCKET_ORDER_BY);
+        super(context, QUERY_URI, PROJECTION, SELECTION, SELECTION_ARGS, BUCKET_ORDER_BY);
     }
 
     @Override
@@ -50,13 +66,13 @@ public class AlbumLoader extends CursorLoader {
         while (albums.moveToNext()) {
             totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
         }
-        String allAlbumId;
+        String allAlbumCoverPath;
         if (albums.moveToFirst()) {
-            allAlbumId = albums.getString(albums.getColumnIndex(MediaStore.Images.Media._ID));
+            allAlbumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
         } else {
-            allAlbumId = MEDIA_ID_DUMMY;
+            allAlbumCoverPath = "";
         }
-        allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumId, String.valueOf(totalCount)});
+        allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath, String.valueOf(totalCount)});
 
         return new MergeCursor(new Cursor[]{allAlbum, albums});
     }

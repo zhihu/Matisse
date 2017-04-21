@@ -19,24 +19,21 @@ package com.zhihu.matisse.internal.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.zhihu.matisse.internal.entity.Album;
-import com.zhihu.matisse.internal.loader.AlbumPhotoLoader;
+import com.zhihu.matisse.internal.loader.AlbumLoader;
 
 import java.lang.ref.WeakReference;
 
-public class AlbumPhotoCollection implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_ID = 2;
-    private static final String ARGS_ALBUM = "args_album";
-    private static final String ARGS_ENABLE_CAPTURE = "args_enable_capture";
+public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int LOADER_ID = 1;
+    private static final String STATE_CURRENT_SELECTION = "state_current_selection";
     private WeakReference<Context> mContext;
     private LoaderManager mLoaderManager;
-    private AlbumPhotoCallbacks mCallbacks;
+    private AlbumCallbacks mCallbacks;
+    private int mCurrentSelection;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -44,14 +41,7 @@ public class AlbumPhotoCollection implements LoaderManager.LoaderCallbacks<Curso
         if (context == null) {
             return null;
         }
-
-        Album album = args.getParcelable(ARGS_ALBUM);
-        if (album == null) {
-            return null;
-        }
-
-        return AlbumPhotoLoader.newInstance(context, album,
-                album.isAll() && args.getBoolean(ARGS_ENABLE_CAPTURE, false));
+        return new AlbumLoader(context);
     }
 
     @Override
@@ -61,7 +51,7 @@ public class AlbumPhotoCollection implements LoaderManager.LoaderCallbacks<Curso
             return;
         }
 
-        mCallbacks.onLoad(data);
+        mCallbacks.onAlbumLoad(data);
     }
 
     @Override
@@ -71,13 +61,25 @@ public class AlbumPhotoCollection implements LoaderManager.LoaderCallbacks<Curso
             return;
         }
 
-        mCallbacks.onReset();
+        mCallbacks.onAlbumReset();
     }
 
-    public void onCreate(@NonNull FragmentActivity context, @NonNull AlbumPhotoCallbacks callbacks) {
-        mContext = new WeakReference<Context>(context);
-        mLoaderManager = context.getSupportLoaderManager();
+    public void onCreate(FragmentActivity activity, AlbumCallbacks callbacks) {
+        mContext = new WeakReference<Context>(activity);
+        mLoaderManager = activity.getSupportLoaderManager();
         mCallbacks = callbacks;
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        mCurrentSelection = savedInstanceState.getInt(STATE_CURRENT_SELECTION);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STATE_CURRENT_SELECTION, mCurrentSelection);
     }
 
     public void onDestroy() {
@@ -85,21 +87,21 @@ public class AlbumPhotoCollection implements LoaderManager.LoaderCallbacks<Curso
         mCallbacks = null;
     }
 
-    public void load(@Nullable Album target) {
-        load(target, false);
+    public void loadAlbums() {
+        mLoaderManager.initLoader(LOADER_ID, null, this);
     }
 
-    public void load(@Nullable Album target, boolean enableCapture) {
-        Bundle args = new Bundle();
-        args.putParcelable(ARGS_ALBUM, target);
-        args.putBoolean(ARGS_ENABLE_CAPTURE, enableCapture);
-        mLoaderManager.initLoader(LOADER_ID, args, this);
+    public int getCurrentSelection() {
+        return mCurrentSelection;
     }
 
-    public interface AlbumPhotoCallbacks {
+    public void setStateCurrentSelection(int currentSelection) {
+        mCurrentSelection = currentSelection;
+    }
 
-        void onLoad(Cursor cursor);
+    public interface AlbumCallbacks {
+        void onAlbumLoad(Cursor cursor);
 
-        void onReset();
+        void onAlbumReset();
     }
 }

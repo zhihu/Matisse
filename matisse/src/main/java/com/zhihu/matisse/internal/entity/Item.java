@@ -45,12 +45,23 @@ public class Item implements Parcelable {
     public final String mimeType;
     public final Uri uri;
     public final long size;
+    public final long duration; // only for video, in ms
 
-    Item(long id, String mimeType, long size) {
+    Item(long id, String mimeType, long size, long duration) {
         this.id = id;
         this.mimeType = mimeType;
-        this.uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+        Uri contentUri;
+        if (isImage()) {
+            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        } else if (isVideo()) {
+            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        } else {
+            // ?
+            contentUri = MediaStore.Files.getContentUri("external");
+        }
+        this.uri = ContentUris.withAppendedId(contentUri, id);
         this.size = size;
+        this.duration = duration;
     }
 
     Item(Parcel source) {
@@ -58,12 +69,14 @@ public class Item implements Parcelable {
         mimeType = source.readString();
         uri = source.readParcelable(Uri.class.getClassLoader());
         size = source.readLong();
+        duration = source.readLong();
     }
 
     public static Item valueOf(Cursor cursor) {
-        return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID)),
-                cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.SIZE)));
+        return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
+                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
+                cursor.getLong(cursor.getColumnIndex("duration")));
     }
 
     @Override
@@ -77,6 +90,7 @@ public class Item implements Parcelable {
         dest.writeString(mimeType);
         dest.writeParcelable(uri, 0);
         dest.writeLong(size);
+        dest.writeLong(duration);
     }
 
     public Uri getContentUri() {
@@ -87,8 +101,19 @@ public class Item implements Parcelable {
         return id == ITEM_ID_CAPTURE;
     }
 
+    public boolean isImage() {
+        return mimeType.equals(MimeType.JPEG.toString())
+                || mimeType.equals(MimeType.PNG.toString())
+                || mimeType.equals(MimeType.GIF);
+    }
+
     public boolean isGif() {
         return mimeType.equals(MimeType.GIF.toString());
+    }
+
+    public boolean isVideo() {
+        return mimeType.equals(MimeType.MPEG.toString())
+                || mimeType.equals(MimeType.MP4.toString());
     }
 
     @Override
@@ -108,6 +133,7 @@ public class Item implements Parcelable {
         result = 31 * result + mimeType.hashCode();
         result = 31 * result + uri.hashCode();
         result = 31 * result + Long.valueOf(size).hashCode();
+        result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
     }
 }

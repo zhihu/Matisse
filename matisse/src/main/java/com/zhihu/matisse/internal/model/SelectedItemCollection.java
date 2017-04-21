@@ -39,6 +39,27 @@ public class SelectedItemCollection {
     private Set<Item> mItems;
     private SelectionSpec mSpec;
 
+    /**
+     * Empty collection
+     */
+    public static final int COLLECTION_UNDEFINED = 0x00;
+    /**
+     * Collection only with images
+     */
+    public static final int COLLECTION_IMAGE = 0x01;
+    /**
+     * Collection only with videos
+     */
+    public static final int COLLECTION_VIDEO = 0x01 << 1;
+    /**
+     * Collection with images and videos.
+     *
+     * Not supported currently.
+     */
+    public static final int COLLECTION_MIXED = COLLECTION_IMAGE | COLLECTION_VIDEO;
+
+    private int mCollectionType = COLLECTION_UNDEFINED;
+
     public SelectedItemCollection(Context context) {
         mContext = context;
     }
@@ -62,14 +83,31 @@ public class SelectedItemCollection {
     }
 
     public boolean add(Item item) {
+        if (typeConflict(item)) {
+            throw new IllegalArgumentException("Can't select images and videos at the same time.");
+        }
+        if (mCollectionType == COLLECTION_UNDEFINED) {
+            if (item.isImage()) {
+                mCollectionType = COLLECTION_IMAGE;
+            } else if (item.isVideo()) {
+                mCollectionType = COLLECTION_VIDEO;
+            }
+        }
         return mItems.add(item);
     }
 
     public boolean remove(Item item) {
-        return mItems.remove(item);
+        boolean result = mItems.remove(item);
+        if (mItems.size() == 0) {
+            mCollectionType = COLLECTION_UNDEFINED;
+        }
+        return result;
     }
 
     public void overwrite(ArrayList<Item> items) {
+        if (items.size() == 0) {
+            mCollectionType = COLLECTION_UNDEFINED;
+        }
         mItems.clear();
         mItems.addAll(items);
     }
@@ -97,6 +135,8 @@ public class SelectedItemCollection {
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
             return new IncapableCause(mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
+        } else if (typeConflict(item)) {
+            return new IncapableCause(mContext.getString(R.string.error_type_conflict));
         }
 
         return PhotoMetadataUtils.isAcceptable(mContext, item);
@@ -104,6 +144,18 @@ public class SelectedItemCollection {
 
     public boolean maxSelectableReached() {
         return mItems.size() == mSpec.maxSelectable;
+    }
+
+    public int getCollectionType() {
+        return mCollectionType;
+    }
+
+    /**
+     * Determine whether there will be conflict media types. A user can't select images and videos at the same time.
+     */
+    public boolean typeConflict(Item item) {
+        return (item.isImage() && (mCollectionType == COLLECTION_VIDEO || mCollectionType == COLLECTION_MIXED))
+                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE || mCollectionType == COLLECTION_MIXED));
     }
 
     public int count() {

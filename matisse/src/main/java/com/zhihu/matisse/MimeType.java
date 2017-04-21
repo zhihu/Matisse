@@ -41,6 +41,14 @@ public enum MimeType {
     }}),
     GIF("image/gif", new HashSet<String>() {{
         add("gif");
+    }}),
+    MPEG("video/mpeg", new HashSet<String>() {{
+        add("mpeg");
+        add("mpg");
+    }}),
+    MP4("video/mp4", new HashSet<String>() {{
+        add("mp4");
+        add("m4v");
     }});
 
     private final String mMimeTypeName;
@@ -61,6 +69,14 @@ public enum MimeType {
 
     public static Set<MimeType> of(MimeType type, MimeType... rest) {
         return EnumSet.of(type, rest);
+    }
+
+    public static Set<MimeType> ofImage() {
+        return EnumSet.of(JPEG, PNG, GIF);
+    }
+
+    public static Set<MimeType> ofVideo() {
+        return EnumSet.of(MPEG, MP4);
     }
 
     @Override

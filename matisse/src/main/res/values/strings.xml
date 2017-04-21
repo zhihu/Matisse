@@ -15,19 +15,20 @@
   limitations under the License.
   -->
 <resources>
-    <string name="album_name_all">All Photos</string>
+    <string name="album_name_all">All Media</string>
 
     <string name="button_preview">Preview</string>
     <string name="button_apply_disable">Apply</string>
     <string name="button_apply">Apply(%1$d)</string>
     <string name="button_back">Back</string>
     <string name="photo_grid_capture">Camera</string>
-    <string name="empty_text">No photos yet</string>
+    <string name="empty_text">No media yet</string>
     <string name="button_ok">OK</string>
 
     <string name="error_over_count_default">You have reached max selectable</string>
-    <string name="error_over_count">You can only select up to %1$d photos</string>
+    <string name="error_over_count">You can only select up to %1$d media files</string>
     <string name="error_under_quality">Under quality</string>
     <string name="error_over_quality">Over quality</string>
     <string name="error_file_type">Unsupported file type</string>
+    <string name="error_type_conflict">Can\'t select images and videos at the same time</string>
 </resources>

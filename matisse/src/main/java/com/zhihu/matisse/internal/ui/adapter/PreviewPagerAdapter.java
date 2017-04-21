@@ -54,7 +54,7 @@ public class PreviewPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public Item getPhotoItem(int position) {
+    public Item getMediaItem(int position) {
         return mItems.get(position);
     }
 

@@ -17,7 +17,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
-        android:id="@+id/photo_thumbnail"
+        android:id="@+id/media_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -35,5 +35,16 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:src="@drawable/ic_gif"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/video_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
         android:visibility="gone"/>
 </merge>

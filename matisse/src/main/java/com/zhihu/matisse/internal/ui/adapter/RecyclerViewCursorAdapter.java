@@ -16,6 +16,7 @@
 package com.zhihu.matisse.internal.ui.adapter;
 
 import android.database.Cursor;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 
 public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHolder> extends
@@ -84,7 +85,7 @@ public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHold
 
         if (newCursor != null) {
             mCursor = newCursor;
-            mRowIDColumn = mCursor.getColumnIndexOrThrow("_id");
+            mRowIDColumn = mCursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID);
             // notify the observers about the new cursor
             notifyDataSetChanged();
         } else {
