@@ -16,10 +16,8 @@
  */
 package com.zhihu.matisse.internal.entity;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -45,22 +43,20 @@ public class Album implements Parcelable {
     public static final String ALBUM_NAME_ALL = "All";
 
     private final String mId;
-    private final long mCoverId;
+    private final String mCoverPath;
     private final String mDisplayName;
     private long mCount;
 
-    private Uri mUri;
-
-    Album(String id, long coverId, String albumName, long count) {
+    Album(String id, String coverPath, String albumName, long count) {
         mId = id;
-        mCoverId = coverId;
+        mCoverPath = coverPath;
         mDisplayName = albumName;
         mCount = count;
     }
 
     Album(Parcel source) {
         mId = source.readString();
-        mCoverId = source.readLong();
+        mCoverPath = source.readString();
         mDisplayName = source.readString();
         mCount = source.readLong();
     }
@@ -72,7 +68,7 @@ public class Album implements Parcelable {
     public static Album valueOf(Cursor cursor) {
         return new Album(
                 cursor.getString(cursor.getColumnIndex("bucket_id")),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
+                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA)),
                 cursor.getString(cursor.getColumnIndex("bucket_display_name")),
                 cursor.getLong(cursor.getColumnIndex(AlbumLoader.COLUMN_COUNT)));
     }
@@ -85,7 +81,7 @@ public class Album implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mId);
-        dest.writeLong(mCoverId);
+        dest.writeString(mCoverPath);
         dest.writeString(mDisplayName);
         dest.writeLong(mCount);
     }
@@ -94,8 +90,8 @@ public class Album implements Parcelable {
         return mId;
     }
 
-    public long getCoverId() {
-        return mCoverId;
+    public String getCoverPath() {
+        return mCoverPath;
     }
 
     public long getCount() {
@@ -104,13 +100,6 @@ public class Album implements Parcelable {
 
     public void addCaptureCount() {
         mCount++;
-    }
-
-    public Uri getContentUri() {
-        if (mUri == null) {
-            mUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mCoverId);
-        }
-        return mUri;
     }
 
     public String getDisplayName(Context context) {

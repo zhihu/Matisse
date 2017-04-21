@@ -30,14 +30,16 @@ public class AlbumLoader extends CursorLoader {
     public static final String COLUMN_COUNT = "count";
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     private static final String[] COLUMNS = {
+            MediaStore.Files.FileColumns._ID,
             "bucket_id",
             "bucket_display_name",
-            MediaStore.Files.FileColumns._ID,
+            MediaStore.MediaColumns.DATA,
             COLUMN_COUNT};
     private static final String[] PROJECTION = {
+            MediaStore.Files.FileColumns._ID,
             "bucket_id",
             "bucket_display_name",
-            MediaStore.Files.FileColumns._ID,
+            MediaStore.MediaColumns.DATA,
             "COUNT(*) AS " + COLUMN_COUNT};
     private static final String SELECTION =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
@@ -64,13 +66,13 @@ public class AlbumLoader extends CursorLoader {
         while (albums.moveToNext()) {
             totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
         }
-        String allAlbumId;
+        String allAlbumCoverPath;
         if (albums.moveToFirst()) {
-            allAlbumId = albums.getString(albums.getColumnIndex(MediaStore.Files.FileColumns._ID));
+            allAlbumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
         } else {
-            allAlbumId = MEDIA_ID_DUMMY;
+            allAlbumCoverPath = "";
         }
-        allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumId, String.valueOf(totalCount)});
+        allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath, String.valueOf(totalCount)});
 
         return new MergeCursor(new Cursor[]{allAlbum, albums});
     }
