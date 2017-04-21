@@ -14,10 +14,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<it.sephiroth.android.library.imagezoom.ImageViewTouch
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/image_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-</it.sephiroth.android.library.imagezoom.ImageViewTouch>
+    <it.sephiroth.android.library.imagezoom.ImageViewTouch
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/video_play_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_play_circle_outline_white_48dp"/>
+</FrameLayout>

@@ -21,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
@@ -50,10 +51,12 @@ public class PreviewItemFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Item item = getArguments().getParcelable(ARGS_ITEM);
+
+        getView().findViewById(R.id.video_play_button).setVisibility(item.isVideo() ? View.VISIBLE : View.GONE);
 
         ImageViewTouch image = (ImageViewTouch) getView().findViewById(R.id.image_view);
         image.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-        Item item = getArguments().getParcelable(ARGS_ITEM);
         Point size = PhotoMetadataUtils.getBitmapSize(getActivity().getContentResolver(),
                 item.getContentUri(), getActivity());
         if (item.isGif()) {
@@ -66,6 +69,6 @@ public class PreviewItemFragment extends Fragment {
     }
 
     public void resetView() {
-        ((ImageViewTouch) getView()).resetMatrix();
+        ((ImageViewTouch) getView().findViewById(R.id.image_view)).resetMatrix();
     }
 }
