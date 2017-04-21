@@ -97,6 +97,8 @@ public class SelectedItemCollection {
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
             return new IncapableCause(mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
+        } else if (typeConflict(item)) {
+            return new IncapableCause(mContext.getString(R.string.error_type_conflict));
         }
 
         return PhotoMetadataUtils.isAcceptable(mContext, item);
@@ -104,6 +106,20 @@ public class SelectedItemCollection {
 
     public boolean maxSelectableReached() {
         return mItems.size() == mSpec.maxSelectable;
+    }
+
+    /**
+     * Determine whether there will be conflict media types. A user can't select images and videos at the same time.
+     */
+    public boolean typeConflict(Item item) {
+        if (mItems.size() > 0) {
+            for (Item sample : mItems) {
+                if ((sample.isVideo() && item.isImage()) || (sample.isImage() && item.isVideo())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public int count() {

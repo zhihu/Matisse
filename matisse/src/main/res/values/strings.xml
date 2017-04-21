@@ -30,4 +30,5 @@
     <string name="error_under_quality">Under quality</string>
     <string name="error_over_quality">Over quality</string>
     <string name="error_file_type">Unsupported file type</string>
+    <string name="error_type_conflict">Can\'t select images and videos at the same time</string>
 </resources>
