@@ -39,9 +39,10 @@ public class AlbumPhotoLoader extends CursorLoader {
             MediaStore.MediaColumns.SIZE,
             "duration"};
     private static final String SELECTION_ALL =
-            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
             + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?";
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
     private static final String[] SELECTION_ALL_ARGS = {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
@@ -51,7 +52,8 @@ public class AlbumPhotoLoader extends CursorLoader {
             + " OR "
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND "
-            + " bucket_id=?";
+            + " bucket_id=?"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
     private static String[] getSelectionAlbumArgs(String albumId) {
         return new String[] {
                 String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
