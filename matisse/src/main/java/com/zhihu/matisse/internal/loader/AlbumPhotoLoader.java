@@ -18,14 +18,12 @@ package com.zhihu.matisse.internal.loader;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
-import com.zhihu.matisse.BuildConfig;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
@@ -95,7 +93,6 @@ public class AlbumPhotoLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         Cursor result = super.loadInBackground();
-        DatabaseUtils.dumpCursor(result);
         if (!mEnableCapture || !MediaStoreCompat.hasCameraFeature(getContext())) {
             return result;
         }

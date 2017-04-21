@@ -18,7 +18,6 @@ package com.zhihu.matisse.internal.loader;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
