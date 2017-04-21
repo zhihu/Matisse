@@ -21,19 +21,19 @@ import android.support.annotation.Nullable;
 
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.model.AlbumPhotoCollection;
+import com.zhihu.matisse.internal.model.AlbumMediaCollection;
 import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumPreviewActivity extends BasePreviewActivity implements
-        AlbumPhotoCollection.AlbumPhotoCallbacks {
+        AlbumMediaCollection.AlbumMediaCallbacks {
 
     public static final String EXTRA_ALBUM = "extra_album";
     public static final String EXTRA_ITEM = "extra_item";
 
-    private AlbumPhotoCollection mCollection = new AlbumPhotoCollection();
+    private AlbumMediaCollection mCollection = new AlbumMediaCollection();
 
     private boolean mIsAlreadySetPosition;
 
@@ -45,13 +45,13 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
         Album album = getIntent().getParcelableExtra(EXTRA_ALBUM);
         mCollection.load(album);
 
-        Item photo = getIntent().getParcelableExtra(EXTRA_ITEM);
+        Item item = getIntent().getParcelableExtra(EXTRA_ITEM);
         if (mSpec.countable) {
-            mCheckView.setCheckedNum(mSelectedCollection.checkedNumOf(photo));
+            mCheckView.setCheckedNum(mSelectedCollection.checkedNumOf(item));
         } else {
-            mCheckView.setChecked(mSelectedCollection.isSelected(photo));
+            mCheckView.setChecked(mSelectedCollection.isSelected(item));
         }
-        updateSize(photo);
+        updateSize(item);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
     }
 
     @Override
-    public void onLoad(Cursor cursor) {
+    public void onAlbumMediaLoad(Cursor cursor) {
         List<Item> items = new ArrayList<>();
         while (cursor.moveToNext()) {
             items.add(Item.valueOf(cursor));
@@ -70,7 +70,7 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
         adapter.addAll(items);
         adapter.notifyDataSetChanged();
         if (!mIsAlreadySetPosition) {
-            //onLoad is called many times..
+            //onAlbumMediaLoad is called many times..
             mIsAlreadySetPosition = true;
             Item selected = getIntent().getParcelableExtra(EXTRA_ITEM);
             int selectedIndex = items.indexOf(selected);
@@ -80,7 +80,7 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
     }
 
     @Override
-    public void onReset() {
+    public void onAlbumMediaReset() {
 
     }
 }

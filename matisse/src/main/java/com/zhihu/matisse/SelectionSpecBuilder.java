@@ -53,7 +53,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_FULL_USER;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LOCKED;
 
 /**
- * Fluent API for building photo select specification.
+ * Fluent API for building media select specification.
  */
 @SuppressWarnings("unused")
 public final class SelectionSpecBuilder {
@@ -108,7 +108,7 @@ public final class SelectionSpecBuilder {
     }
 
     /**
-     * Theme for photo select Activity.
+     * Theme for media selecting Activity.
      * <p>
      * There are two built-in themes:
      * 1. com.zhihu.matisse.R.style.Matisse_Zhihu;
@@ -124,7 +124,7 @@ public final class SelectionSpecBuilder {
     }
 
     /**
-     * Show a auto-increased number or a check mark when user select a photo.
+     * Show a auto-increased number or a check mark when user select media.
      *
      * @param countable true for a auto-increased number from 1, false for a check mark. Default
      *                  value is false.
@@ -161,9 +161,9 @@ public final class SelectionSpecBuilder {
     }
 
     /**
-     * Determines whether the photo capturing is enabled or not on the photo grid view.
+     * Determines whether the photo capturing is enabled or not on the media grid view.
      * <p>
-     * If this value is set true, photo capturing entry will appear only on All Photos's page.
+     * If this value is set true, photo capturing entry will appear only on All Media's page.
      *
      * @param enable Whether to enable capturing or not. Default value is false;
      * @return {@link SelectionSpecBuilder} for fluent API.
@@ -198,7 +198,7 @@ public final class SelectionSpecBuilder {
     }
 
     /**
-     * Set a fixed span count for the photo grid. Same for different screen orientations.
+     * Set a fixed span count for the media grid. Same for different screen orientations.
      * <p>
      * This will be ignored when {@link #gridExpectedSize(int)} is set.
      *
@@ -211,11 +211,11 @@ public final class SelectionSpecBuilder {
     }
 
     /**
-     * Set expected size for photo grid to adapt to different screen sizes. This won't necessarily
-     * be applied cause the photo grid should fill the view container. The measured photo grid's
+     * Set expected size for media grid to adapt to different screen sizes. This won't necessarily
+     * be applied cause the media grid should fill the view container. The measured media grid's
      * size will be as close to this value as possible.
      *
-     * @param size Expected photo grid size in pixel.
+     * @param size Expected media grid size in pixel.
      * @return {@link SelectionSpecBuilder} for fluent API.
      */
     public SelectionSpecBuilder gridExpectedSize(int size) {
@@ -252,7 +252,7 @@ public final class SelectionSpecBuilder {
     }
 
     /**
-     * Start to select photo and wait for result.
+     * Start to select media and wait for result.
      *
      * @param requestCode Identity of the request Activity or Fragment.
      */

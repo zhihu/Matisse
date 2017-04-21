@@ -28,7 +28,10 @@ import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 
-public class AlbumPhotoLoader extends CursorLoader {
+/**
+ * Load images and videos into a single cursor.
+ */
+public class AlbumMediaLoader extends CursorLoader {
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     private static final String[] PROJECTION = {
             MediaStore.Files.FileColumns._ID,
@@ -62,7 +65,7 @@ public class AlbumPhotoLoader extends CursorLoader {
     private static final String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
     private final boolean mEnableCapture;
 
-    private AlbumPhotoLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
+    private AlbumMediaLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
                              String sortOrder, boolean capture) {
         super(context, uri, projection, selection, selectionArgs, sortOrder);
         mEnableCapture = capture;
@@ -70,7 +73,7 @@ public class AlbumPhotoLoader extends CursorLoader {
 
     public static CursorLoader newInstance(Context context, Album album, boolean capture) {
         if (album.isAll()) {
-            return new AlbumPhotoLoader(
+            return new AlbumMediaLoader(
                     context,
                     QUERY_URI,
                     PROJECTION,
@@ -79,7 +82,7 @@ public class AlbumPhotoLoader extends CursorLoader {
                     ORDER_BY,
                     capture);
         } else {
-            return new AlbumPhotoLoader(
+            return new AlbumMediaLoader(
                     context,
                     QUERY_URI,
                     PROJECTION,

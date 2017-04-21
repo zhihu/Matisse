@@ -64,11 +64,11 @@ public class AlbumsAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         Album album = Album.valueOf(cursor);
         ((TextView) view.findViewById(R.id.album_name)).setText(album.getDisplayName(context));
-        ((TextView) view.findViewById(R.id.album_photo_count)).setText(String.valueOf(album.getCount()));
+        ((TextView) view.findViewById(R.id.album_media_count)).setText(String.valueOf(album.getCount()));
 
         // do not need to load animated Gif
         SelectionSpec.getInstance().imageEngine.loadThumbnail(context, context.getResources().getDimensionPixelSize(R
-                        .dimen.photo_grid_size), mPlaceholder,
+                        .dimen.media_grid_size), mPlaceholder,
                 (ImageView) view.findViewById(R.id.album_cover), Uri.fromFile(new File(album.getCoverPath())));
     }
 }

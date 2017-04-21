@@ -29,31 +29,31 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 
-public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener {
+public class MediaGrid extends SquareFrameLayout implements View.OnClickListener {
 
     private ImageView mThumbnail;
     private CheckView mCheckView;
     private ImageView mGifTag;
     private TextView mVideoDuration;
 
-    private Item mPhoto;
+    private Item mMedia;
     private PreBindInfo mPreBindInfo;
-    private OnPhotoGridClickListener mListener;
+    private OnMediaGridClickListener mListener;
 
-    public PhotoGrid(Context context) {
+    public MediaGrid(Context context) {
         super(context);
         init(context);
     }
 
-    public PhotoGrid(Context context, AttributeSet attrs) {
+    public MediaGrid(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
     private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.photo_grid_content, this, true);
+        LayoutInflater.from(context).inflate(R.layout.media_grid_content, this, true);
 
-        mThumbnail = (ImageView) findViewById(R.id.photo_thumbnail);
+        mThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
         mCheckView = (CheckView) findViewById(R.id.check_view);
         mGifTag = (ImageView) findViewById(R.id.gif);
         mVideoDuration = (TextView) findViewById(R.id.video_duration);
@@ -66,31 +66,31 @@ public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener
     public void onClick(View v) {
         if (mListener != null) {
             if (v == mThumbnail) {
-                mListener.onThumbnailClicked(mThumbnail, mPhoto, mPreBindInfo.mViewHolder);
+                mListener.onThumbnailClicked(mThumbnail, mMedia, mPreBindInfo.mViewHolder);
             } else if (v == mCheckView) {
-                mListener.onCheckViewClicked(mCheckView, mPhoto, mPreBindInfo.mViewHolder);
+                mListener.onCheckViewClicked(mCheckView, mMedia, mPreBindInfo.mViewHolder);
             }
         }
     }
 
-    public void preBindPhoto(PreBindInfo info) {
+    public void preBindMedia(PreBindInfo info) {
         mPreBindInfo = info;
     }
 
-    public void bindPhoto(Item item) {
-        mPhoto = item;
+    public void bindMedia(Item item) {
+        mMedia = item;
         setGifTag();
         initCheckView();
         setImage();
         setVideoDuration();
     }
 
-    public Item getPhoto() {
-        return mPhoto;
+    public Item getMedia() {
+        return mMedia;
     }
 
     private void setGifTag() {
-        mGifTag.setVisibility(mPhoto.isGif() ? View.VISIBLE : View.GONE);
+        mGifTag.setVisibility(mMedia.isGif() ? View.VISIBLE : View.GONE);
     }
 
     private void initCheckView() {
@@ -110,37 +110,37 @@ public class PhotoGrid extends SquareFrameLayout implements View.OnClickListener
     }
 
     private void setImage() {
-        if (mPhoto.isGif()) {
+        if (mMedia.isGif()) {
             SelectionSpec.getInstance().imageEngine.loadAnimatedGifThumbnail(getContext(), mPreBindInfo.mResize,
-                    mPreBindInfo.mPlaceholder, mThumbnail, mPhoto.getContentUri());
+                    mPreBindInfo.mPlaceholder, mThumbnail, mMedia.getContentUri());
         } else {
             SelectionSpec.getInstance().imageEngine.loadThumbnail(getContext(), mPreBindInfo.mResize,
-                    mPreBindInfo.mPlaceholder, mThumbnail, mPhoto.getContentUri());
+                    mPreBindInfo.mPlaceholder, mThumbnail, mMedia.getContentUri());
         }
     }
 
     private void setVideoDuration() {
-        if (mPhoto.isVideo()) {
+        if (mMedia.isVideo()) {
             mVideoDuration.setVisibility(VISIBLE);
-            mVideoDuration.setText(DateUtils.formatElapsedTime(mPhoto.duration / 1000));
+            mVideoDuration.setText(DateUtils.formatElapsedTime(mMedia.duration / 1000));
         } else {
             mVideoDuration.setVisibility(GONE);
         }
     }
 
-    public void setOnPhotoGridClickListener(OnPhotoGridClickListener listener) {
+    public void setOnMediaGridClickListener(OnMediaGridClickListener listener) {
         mListener = listener;
     }
 
-    public void removeOnPhotoGridClickListener() {
+    public void removeOnMediaGridClickListener() {
         mListener = null;
     }
 
-    public interface OnPhotoGridClickListener {
+    public interface OnMediaGridClickListener {
 
-        void onThumbnailClicked(ImageView thumbnail, Item photo, RecyclerView.ViewHolder holder);
+        void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder);
 
-        void onCheckViewClicked(CheckView checkView, Item photo, RecyclerView.ViewHolder holder);
+        void onCheckViewClicked(CheckView checkView, Item item, RecyclerView.ViewHolder holder);
     }
 
     public static class PreBindInfo {

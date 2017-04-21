@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Entry for Matisse's photo selection.
+ * Entry for Matisse's media selection.
  */
 public final class Matisse {
 
@@ -72,11 +72,11 @@ public final class Matisse {
     }
 
     /**
-     * Obtain user selected photos' {@link Uri} list in the starting Activity or Fragment.
+     * Obtain user selected media' {@link Uri} list in the starting Activity or Fragment.
      *
      * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
-     * @return User selected photos' {@link Uri} list.
+     * @return User selected media' {@link Uri} list.
      */
     public static List<Uri> obtainResult(Intent data) {
         return data.getParcelableArrayListExtra(MatisseActivity.EXTRA_RESULT_SELECTION);

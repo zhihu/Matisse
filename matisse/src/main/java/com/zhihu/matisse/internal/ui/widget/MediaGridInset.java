@@ -19,13 +19,13 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class PhotoGridInset extends RecyclerView.ItemDecoration {
+public class MediaGridInset extends RecyclerView.ItemDecoration {
 
     private int mSpanCount;
     private int mSpacing;
     private boolean mIncludeEdge;
 
-    public PhotoGridInset(int spanCount, int spacing, boolean includeEdge) {
+    public MediaGridInset(int spanCount, int spacing, boolean includeEdge) {
         this.mSpanCount = spanCount;
         this.mSpacing = spacing;
         this.mIncludeEdge = includeEdge;

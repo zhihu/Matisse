@@ -61,7 +61,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_photo_preview);
+        setContentView(R.layout.activity_media_preview);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
@@ -92,7 +92,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
             @Override
             public void onClick(View v) {
-                Item item = mAdapter.getPhotoItem(mPager.getCurrentItem());
+                Item item = mAdapter.getMediaItem(mPager.getCurrentItem());
                 if (mSelectedCollection.isSelected(item)) {
                     mSelectedCollection.remove(item);
                     if (mSpec.countable) {
@@ -149,7 +149,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         if (mPreviousPos != -1 && mPreviousPos != position) {
             ((PreviewItemFragment) adapter.instantiateItem(mPager, mPreviousPos)).resetView();
 
-            Item item = adapter.getPhotoItem(position);
+            Item item = adapter.getMediaItem(position);
             if (mSpec.countable) {
                 int checkedNum = mSelectedCollection.checkedNumOf(item);
                 mCheckView.setCheckedNum(checkedNum);

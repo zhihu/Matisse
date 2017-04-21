@@ -36,13 +36,13 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.model.DevicePhotoAlbumCollection;
+import com.zhihu.matisse.internal.model.AlbumCollection;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.AlbumPreviewActivity;
 import com.zhihu.matisse.internal.ui.BasePreviewActivity;
-import com.zhihu.matisse.internal.ui.PhotoSelectionFragment;
+import com.zhihu.matisse.internal.ui.MediaSelectionFragment;
 import com.zhihu.matisse.internal.ui.SelectedPreviewActivity;
-import com.zhihu.matisse.internal.ui.adapter.AlbumPhotosAdapter;
+import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
 import com.zhihu.matisse.internal.ui.adapter.AlbumsAdapter;
 import com.zhihu.matisse.internal.ui.widget.AlbumsSpinner;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
@@ -50,19 +50,19 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import java.util.ArrayList;
 
 /**
- * Main Activity to display albums and photos in each album and also support photo selecting
+ * Main Activity to display albums and media content (images/videos) in each album and also support media selecting
  * operations.
  */
 public class MatisseActivity extends AppCompatActivity implements
-        DevicePhotoAlbumCollection.DevicePhotoAlbumCallbacks, AdapterView.OnItemSelectedListener,
-        PhotoSelectionFragment.SelectionProvider, View.OnClickListener,
-        AlbumPhotosAdapter.CheckStateListener, AlbumPhotosAdapter.OnPhotoClickListener,
-        AlbumPhotosAdapter.OnPhotoCapture {
+        AlbumCollection.AlbumCallbacks, AdapterView.OnItemSelectedListener,
+        MediaSelectionFragment.SelectionProvider, View.OnClickListener,
+        AlbumMediaAdapter.CheckStateListener, AlbumMediaAdapter.OnMediaClickListener,
+        AlbumMediaAdapter.OnPhotoCapture {
 
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
     private static final int REQUEST_CODE_PREVIEW = 23;
     private static final int REQUEST_CODE_CAPTURE = 24;
-    private final DevicePhotoAlbumCollection mAlbumCollection = new DevicePhotoAlbumCollection();
+    private final AlbumCollection mAlbumCollection = new AlbumCollection();
     private MediaStoreCompat mMediaStoreCompat;
     private SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
 
@@ -164,10 +164,10 @@ public class MatisseActivity extends AppCompatActivity implements
                 finish();
             } else {
                 mSelectedCollection.overwrite(selected);
-                Fragment photoSelectionFragment = getSupportFragmentManager().findFragmentByTag(
-                        PhotoSelectionFragment.class.getSimpleName());
-                if (photoSelectionFragment instanceof PhotoSelectionFragment) {
-                    ((PhotoSelectionFragment) photoSelectionFragment).refreshPhotoGrid();
+                Fragment mediaSelectionFragment = getSupportFragmentManager().findFragmentByTag(
+                        MediaSelectionFragment.class.getSimpleName());
+                if (mediaSelectionFragment instanceof MediaSelectionFragment) {
+                    ((MediaSelectionFragment) mediaSelectionFragment).refreshMediaGrid();
                 }
                 updateBottomToolbar();
             }
@@ -260,10 +260,10 @@ public class MatisseActivity extends AppCompatActivity implements
         } else {
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
-            Fragment fragment = PhotoSelectionFragment.newInstance(album);
+            Fragment fragment = MediaSelectionFragment.newInstance(album);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment, PhotoSelectionFragment.class.getSimpleName())
+                    .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
                     .commitAllowingStateLoss();
         }
     }
@@ -275,7 +275,7 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onPhotoClick(Album album, Item item, int adapterPosition) {
+    public void onMediaClick(Album album, Item item, int adapterPosition) {
         Intent intent = new Intent(this, AlbumPreviewActivity.class);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
