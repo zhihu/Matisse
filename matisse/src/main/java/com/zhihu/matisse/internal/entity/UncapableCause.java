@@ -20,14 +20,14 @@ import android.support.annotation.IntDef;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-import com.zhihu.matisse.internal.ui.widget.UncapableDialog;
+import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 
 import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 @SuppressWarnings("unused")
-public class UncapableCause {
+public class IncapableCause {
     public static final int TOAST = 0x00;
     public static final int DIALOG = 0x01;
     public static final int NONE = 0x02;
@@ -41,27 +41,27 @@ public class UncapableCause {
     private String mTitle;
     private String mMessage;
 
-    public UncapableCause(String message) {
+    public IncapableCause(String message) {
         mMessage = message;
     }
 
-    public UncapableCause(String title, String message) {
+    public IncapableCause(String title, String message) {
         mTitle = title;
         mMessage = message;
     }
 
-    public UncapableCause(@Form int form, String message) {
+    public IncapableCause(@Form int form, String message) {
         mForm = form;
         mMessage = message;
     }
 
-    public UncapableCause(@Form int form, String title, String message) {
+    public IncapableCause(@Form int form, String title, String message) {
         mForm = form;
         mTitle = title;
         mMessage = message;
     }
 
-    public static void handleCause(Context context, UncapableCause cause) {
+    public static void handleCause(Context context, IncapableCause cause) {
         if (cause == null)
             return;
 
@@ -73,9 +73,9 @@ public class UncapableCause {
                 Toast.makeText(context, cause.mMessage, Toast.LENGTH_SHORT).show();
                 break;
             case DIALOG:
-                UncapableDialog uncapableDialog = UncapableDialog.newInstance(cause.mTitle, cause.mMessage);
-                uncapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
-                        UncapableDialog.class.getName());
+                IncapableDialog IncapableDialog = IncapableDialog.newInstance(cause.mTitle, cause.mMessage);
+                IncapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
+                        IncapableDialog.class.getName());
                 break;
         }
     }

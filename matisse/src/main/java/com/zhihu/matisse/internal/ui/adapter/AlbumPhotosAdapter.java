@@ -32,7 +32,7 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.UncapableCause;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.PhotoGrid;
@@ -192,8 +192,8 @@ public class AlbumPhotosAdapter extends
     }
 
     private boolean assertAddSelection(Context context, Item item) {
-        UncapableCause cause = mSelectedCollection.isAcceptable(item);
-        UncapableCause.handleCause(context, cause);
+        IncapableCause cause = mSelectedCollection.isAcceptable(item);
+        IncapableCause.handleCause(context, cause);
         return cause == null;
     }
 

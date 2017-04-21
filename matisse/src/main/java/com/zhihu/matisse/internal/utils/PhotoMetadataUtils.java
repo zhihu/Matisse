@@ -33,7 +33,7 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.UncapableCause;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -121,16 +121,16 @@ public final class PhotoMetadataUtils {
         return uri.getPath();
     }
 
-    public static UncapableCause isAcceptable(Context context, Item item) {
+    public static IncapableCause isAcceptable(Context context, Item item) {
         if (!isSelectableType(context, item)) {
-            return new UncapableCause(context.getString(R.string.error_file_type));
+            return new IncapableCause(context.getString(R.string.error_file_type));
         }
 
         if (SelectionSpec.getInstance().filters != null) {
             for (Filter filter : SelectionSpec.getInstance().filters) {
-                UncapableCause uncapableCause = filter.filter(context, item);
-                if (uncapableCause != null) {
-                    return uncapableCause;
+                IncapableCause IncapableCause = filter.filter(context, item);
+                if (IncapableCause != null) {
+                    return IncapableCause;
                 }
             }
         }

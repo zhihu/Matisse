@@ -19,7 +19,7 @@ import android.content.Context;
 
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.entity.UncapableCause;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 
 import java.util.Set;
 
@@ -50,9 +50,9 @@ public abstract class Filter {
     /**
      * Invoked for filtering each item.
      *
-     * @return null if selectable, {@link UncapableCause} if not selectable.
+     * @return null if selectable, {@link IncapableCause} if not selectable.
      */
-    public abstract UncapableCause filter(Context context, Item item);
+    public abstract IncapableCause filter(Context context, Item item);
 
     /**
      * Whether an {@link Item} need filtering.

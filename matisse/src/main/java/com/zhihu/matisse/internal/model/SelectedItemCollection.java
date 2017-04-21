@@ -22,7 +22,7 @@ import android.os.Bundle;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.UncapableCause;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
@@ -94,9 +94,9 @@ public class SelectedItemCollection {
         return mItems.contains(item);
     }
 
-    public UncapableCause isAcceptable(Item item) {
+    public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
-            return new UncapableCause(mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
+            return new IncapableCause(mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
         }
 
         return PhotoMetadataUtils.isAcceptable(mContext, item);
