@@ -73,8 +73,8 @@ public class IncapableCause {
                 Toast.makeText(context, cause.mMessage, Toast.LENGTH_SHORT).show();
                 break;
             case DIALOG:
-                IncapableDialog IncapableDialog = IncapableDialog.newInstance(cause.mTitle, cause.mMessage);
-                IncapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
+                IncapableDialog incapableDialog = IncapableDialog.newInstance(cause.mTitle, cause.mMessage);
+                incapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
                         IncapableDialog.class.getName());
                 break;
         }
