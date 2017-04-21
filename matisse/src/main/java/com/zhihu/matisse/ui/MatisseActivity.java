@@ -184,13 +184,12 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     private void updateBottomToolbar() {
+        mButtonPreview.setEnabled(mSelectedCollection.getCollectionType() == SelectedItemCollection.COLLECTION_IMAGE);
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
-            mButtonPreview.setEnabled(false);
-            mButtonApply.setText(getString(R.string.button_apply_disable));
             mButtonApply.setEnabled(false);
+            mButtonApply.setText(getString(R.string.button_apply_disable));
         } else {
-            mButtonPreview.setEnabled(true);
             mButtonApply.setEnabled(true);
             mButtonApply.setText(getString(R.string.button_apply, selectedCount));
         }
