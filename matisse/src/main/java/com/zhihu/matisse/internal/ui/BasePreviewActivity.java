@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.UncapableCause;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
@@ -206,8 +206,8 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     }
 
     private boolean assertAddSelection(Item item) {
-        UncapableCause cause = mSelectedCollection.isAcceptable(item);
-        UncapableCause.handleCause(this, cause);
+        IncapableCause cause = mSelectedCollection.isAcceptable(item);
+        IncapableCause.handleCause(this, cause);
         return cause == null;
     }
 }

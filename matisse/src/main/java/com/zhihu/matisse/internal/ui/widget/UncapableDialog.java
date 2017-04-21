@@ -25,13 +25,13 @@ import android.text.TextUtils;
 
 import com.zhihu.matisse.R;
 
-public class UncapableDialog extends DialogFragment {
+public class IncapableDialog extends DialogFragment {
 
     public static final String EXTRA_TITLE = "extra_title";
     public static final String EXTRA_MESSAGE = "extra_message";
 
-    public static UncapableDialog newInstance(String title, String message) {
-        UncapableDialog dialog = new UncapableDialog();
+    public static IncapableDialog newInstance(String title, String message) {
+        IncapableDialog dialog = new IncapableDialog();
         Bundle args = new Bundle();
         args.putString(EXTRA_TITLE, title);
         args.putString(EXTRA_MESSAGE, message);
