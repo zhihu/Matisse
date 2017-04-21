@@ -2,9 +2,9 @@
 
 # Matisse
 [![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse)  
-Matisse is a well-designed local image selector for Android. You can  
+Matisse is a well-designed local image and video selector for Android. You can  
 - Use it in Activity or Fragment
-- Select JPEG, PNG and GIF
+- Select images including JPEG, PNG, GIF and videos including MPEG, MP4 
 - Apply different themes, including two built-in themes and custom themes
 - Different image loaders
 - Define custom filter rules
@@ -58,7 +58,7 @@ Start `MatisseActivity` from current `Activity` or `Fragment`:
 
 ```java
 Matisse.from(MainActivity.this)
-        .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))
+        .choose(MimeType.allOf())
         .countable(true)
         .maxSelectable(9)
         .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
