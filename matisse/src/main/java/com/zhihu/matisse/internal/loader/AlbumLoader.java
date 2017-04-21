@@ -40,9 +40,10 @@ public class AlbumLoader extends CursorLoader {
             MediaStore.Files.FileColumns._ID,
             "COUNT(*) AS " + COLUMN_COUNT};
     private static final String SELECTION =
-            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
             + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
             + ") GROUP BY (bucket_id";
     private static final String[] SELECTION_ARGS = {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
