@@ -188,7 +188,8 @@ public final class SelectionSpecBuilder {
     /**
      * Set the desired orientation of this activity.
      *
-     * @param orientation An orientation constant as used in {@link ScreenOrientation}. Default value is {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_PORTRAIT}.
+     * @param orientation An orientation constant as used in {@link ScreenOrientation}.
+     *                    Default value is {@link android.content.pm.ActivityInfo#SCREEN_ORIENTATION_PORTRAIT}.
      * @return {@link SelectionSpecBuilder} for fluent API.
      * @see Activity#setRequestedOrientation(int)
      */
