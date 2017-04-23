@@ -31,4 +31,5 @@
     <string name="error_over_quality">图片质量太高</string>
     <string name="error_file_type">不支持的文件类型</string>
     <string name="error_type_conflict">不能同时选择图片和视频</string>
+    <string name="error_no_video_activity">没有支持视频预览的应用</string>
 </resources>
