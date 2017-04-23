@@ -54,7 +54,8 @@ public final class PhotoMetadataUtils {
         return size.x * size.y;
     }
 
-    public static Point getBitmapSize(ContentResolver resolver, Uri uri, Activity activity) {
+    public static Point getBitmapSize(Uri uri, Activity activity) {
+        ContentResolver resolver = activity.getContentResolver();
         Point imageSize = getBitmapBound(resolver, uri);
         int w = imageSize.x;
         int h = imageSize.y;
