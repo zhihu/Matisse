@@ -52,7 +52,6 @@ public class AlbumLoader extends CursorLoader {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
     };
     private static final String BUCKET_ORDER_BY = "datetaken DESC";
-    private static final String MEDIA_ID_DUMMY = String.valueOf(-1);
 
     public AlbumLoader(Context context) {
         super(context, QUERY_URI, PROJECTION, SELECTION, SELECTION_ARGS, BUCKET_ORDER_BY);
@@ -72,7 +71,8 @@ public class AlbumLoader extends CursorLoader {
         } else {
             allAlbumCoverPath = "";
         }
-        allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath, String.valueOf(totalCount)});
+        allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath,
+                String.valueOf(totalCount)});
 
         return new MergeCursor(new Cursor[]{allAlbum, albums});
     }
