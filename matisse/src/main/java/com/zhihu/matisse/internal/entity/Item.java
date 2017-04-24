@@ -115,7 +115,14 @@ public class Item implements Parcelable {
 
     public boolean isVideo() {
         return mimeType.equals(MimeType.MPEG.toString())
-                || mimeType.equals(MimeType.MP4.toString());
+                || mimeType.equals(MimeType.MP4.toString())
+                || mimeType.equals(MimeType.QUICKTIME.toString())
+                || mimeType.equals(MimeType.THREEGPP.toString())
+                || mimeType.equals(MimeType.THREEGPP2.toString())
+                || mimeType.equals(MimeType.MKV.toString())
+                || mimeType.equals(MimeType.WEBM.toString())
+                || mimeType.equals(MimeType.TS.toString())
+                || mimeType.equals(MimeType.AVI.toString());
     }
 
     @Override

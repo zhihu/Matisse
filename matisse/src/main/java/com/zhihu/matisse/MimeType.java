@@ -28,8 +28,9 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * MIME Type enumeration to restrict selectable media on the selection activity. Matisse only supports images and videos.
- *
+ * MIME Type enumeration to restrict selectable media on the selection activity. Matisse only supports images and
+ * videos.
+ * <p>
  * Good example of mime types Android supports:
  * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/MediaFile.java
  */
@@ -61,6 +62,29 @@ public enum MimeType {
     MP4("video/mp4", new HashSet<String>() {{
         add("mp4");
         add("m4v");
+    }}),
+    QUICKTIME("video/quicktime", new HashSet<String>() {{
+        add("mov");
+    }}),
+    THREEGPP("video/3gpp", new HashSet<String>() {{
+        add("3gp");
+        add("3gpp");
+    }}),
+    THREEGPP2("video/3gpp2", new HashSet<String>() {{
+        add("3g2");
+        add("3gpp2");
+    }}),
+    MKV("video/x-matroska", new HashSet<String>() {{
+        add("mkv");
+    }}),
+    WEBM("video/webm", new HashSet<String>() {{
+        add("webm");
+    }}),
+    TS("video/mp2ts", new HashSet<String>() {{
+        add("ts");
+    }}),
+    AVI("video/avi", new HashSet<String>() {{
+        add("avi");
     }});
 
     private final String mMimeTypeName;
@@ -84,7 +108,7 @@ public enum MimeType {
     }
 
     public static Set<MimeType> ofVideo() {
-        return EnumSet.of(MPEG, MP4);
+        return EnumSet.of(MPEG, MP4, QUICKTIME, THREEGPP, THREEGPP2, MKV, WEBM, TS, AVI);
     }
 
     @Override
