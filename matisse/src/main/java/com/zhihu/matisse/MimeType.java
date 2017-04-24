@@ -28,10 +28,14 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * MIME Type enumeration to restrict selectable media on the selection activity.
+ * MIME Type enumeration to restrict selectable media on the selection activity. Matisse only supports images and videos.
+ *
+ * Good example of mime types Android supports:
+ * https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/MediaFile.java
  */
 @SuppressWarnings("unused")
 public enum MimeType {
+    // ============== images ==============
     JPEG("image/jpeg", new HashSet<String>() {{
         add("jpg");
         add("jpeg");
@@ -42,6 +46,14 @@ public enum MimeType {
     GIF("image/gif", new HashSet<String>() {{
         add("gif");
     }}),
+    BMP("image/x-ms-bmp", new HashSet<String>() {{
+        add("bmp");
+    }}),
+    WEBP("image/webp", new HashSet<String>() {{
+        add("webp");
+    }}),
+
+    // ============== videos ==============
     MPEG("video/mpeg", new HashSet<String>() {{
         add("mpeg");
         add("mpg");
