@@ -47,7 +47,7 @@ public class Item implements Parcelable {
     public final long size;
     public final long duration; // only for video, in ms
 
-    Item(long id, String mimeType, long size, long duration) {
+    private Item(long id, String mimeType, long size, long duration) {
         this.id = id;
         this.mimeType = mimeType;
         Uri contentUri;
@@ -64,7 +64,7 @@ public class Item implements Parcelable {
         this.duration = duration;
     }
 
-    Item(Parcel source) {
+    private Item(Parcel source) {
         id = source.readLong();
         mimeType = source.readString();
         uri = source.readParcelable(Uri.class.getClassLoader());
@@ -104,7 +104,9 @@ public class Item implements Parcelable {
     public boolean isImage() {
         return mimeType.equals(MimeType.JPEG.toString())
                 || mimeType.equals(MimeType.PNG.toString())
-                || mimeType.equals(MimeType.GIF);
+                || mimeType.equals(MimeType.GIF.toString())
+                || mimeType.equals(MimeType.BMP.toString())
+                || mimeType.equals(MimeType.WEBP.toString());
     }
 
     public boolean isGif() {
@@ -113,7 +115,14 @@ public class Item implements Parcelable {
 
     public boolean isVideo() {
         return mimeType.equals(MimeType.MPEG.toString())
-                || mimeType.equals(MimeType.MP4.toString());
+                || mimeType.equals(MimeType.MP4.toString())
+                || mimeType.equals(MimeType.QUICKTIME.toString())
+                || mimeType.equals(MimeType.THREEGPP.toString())
+                || mimeType.equals(MimeType.THREEGPP2.toString())
+                || mimeType.equals(MimeType.MKV.toString())
+                || mimeType.equals(MimeType.WEBM.toString())
+                || mimeType.equals(MimeType.TS.toString())
+                || mimeType.equals(MimeType.AVI.toString());
     }
 
     @Override
