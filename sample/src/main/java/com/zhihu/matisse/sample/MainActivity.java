@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             switch (v.getId()) {
                                 case R.id.zhihu:
                                     Matisse.from(MainActivity.this)
-                                            .choose(MimeType.allOf())
+                                            .choose(MimeType.ofAll())
                                             .countable(true)
                                             .maxSelectable(9)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))

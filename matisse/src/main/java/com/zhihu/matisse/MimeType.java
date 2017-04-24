@@ -71,12 +71,8 @@ public enum MimeType {
         mExtensions = extensions;
     }
 
-    public static Set<MimeType> allOf() {
+    public static Set<MimeType> ofAll() {
         return EnumSet.allOf(MimeType.class);
-    }
-
-    public static Set<MimeType> of(MimeType type) {
-        return EnumSet.of(type);
     }
 
     public static Set<MimeType> of(MimeType type, MimeType... rest) {
@@ -84,7 +80,7 @@ public enum MimeType {
     }
 
     public static Set<MimeType> ofImage() {
-        return EnumSet.of(JPEG, PNG, GIF);
+        return EnumSet.of(JPEG, PNG, GIF, BMP, WEBP);
     }
 
     public static Set<MimeType> ofVideo() {
