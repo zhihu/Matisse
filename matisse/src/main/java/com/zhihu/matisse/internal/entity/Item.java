@@ -47,7 +47,7 @@ public class Item implements Parcelable {
     public final long size;
     public final long duration; // only for video, in ms
 
-    Item(long id, String mimeType, long size, long duration) {
+    private Item(long id, String mimeType, long size, long duration) {
         this.id = id;
         this.mimeType = mimeType;
         Uri contentUri;
@@ -64,7 +64,7 @@ public class Item implements Parcelable {
         this.duration = duration;
     }
 
-    Item(Parcel source) {
+    private Item(Parcel source) {
         id = source.readLong();
         mimeType = source.readString();
         uri = source.readParcelable(Uri.class.getClassLoader());
