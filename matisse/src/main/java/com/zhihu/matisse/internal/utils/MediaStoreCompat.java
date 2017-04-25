@@ -99,7 +99,9 @@ public class MediaStoreCompat {
         } else {
             storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         }
-        return new File(storageDir + imageFileName + ".jpg");
+        return new File(storageDir
+              + (storageDir.getPath().endsWith("/") ? "" : "/")  // delimiter check
+              + imageFileName + ".jpg");
     }
 
     public Uri getCurrentPhotoPath() {
