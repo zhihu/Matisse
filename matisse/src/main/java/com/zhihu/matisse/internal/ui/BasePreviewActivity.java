@@ -27,22 +27,19 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zhihu.matisse.R;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class BasePreviewActivity extends AppCompatActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener {
 
-    public static final String EXTRA_DEFAULT_SELECTED = "extra_default_selected";
-    public static final String EXTRA_RESULT_SELECTED = "extra_result_selected";
+    public static final String EXTRA_DEFAULT_BUNDLE = "extra_default_bundle";
+    public static final String EXTRA_RESULT_BUNDLE = "extra_result_bundle";
     public static final String EXTRA_RESULT_APPLY = "extra_result_apply";
 
     protected final SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
@@ -70,10 +67,11 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         if (mSpec.needOrientationRestriction()) {
             setRequestedOrientation(mSpec.orientation);
         }
-        mSelectedCollection.onCreate(savedInstanceState, mSpec);
+
         if (savedInstanceState == null) {
-            mSelectedCollection.setDefaultSelection(
-                    getIntent().<Item>getParcelableArrayListExtra(EXTRA_DEFAULT_SELECTED));
+            mSelectedCollection.onCreate(getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE), mSpec);
+        } else {
+            mSelectedCollection.onCreate(savedInstanceState, mSpec);
         }
 
         mButtonBack = (TextView) findViewById(R.id.button_back);
@@ -199,8 +197,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     protected void sendBackResult(boolean apply) {
         Intent intent = new Intent();
-        List<Item> checked = mSelectedCollection.asList();
-        intent.putParcelableArrayListExtra(EXTRA_RESULT_SELECTED, (ArrayList<Item>) checked);
+        intent.putExtra(EXTRA_RESULT_BUNDLE, mSelectedCollection.getDataWithBundle());
         intent.putExtra(EXTRA_RESULT_APPLY, apply);
         setResult(Activity.RESULT_OK, intent);
     }

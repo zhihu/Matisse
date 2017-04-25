@@ -34,7 +34,7 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class SelectedItemCollection {
 
-    private static final String STATE_SELECTION = "state_selection";
+    public static final String STATE_SELECTION = "state_selection", STATE_COLLECTION_TYPE = "state_collection_type";
     private final Context mContext;
     private Set<Item> mItems;
     private SelectionSpec mSpec;
@@ -64,12 +64,13 @@ public class SelectedItemCollection {
         mContext = context;
     }
 
-    public void onCreate(Bundle savedInstanceState, SelectionSpec spec) {
-        if (savedInstanceState == null) {
+    public void onCreate(Bundle bundle, SelectionSpec spec) {
+        if (bundle == null) {
             mItems = new LinkedHashSet<>();
         } else {
-            List<Item> saved = savedInstanceState.getParcelableArrayList(STATE_SELECTION);
+            List<Item> saved = bundle.getParcelableArrayList(STATE_SELECTION);
             mItems = new LinkedHashSet<>(saved);
+            mCollectionType = bundle.getInt(STATE_COLLECTION_TYPE, COLLECTION_UNDEFINED);
         }
         mSpec = spec;
     }
@@ -80,6 +81,14 @@ public class SelectedItemCollection {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(STATE_SELECTION, new ArrayList<>(mItems));
+        outState.putInt(STATE_COLLECTION_TYPE, mCollectionType);
+    }
+
+    public Bundle getDataWithBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(STATE_SELECTION, new ArrayList<>(mItems));
+        bundle.putInt(STATE_COLLECTION_TYPE, mCollectionType);
+        return bundle;
     }
 
     public boolean add(Item item) {
@@ -104,13 +113,16 @@ public class SelectedItemCollection {
         return result;
     }
 
-    public void overwrite(ArrayList<Item> items) {
+    public void overwrite(ArrayList<Item> items, int collectionType) {
         if (items.size() == 0) {
             mCollectionType = COLLECTION_UNDEFINED;
+        } else {
+            mCollectionType = collectionType;
         }
         mItems.clear();
         mItems.addAll(items);
     }
+
 
     public List<Item> asList() {
         return new ArrayList<>(mItems);
