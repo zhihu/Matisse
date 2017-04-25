@@ -152,18 +152,22 @@ public class MatisseActivity extends AppCompatActivity implements
             return;
 
         if (requestCode == REQUEST_CODE_PREVIEW) {
-            ArrayList<Item> selected = data.getParcelableArrayListExtra(BasePreviewActivity.EXTRA_RESULT_SELECTED);
+            Bundle resultBundle = data.getBundleExtra(BasePreviewActivity.EXTRA_RESULT_BUNDLE);
+            ArrayList<Item> selected = resultBundle.getParcelableArrayList(SelectedItemCollection.STATE_SELECTION);
+            int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE, SelectedItemCollection.COLLECTION_UNDEFINED);
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
                 Intent result = new Intent();
                 ArrayList<Uri> selectedUris = new ArrayList<>();
-                for (Item item : selected) {
-                    selectedUris.add(item.getContentUri());
+                if (selected != null) {
+                    for (Item item : selected) {
+                        selectedUris.add(item.getContentUri());
+                    }
                 }
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
                 setResult(RESULT_OK, result);
                 finish();
             } else {
-                mSelectedCollection.overwrite(selected);
+                mSelectedCollection.overwrite(selected, collectionType);
                 Fragment mediaSelectionFragment = getSupportFragmentManager().findFragmentByTag(
                         MediaSelectionFragment.class.getSimpleName());
                 if (mediaSelectionFragment instanceof MediaSelectionFragment) {
@@ -200,7 +204,7 @@ public class MatisseActivity extends AppCompatActivity implements
     public void onClick(View v) {
         if (v.getId() == R.id.button_preview) {
             Intent intent = new Intent(this, SelectedPreviewActivity.class);
-            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_SELECTED, (ArrayList<Item>) mSelectedCollection.asList());
+            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
             startActivityForResult(intent, REQUEST_CODE_PREVIEW);
         } else if (v.getId() == R.id.button_apply) {
             Intent result = new Intent();
@@ -279,7 +283,7 @@ public class MatisseActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, AlbumPreviewActivity.class);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
-        intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_SELECTED, (ArrayList<Item>) mSelectedCollection.asList());
+        intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
         startActivityForResult(intent, REQUEST_CODE_PREVIEW);
     }
 
