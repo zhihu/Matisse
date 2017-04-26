@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="?actionBarSize"
             android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
-            android:foreground="?selectableItemBackground"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
             android:textColor="?attr/album.selected"
             android:textSize="20sp"/>
