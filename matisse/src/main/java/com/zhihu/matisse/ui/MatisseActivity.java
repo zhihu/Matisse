@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -59,12 +60,18 @@ public class MatisseActivity extends AppCompatActivity implements
         AlbumMediaAdapter.CheckStateListener, AlbumMediaAdapter.OnMediaClickListener,
         AlbumMediaAdapter.OnPhotoCapture {
 
+    private static final String TAG = MatisseActivity.class.getName();
+
+    private static final String KEY_CURRENT_ALBUM_SELECTION = TAG + "_currentAlbumSelection";
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
     private static final int REQUEST_CODE_PREVIEW = 23;
     private static final int REQUEST_CODE_CAPTURE = 24;
-    private final AlbumCollection mAlbumCollection = new AlbumCollection();
+    private static final int LOADER_ID_ALBUM = 0;
+
+    private AlbumCollection mAlbumCollection;
     private MediaStoreCompat mMediaStoreCompat;
     private SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
+    private int mCurrentAlbumSelection;
 
     private AlbumsSpinner mAlbumsSpinner;
     private AlbumsAdapter mAlbumsAdapter;
@@ -112,22 +119,29 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumsSpinner.setSelectedTextView((TextView) findViewById(R.id.selected_album));
         mAlbumsSpinner.setPopupAnchorView(findViewById(R.id.toolbar));
         mAlbumsSpinner.setAdapter(mAlbumsAdapter);
-        mAlbumCollection.onCreate(this, this);
-        mAlbumCollection.onRestoreInstanceState(savedInstanceState);
-        mAlbumCollection.loadAlbums();
+
+        if (savedInstanceState != null) {
+            mCurrentAlbumSelection = savedInstanceState.getInt(KEY_CURRENT_ALBUM_SELECTION, 0);
+        }
+
+        mAlbumCollection = new AlbumCollection(this, this);
+
+        LoaderManager loaderManager = getSupportLoaderManager();
+        loaderManager.initLoader(LOADER_ID_ALBUM, null, mAlbumCollection);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
-        mAlbumCollection.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_ALBUM_SELECTION, mCurrentAlbumSelection);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAlbumCollection.onDestroy();
+
+        mAlbumCollection = null;
     }
 
     @Override
@@ -153,8 +167,10 @@ public class MatisseActivity extends AppCompatActivity implements
 
         if (requestCode == REQUEST_CODE_PREVIEW) {
             Bundle resultBundle = data.getBundleExtra(BasePreviewActivity.EXTRA_RESULT_BUNDLE);
-            ArrayList<Item> selected = resultBundle.getParcelableArrayList(SelectedItemCollection.STATE_SELECTION);
-            int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE, SelectedItemCollection.COLLECTION_UNDEFINED);
+            ArrayList<Item> selected =
+                    resultBundle.getParcelableArrayList(SelectedItemCollection.STATE_SELECTION);
+            int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE,
+                    SelectedItemCollection.COLLECTION_UNDEFINED);
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
                 Intent result = new Intent();
                 ArrayList<Uri> selectedUris = new ArrayList<>();
@@ -204,7 +220,8 @@ public class MatisseActivity extends AppCompatActivity implements
     public void onClick(View v) {
         if (v.getId() == R.id.button_preview) {
             Intent intent = new Intent(this, SelectedPreviewActivity.class);
-            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
+            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE,
+                    mSelectedCollection.getDataWithBundle());
             startActivityForResult(intent, REQUEST_CODE_PREVIEW);
         } else if (v.getId() == R.id.button_apply) {
             Intent result = new Intent();
@@ -217,7 +234,7 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        mAlbumCollection.setStateCurrentSelection(position);
+        mCurrentAlbumSelection = position;
         mAlbumsAdapter.getCursor().moveToPosition(position);
         Album album = Album.valueOf(mAlbumsAdapter.getCursor());
         if (album.isAll() && SelectionSpec.getInstance().capture) {
@@ -240,9 +257,8 @@ public class MatisseActivity extends AppCompatActivity implements
 
             @Override
             public void run() {
-                cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
-                mAlbumsSpinner.setSelection(MatisseActivity.this,
-                        mAlbumCollection.getCurrentSelection());
+                cursor.moveToPosition(mCurrentAlbumSelection);
+                mAlbumsSpinner.setSelection(MatisseActivity.this, mCurrentAlbumSelection);
                 Album album = Album.valueOf(cursor);
                 if (album.isAll() && SelectionSpec.getInstance().capture) {
                     album.addCaptureCount();
@@ -283,7 +299,8 @@ public class MatisseActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, AlbumPreviewActivity.class);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
-        intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
+        intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE,
+                mSelectedCollection.getDataWithBundle());
         startActivityForResult(intent, REQUEST_CODE_PREVIEW);
     }
 
