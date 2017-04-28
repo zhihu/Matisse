@@ -17,7 +17,7 @@ Matisse is a well-designed local image and video selector for Android. You can
 ## Download
 Gradle:
 
-```groovy
+``` gradle
 repositories {
     jcenter()
 }
