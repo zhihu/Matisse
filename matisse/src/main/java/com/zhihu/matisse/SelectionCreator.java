@@ -128,7 +128,6 @@ public final class SelectionCreator {
      *
      * @param maxSelectable Maximum selectable count. Default value is 1.
      * @return {@link SelectionCreator} for fluent API.
-     * @throws IllegalArgumentException if maxSelectable if less than 1.
      */
     public SelectionCreator maxSelectable(int maxSelectable) {
         if (maxSelectable < 1)
@@ -142,7 +141,6 @@ public final class SelectionCreator {
      *
      * @param filter {@link Filter}
      * @return {@link SelectionCreator} for fluent API.
-     * @throws IllegalArgumentException if filter is null.
      */
     public SelectionCreator addFilter(@NonNull Filter filter) {
         if (mSelectionSpec.filters == null) {
@@ -198,7 +196,6 @@ public final class SelectionCreator {
      *
      * @param spanCount Requested span count.
      * @return {@link SelectionCreator} for fluent API.
-     * @throws IllegalArgumentException if spanCount is less than 1.
      */
     public SelectionCreator spanCount(int spanCount) {
         if (spanCount < 1) throw new IllegalArgumentException("spanCount cannot be less than 1");
@@ -225,7 +222,6 @@ public final class SelectionCreator {
      *
      * @param scale Thumbnail's scale in (0.0, 1.0]. Default value is 0.5.
      * @return {@link SelectionCreator} for fluent API.
-     * @throws IllegalArgumentException if scale is less than 0f or greater than 1.0f.
      */
     public SelectionCreator thumbnailScale(float scale) {
         if (scale < 0f || scale > 1f)
