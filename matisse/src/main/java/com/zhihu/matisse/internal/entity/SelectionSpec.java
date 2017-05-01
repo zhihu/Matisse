@@ -20,7 +20,9 @@ import android.content.pm.ActivityInfo;
 import android.support.annotation.StyleRes;
 
 import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 
 import java.util.List;
@@ -55,19 +57,19 @@ public final class SelectionSpec {
         return selectionSpec;
     }
 
-    void reset() {
+    private void reset() {
         mimeTypeSet = null;
-        themeId = 0;
+        themeId = R.style.Matisse_Zhihu;
         orientation = 0;
         countable = false;
         maxSelectable = 0;
         filters = null;
         capture = false;
         captureStrategy = null;
-        spanCount = 0;
+        spanCount = 3;
         gridExpectedSize = 0;
-        thumbnailScale = 0.0f;
-        imageEngine = null;
+        thumbnailScale = 0.5f;
+        imageEngine = new GlideEngine();
     }
 
     public boolean needOrientationRestriction() {

@@ -39,6 +39,10 @@ public final class Matisse {
         this(activity, null);
     }
 
+    private Matisse(Fragment fragment) {
+        this(fragment.getActivity(), fragment);
+    }
+
     private Matisse(Activity activity, Fragment fragment) {
         mContext = new WeakReference<>(activity);
         mFragment = new WeakReference<>(fragment);
@@ -67,7 +71,7 @@ public final class Matisse {
      * @return Matisse instance.
      */
     public static Matisse from(Fragment fragment) {
-        return new Matisse(fragment.getActivity(), fragment);
+        return new Matisse(fragment);
     }
 
     /**
@@ -87,12 +91,12 @@ public final class Matisse {
      * Types not included in the set will still be shown in the grid but can't be chosen.
      *
      * @param mimeType MIME types set user can choose from.
-     * @return {@link SelectionSpecBuilder} to build select specifications.
+     * @return {@link SelectionCreator} to build select specifications.
      * @see MimeType
-     * @see SelectionSpecBuilder
+     * @see SelectionCreator
      */
-    public SelectionSpecBuilder choose(Set<MimeType> mimeType) {
-        return new SelectionSpecBuilder(this, mimeType);
+    public SelectionCreator choose(Set<MimeType> mimeType) {
+        return new SelectionCreator(this, mimeType);
     }
 
     @Nullable
