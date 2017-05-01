@@ -62,7 +62,7 @@ public final class SelectionSpec {
         themeId = R.style.Matisse_Zhihu;
         orientation = 0;
         countable = false;
-        maxSelectable = 0;
+        maxSelectable = 1;
         filters = null;
         capture = false;
         captureStrategy = null;
