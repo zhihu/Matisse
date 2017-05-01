@@ -88,6 +88,8 @@ public class MatisseActivity extends AppCompatActivity implements
 
         if (spec.capture) {
             mMediaStoreCompat = new MediaStoreCompat(this);
+            if (spec.captureStrategy == null)
+                throw new RuntimeException("Don't forget to set CaptureStrategy.");
             mMediaStoreCompat.setCaptureStrategy(spec.captureStrategy);
         }
 
