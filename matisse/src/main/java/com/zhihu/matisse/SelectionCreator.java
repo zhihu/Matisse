@@ -224,7 +224,7 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator thumbnailScale(float scale) {
-        if (scale < 0f || scale > 1f)
+        if (scale <= 0f || scale > 1f)
             throw new IllegalArgumentException("Thumbnail scale must be between (0.0, 1.0]");
         mSelectionSpec.thumbnailScale = scale;
         return this;
