@@ -24,6 +24,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v4.os.EnvironmentCompat;
 
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class MediaStoreCompat {
 
@@ -79,6 +81,7 @@ public class MediaStoreCompat {
                 mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
                         mCaptureStrategy.authority, photoFile);
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
+                captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 if (mFragment != null) {
                     mFragment.get().startActivityForResult(captureIntent, requestCode);
                 } else {
@@ -90,8 +93,9 @@ public class MediaStoreCompat {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = String.format("JPEG_%s.jpg", timeStamp);
         File storageDir;
         if (mCaptureStrategy.isPublic) {
             storageDir = Environment.getExternalStoragePublicDirectory(
@@ -99,7 +103,16 @@ public class MediaStoreCompat {
         } else {
             storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         }
-        return new File(storageDir + imageFileName + ".jpg");
+
+        // Avoid joining path components manually
+        File tempFile = new File(storageDir, imageFileName);
+
+        // Handle the situation that user's external storage is not ready
+        if (!Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(tempFile))) {
+            return null;
+        }
+
+        return tempFile;
     }
 
     public Uri getCurrentPhotoPath() {
