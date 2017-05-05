@@ -107,6 +107,7 @@ public class AlbumsSpinner {
                 mListPopupWindow.show();
             }
         });
+        mSelected.setOnTouchListener(mListPopupWindow.createDragToOpenListener(mSelected));
     }
 
     public void setPopupAnchorView(View view) {
