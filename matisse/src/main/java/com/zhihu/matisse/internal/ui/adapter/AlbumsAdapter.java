@@ -67,8 +67,7 @@ public class AlbumsAdapter extends CursorAdapter {
         ((TextView) view.findViewById(R.id.album_media_count)).setText(String.valueOf(album.getCount()));
 
         // do not need to load animated Gif
-        SelectionSpec.getInstance().imageEngine.loadThumbnail(context, context.getResources().getDimensionPixelSize(R
-                        .dimen.media_grid_size), mPlaceholder,
+        SelectionSpec.getInstance().imageEngine.loadThumbnail(context, mPlaceholder,
                 (ImageView) view.findViewById(R.id.album_cover), Uri.fromFile(new File(album.getCoverPath())));
     }
 }
