@@ -16,42 +16,98 @@
 package com.zhihu.matisse.internal.ui.widget;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 
 public class RoundedRectangleImageView extends AppCompatImageView {
 
-    private static float radius; // dp
+    private static final float sRadius = 3.f; // Radius in dp
+
+    private float mResolvedRadius; // Radius in px
+    private Paint mMaskPaint;
+    private Path mMaskPath;
+    private Bitmap mPreRendered;
 
     public RoundedRectangleImageView(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public RoundedRectangleImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public RoundedRectangleImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+
+        resolveRadiusDimensions();
+
+        mMaskPaint = new Paint();
+        mMaskPaint.setColor(Color.GREEN);
+        mMaskPaint.setAntiAlias(true);
+        mMaskPaint.setFilterBitmap(true);
     }
 
-    private void init(Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        radius = 2.0f * density;
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        resolveRadiusDimensions();
+        postInvalidate();
+    }
+
+    @Override
+    protected boolean setFrame(int l, int t, int r, int b) {
+        RectF rect = new RectF(0, 0, r - l, b - t);
+        mMaskPath = new Path();
+        mMaskPath.addRoundRect(rect, mResolvedRadius, mResolvedRadius, Path.Direction.CW);
+        mPreRendered = null;
+
+        return super.setFrame(l, t, r, b);
+    }
+
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        mPreRendered = null;
+        super.setImageDrawable(drawable);
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        mPreRendered = null;
+        super.setImageBitmap(bm);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Path roundedRectPath = new Path();
-        RectF rect = new RectF(0.0f, 0.0f, getWidth(), getHeight());
-        roundedRectPath.addRoundRect(rect, radius, radius, Path.Direction.CW);
-        canvas.clipPath(roundedRectPath);
-        super.onDraw(canvas);
+        if (mPreRendered == null) {
+            Bitmap tempBitmap =
+                    Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_4444);
+            Canvas bitmapCanvas = new Canvas(tempBitmap);
+            mMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            bitmapCanvas.drawPath(mMaskPath, mMaskPaint);
+
+            mPreRendered = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_4444);
+            bitmapCanvas = new Canvas(mPreRendered);
+            super.onDraw(bitmapCanvas);
+            mMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+            bitmapCanvas.drawBitmap(tempBitmap, 0, 0, mMaskPaint);
+        }
+
+        canvas.drawBitmap(mPreRendered, 0, 0, null);
+    }
+
+    private void resolveRadiusDimensions() {
+        mResolvedRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sRadius,
+                getResources().getDisplayMetrics());
     }
 }

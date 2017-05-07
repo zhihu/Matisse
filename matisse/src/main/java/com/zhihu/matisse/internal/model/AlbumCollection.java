@@ -19,84 +19,34 @@ package com.zhihu.matisse.internal.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.zhihu.matisse.internal.loader.AlbumLoader;
 
-import java.lang.ref.WeakReference;
-
 public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_ID = 1;
-    private static final String STATE_CURRENT_SELECTION = "state_current_selection";
-    private WeakReference<Context> mContext;
-    private LoaderManager mLoaderManager;
+
+    private Context mContext;
     private AlbumCallbacks mCallbacks;
-    private int mCurrentSelection;
+
+    public AlbumCollection(Context context, AlbumCallbacks callbacks) {
+        mContext = context;
+        mCallbacks = callbacks;
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Context context = mContext.get();
-        if (context == null) {
-            return null;
-        }
-        return new AlbumLoader(context);
+        return new AlbumLoader(mContext);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Context context = mContext.get();
-        if (context == null) {
-            return;
-        }
-
         mCallbacks.onAlbumLoad(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Context context = mContext.get();
-        if (context == null) {
-            return;
-        }
-
         mCallbacks.onAlbumReset();
-    }
-
-    public void onCreate(FragmentActivity activity, AlbumCallbacks callbacks) {
-        mContext = new WeakReference<Context>(activity);
-        mLoaderManager = activity.getSupportLoaderManager();
-        mCallbacks = callbacks;
-    }
-
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            return;
-        }
-
-        mCurrentSelection = savedInstanceState.getInt(STATE_CURRENT_SELECTION);
-    }
-
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STATE_CURRENT_SELECTION, mCurrentSelection);
-    }
-
-    public void onDestroy() {
-        mLoaderManager.destroyLoader(LOADER_ID);
-        mCallbacks = null;
-    }
-
-    public void loadAlbums() {
-        mLoaderManager.initLoader(LOADER_ID, null, this);
-    }
-
-    public int getCurrentSelection() {
-        return mCurrentSelection;
-    }
-
-    public void setStateCurrentSelection(int currentSelection) {
-        mCurrentSelection = currentSelection;
     }
 
     public interface AlbumCallbacks {
