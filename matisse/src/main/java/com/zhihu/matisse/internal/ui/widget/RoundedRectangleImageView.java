@@ -24,7 +24,9 @@ import android.util.AttributeSet;
 
 public class RoundedRectangleImageView extends AppCompatImageView {
 
-    private static float radius; // dp
+    private float mRadius; // dp
+    private Path mRoundedRectPath;
+    private RectF mRectF;
 
     public RoundedRectangleImageView(Context context) {
         super(context);
@@ -43,15 +45,21 @@ public class RoundedRectangleImageView extends AppCompatImageView {
 
     private void init(Context context) {
         float density = context.getResources().getDisplayMetrics().density;
-        radius = 2.0f * density;
+        mRadius = 2.0f * density;
+        mRoundedRectPath = new Path();
+        mRectF = new RectF();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mRectF.set(0.0f, 0.0f, getWidth(), getHeight());
+        mRoundedRectPath.addRoundRect(mRectF, mRadius, mRadius, Path.Direction.CW);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Path roundedRectPath = new Path();
-        RectF rect = new RectF(0.0f, 0.0f, getWidth(), getHeight());
-        roundedRectPath.addRoundRect(rect, radius, radius, Path.Direction.CW);
-        canvas.clipPath(roundedRectPath);
+        canvas.clipPath(mRoundedRectPath);
         super.onDraw(canvas);
     }
 }

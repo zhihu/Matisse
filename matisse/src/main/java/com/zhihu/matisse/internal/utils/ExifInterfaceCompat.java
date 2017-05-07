@@ -28,9 +28,9 @@ import java.util.TimeZone;
 /**
  * Bug fixture for ExifInterface constructor.
  */
-public final class ExifInterfaceCompat {
-    public static final String TAG = ExifInterfaceCompat.class.getSimpleName();
-    public static final int EXIF_DEGREE_FALLBACK_VALUE = -1;
+final class ExifInterfaceCompat {
+    private static final String TAG = ExifInterfaceCompat.class.getSimpleName();
+    private static final int EXIF_DEGREE_FALLBACK_VALUE = -1;
 
     /**
      * Do not instantiate this class.
@@ -54,7 +54,7 @@ public final class ExifInterfaceCompat {
         return new ExifInterface(filename);
     }
 
-    public static Date getExifDateTime(String filepath) {
+    private static Date getExifDateTime(String filepath) {
         ExifInterface exif;
         try {
             // ExifInterface does not check whether file path is null or not,

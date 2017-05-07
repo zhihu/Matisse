@@ -18,8 +18,10 @@ package com.zhihu.matisse;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
 
@@ -60,6 +62,7 @@ public final class SelectionCreator {
     private final SelectionSpec mSelectionSpec;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @IntDef({
             SCREEN_ORIENTATION_UNSPECIFIED,
             SCREEN_ORIENTATION_LANDSCAPE,
