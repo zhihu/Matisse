@@ -15,6 +15,7 @@
   limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -26,7 +27,8 @@
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
         android:elevation="4dp"
-        android:theme="?toolbar">
+        android:theme="?toolbar"
+        tools:targetApi="lollipop">
 
         <TextView
             android:id="@+id/selected_album"
@@ -45,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="?attr/bottomToolbar.bg"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        tools:targetApi="lollipop">
 
         <TextView
             android:id="@+id/button_preview"
