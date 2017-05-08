@@ -56,8 +56,7 @@ public class AlbumMediaAdapter extends
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = sC;
 
-        TypedArray ta = context.getTheme()
-                .obtainStyledAttributes(new int[]{R.attr.item_placeholder});
+        TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.item_placeholder});
         mPlaceholder = ta.getDrawable(0);
         ta.recycle();
 
@@ -80,8 +79,7 @@ public class AlbumMediaAdapter extends
             });
             return holder;
         } else if (viewType == VIEW_TYPE_MEDIA) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.media_grid_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_grid_item, parent, false);
             return new MediaViewHolder(v);
         }
         return null;

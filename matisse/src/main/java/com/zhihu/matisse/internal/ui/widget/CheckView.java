@@ -142,8 +142,7 @@ public class CheckView extends View {
                 initTextPaint();
                 String text = String.valueOf(mCheckedNum);
                 int baseX = (int) (canvas.getWidth() - mTextPaint.measureText(text)) / 2;
-                int baseY =
-                        (int) (canvas.getHeight() - mTextPaint.descent() - mTextPaint.ascent()) / 2;
+                int baseY = (int) (canvas.getHeight() - mTextPaint.descent() - mTextPaint.ascent()) / 2;
                 canvas.drawText(text, baseX, baseY, mTextPaint);
             }
         } else {

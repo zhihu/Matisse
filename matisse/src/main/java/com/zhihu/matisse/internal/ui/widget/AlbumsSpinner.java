@@ -30,7 +30,7 @@ import com.zhihu.matisse.internal.entity.Album;
 
 public class AlbumsSpinner {
 
-    private static final int S_MAX_SHOWN_COUNT = 6;
+    private static final int MAX_SHOWN_COUNT = 6;
     private CursorAdapter mAdapter;
     private TextView mSelected;
     private ListPopupWindow mListPopupWindow;
@@ -102,7 +102,7 @@ public class AlbumsSpinner {
             public void onClick(View v) {
                 int itemHeight = v.getResources().getDimensionPixelSize(R.dimen.album_item_height);
                 mListPopupWindow.setHeight(
-                        mAdapter.getCount() > S_MAX_SHOWN_COUNT ? itemHeight * S_MAX_SHOWN_COUNT
+                        mAdapter.getCount() > MAX_SHOWN_COUNT ? itemHeight * MAX_SHOWN_COUNT
                                 : itemHeight * mAdapter.getCount());
                 mListPopupWindow.show();
             }
