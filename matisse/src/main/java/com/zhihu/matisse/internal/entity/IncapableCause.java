@@ -69,13 +69,14 @@ public class IncapableCause {
             case NONE:
                 // do nothing.
                 break;
-            case TOAST:
-                Toast.makeText(context, cause.mMessage, Toast.LENGTH_SHORT).show();
-                break;
             case DIALOG:
                 IncapableDialog incapableDialog = IncapableDialog.newInstance(cause.mTitle, cause.mMessage);
                 incapableDialog.show(((FragmentActivity) context).getSupportFragmentManager(),
                         IncapableDialog.class.getName());
+                break;
+            case TOAST:
+            default:
+                Toast.makeText(context, cause.mMessage, Toast.LENGTH_SHORT).show();
                 break;
         }
     }

@@ -78,12 +78,12 @@ public class PreviewItemFragment extends Fragment {
             videoPlayButton.setVisibility(View.GONE);
         }
 
-        ImageViewTouch image = (ImageViewTouch)view.findViewById(R.id.image_view);
+        ImageViewTouch image = (ImageViewTouch) view.findViewById(R.id.image_view);
         image.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
 
         Point size = PhotoMetadataUtils.getBitmapSize(item.getContentUri(), getActivity());
         if (item.isGif()) {
-            SelectionSpec.getInstance().imageEngine.loadAnimatedGifImage(getContext(), size.x, size.y, image,
+            SelectionSpec.getInstance().imageEngine.loadGifImage(getContext(), size.x, size.y, image,
                     item.getContentUri());
         } else {
             SelectionSpec.getInstance().imageEngine.loadImage(getContext(), size.x, size.y, image,

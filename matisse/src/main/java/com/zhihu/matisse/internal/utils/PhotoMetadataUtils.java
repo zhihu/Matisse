@@ -129,9 +129,9 @@ public final class PhotoMetadataUtils {
 
         if (SelectionSpec.getInstance().filters != null) {
             for (Filter filter : SelectionSpec.getInstance().filters) {
-                IncapableCause IncapableCause = filter.filter(context, item);
-                if (IncapableCause != null) {
-                    return IncapableCause;
+                IncapableCause incapableCause = filter.filter(context, item);
+                if (incapableCause != null) {
+                    return incapableCause;
                 }
             }
         }

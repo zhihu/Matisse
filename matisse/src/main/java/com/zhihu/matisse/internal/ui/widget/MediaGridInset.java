@@ -38,16 +38,20 @@ public class MediaGridInset extends RecyclerView.ItemDecoration {
         int column = position % mSpanCount; // item column
 
         if (mIncludeEdge) {
-            outRect.left = mSpacing - column * mSpacing / mSpanCount; // spacing - column * ((1f / spanCount) * spacing)
-            outRect.right = (column + 1) * mSpacing / mSpanCount; // (column + 1) * ((1f / spanCount) * spacing)
+            // spacing - column * ((1f / spanCount) * spacing)
+            outRect.left = mSpacing - column * mSpacing / mSpanCount;
+            // (column + 1) * ((1f / spanCount) * spacing)
+            outRect.right = (column + 1) * mSpacing / mSpanCount;
 
             if (position < mSpanCount) { // top edge
                 outRect.top = mSpacing;
             }
             outRect.bottom = mSpacing; // item bottom
         } else {
-            outRect.left = column * mSpacing / mSpanCount; // column * ((1f / spanCount) * spacing)
-            outRect.right = mSpacing - (column + 1) * mSpacing / mSpanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+            // column * ((1f / spanCount) * spacing)
+            outRect.left = column * mSpacing / mSpanCount;
+            // spacing - (column + 1) * ((1f / spanCount) * spacing)
+            outRect.right = mSpacing - (column + 1) * mSpacing / mSpanCount;
             if (position >= mSpanCount) {
                 outRect.top = mSpacing; // item top
             }
