@@ -15,5 +15,5 @@ notifications:
   email: false
 
 script:
-  ./gradlew assemble check
-  ./gradlew checkstyle
+  - ./gradlew assemble check
+  - ./gradlew checkstyle
