@@ -96,9 +96,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).
 
 ## Contributing
- - To contribute with a small fix, simply create a pull request.
- - Better to open an issue to discuss with the team and the community if you're intended to work on something BIG. Also you can check our [roadmap](https://github.com/zhihu/Matisse/wiki/Roadmap).
- - Please follow [Code Style for Contributors](https://source.android.com/source/code-style) of AOSP.
+[Matisse is an Open Source Project](https://github.com/zhihu/Matisse/blob/master/CONTRIBUTING.md)
 
 ## Thanks
 This library is inspired by [Laevatein](https://github.com/nohana/Laevatein) and uses some of its source code.
