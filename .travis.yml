@@ -14,4 +14,6 @@ jdk:
 notifications:
   email: false
 
-script: ./gradlew assemble check
+script:
+  ./gradlew assemble check
+  ./gradlew checkstyle
