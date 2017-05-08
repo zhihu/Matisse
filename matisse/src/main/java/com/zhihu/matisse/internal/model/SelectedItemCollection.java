@@ -34,7 +34,8 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class SelectedItemCollection {
 
-    public static final String STATE_SELECTION = "state_selection", STATE_COLLECTION_TYPE = "state_collection_type";
+    public static final String STATE_SELECTION = "state_selection";
+    public static final String STATE_COLLECTION_TYPE = "state_collection_type";
     private final Context mContext;
     private Set<Item> mItems;
     private SelectionSpec mSpec;
@@ -146,7 +147,8 @@ public class SelectedItemCollection {
 
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
-            return new IncapableCause(mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
+            return new IncapableCause(
+                    mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
         } else if (typeConflict(item)) {
             return new IncapableCause(mContext.getString(R.string.error_type_conflict));
         }
@@ -166,8 +168,11 @@ public class SelectedItemCollection {
      * Determine whether there will be conflict media types. A user can't select images and videos at the same time.
      */
     public boolean typeConflict(Item item) {
-        return (item.isImage() && (mCollectionType == COLLECTION_VIDEO || mCollectionType == COLLECTION_MIXED))
-                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE || mCollectionType == COLLECTION_MIXED));
+        return (item.isImage()
+                && (mCollectionType == COLLECTION_VIDEO
+                || mCollectionType == COLLECTION_MIXED))
+                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE
+                || mCollectionType == COLLECTION_MIXED));
     }
 
     public int count() {

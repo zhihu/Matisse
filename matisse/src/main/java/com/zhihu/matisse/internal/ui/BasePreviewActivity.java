@@ -82,7 +82,8 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.addOnPageChangeListener(this);
-        mPager.setAdapter(mAdapter = new PreviewPagerAdapter(getSupportFragmentManager(), null));
+        mAdapter = new PreviewPagerAdapter(getSupportFragmentManager(), null);
+        mPager.setAdapter(mAdapter);
         mCheckView = (CheckView) findViewById(R.id.check_view);
         mCheckView.setCountable(mSpec.countable);
 

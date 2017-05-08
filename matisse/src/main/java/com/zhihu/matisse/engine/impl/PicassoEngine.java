@@ -30,28 +30,28 @@ import com.zhihu.matisse.engine.ImageEngine;
 public class PicassoEngine implements ImageEngine {
 
     @Override
-    public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+    public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView iv, Uri uri) {
         Picasso.with(context).load(uri).placeholder(placeholder)
                 .resize(resize, resize)
                 .centerCrop()
-                .into(imageView);
+                .into(iv);
     }
 
     @Override
-    public void loadAnimatedGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView,
-                                         Uri uri) {
-        loadThumbnail(context, resize, placeholder, imageView, uri);
+    public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView iv,
+                                 Uri uri) {
+        loadThumbnail(context, resize, placeholder, iv, uri);
     }
 
     @Override
-    public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        Picasso.with(context).load(uri).resize(resizeX, resizeY).priority(Picasso.Priority.HIGH)
+    public void loadImage(Context context, int rX, int rY, ImageView imageView, Uri uri) {
+        Picasso.with(context).load(uri).resize(rX, rY).priority(Picasso.Priority.HIGH)
                 .centerInside().into(imageView);
     }
 
     @Override
-    public void loadAnimatedGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        loadImage(context, resizeX, resizeY, imageView, uri);
+    public void loadGifImage(Context context, int rX, int rY, ImageView iv, Uri uri) {
+        loadImage(context, rX, rY, iv, uri);
     }
 
     @Override

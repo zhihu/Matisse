@@ -31,45 +31,45 @@ import com.zhihu.matisse.engine.ImageEngine;
 public class GlideEngine implements ImageEngine {
 
     @Override
-    public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+    public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView iv, Uri uri) {
         Glide.with(context)
                 .load(uri)
                 .asBitmap()  // some .jpeg files are actually gif
                 .placeholder(placeholder)
                 .override(resize, resize)
                 .centerCrop()
-                .into(imageView);
+                .into(iv);
     }
 
     @Override
-    public void loadAnimatedGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView,
-                                         Uri uri) {
+    public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView iv,
+                                 Uri uri) {
         Glide.with(context)
                 .load(uri)
                 .asBitmap()
                 .placeholder(placeholder)
                 .override(resize, resize)
                 .centerCrop()
-                .into(imageView);
+                .into(iv);
     }
 
     @Override
-    public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+    public void loadImage(Context context, int rX, int rY, ImageView imageView, Uri uri) {
         Glide.with(context)
                 .load(uri)
-                .override(resizeX, resizeY)
+                .override(rX, rY)
                 .priority(Priority.HIGH)
                 .into(imageView);
     }
 
     @Override
-    public void loadAnimatedGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+    public void loadGifImage(Context context, int rX, int rY, ImageView iv, Uri uri) {
         Glide.with(context)
                 .load(uri)
                 .asGif()
-                .override(resizeX, resizeY)
+                .override(rX, rY)
                 .priority(Priority.HIGH)
-                .into(imageView);
+                .into(iv);
     }
 
     @Override

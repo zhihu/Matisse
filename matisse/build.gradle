@@ -15,6 +15,7 @@
  */
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 25
@@ -57,4 +58,14 @@ publish {
     publishVersion = '0.4.3'
     desc = 'A well-designed local image selector for Android'
     website = 'https://www.zhihu.com/'
+}
+
+task checkstyle(type:Checkstyle) {
+    description 'Runs Checkstyle inspection against matisse sourcesets.'
+    group = 'Code Quality'
+    configFile rootProject.file('checkstyle.xml')
+    ignoreFailures = false
+    showViolations true
+    classpath = files()
+    source 'src/main/java'
 }

@@ -140,9 +140,11 @@ public class CheckView extends View {
                 canvas.drawCircle((float) SIZE * mDensity / 2, (float) SIZE * mDensity / 2,
                         BG_RADIUS * mDensity, mBackgroundPaint);
                 initTextPaint();
-                int baseX = (int) (canvas.getWidth() / 2 - mTextPaint.measureText(String.valueOf(mCheckedNum)) / 2);
-                int baseY = (int) ((canvas.getHeight() / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2));
-                canvas.drawText(String.valueOf(mCheckedNum), baseX, baseY, mTextPaint);
+                String text = String.valueOf(mCheckedNum);
+                int baseX = (int) (canvas.getWidth() - mTextPaint.measureText(text)) / 2;
+                int baseY =
+                        (int) (canvas.getHeight() - mTextPaint.descent() - mTextPaint.ascent()) / 2;
+                canvas.drawText(text, baseX, baseY, mTextPaint);
             }
         } else {
             if (mChecked) {
