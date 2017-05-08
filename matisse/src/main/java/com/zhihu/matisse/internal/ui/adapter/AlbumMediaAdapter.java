@@ -51,23 +51,22 @@ public class AlbumMediaAdapter extends
     private RecyclerView mRecyclerView;
     private int mImageResize;
 
-    public AlbumMediaAdapter(Context context, SelectedItemCollection sC, RecyclerView rV) {
+    public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView) {
         super(null);
         mSelectionSpec = SelectionSpec.getInstance();
-        mSelectedCollection = sC;
+        mSelectedCollection = selectedCollection;
 
         TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.item_placeholder});
         mPlaceholder = ta.getDrawable(0);
         ta.recycle();
 
-        mRecyclerView = rV;
+        mRecyclerView = recyclerView;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_CAPTURE) {
-            View v = LayoutInflater.from(parent.getContext()).
-                    inflate(R.layout.photo_capture_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_capture_item, parent, false);
             CaptureViewHolder holder = new CaptureViewHolder(v);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

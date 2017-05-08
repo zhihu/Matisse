@@ -147,8 +147,7 @@ public class SelectedItemCollection {
 
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
-            return new IncapableCause(
-                    mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
+            return new IncapableCause(mContext.getString(R.string.error_over_count, mSpec.maxSelectable));
         } else if (typeConflict(item)) {
             return new IncapableCause(mContext.getString(R.string.error_type_conflict));
         }
@@ -169,10 +168,8 @@ public class SelectedItemCollection {
      */
     public boolean typeConflict(Item item) {
         return (item.isImage()
-                && (mCollectionType == COLLECTION_VIDEO
-                || mCollectionType == COLLECTION_MIXED))
-                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE
-                || mCollectionType == COLLECTION_MIXED));
+                && (mCollectionType == COLLECTION_VIDEO || mCollectionType == COLLECTION_MIXED))
+                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE || mCollectionType == COLLECTION_MIXED));
     }
 
     public int count() {
