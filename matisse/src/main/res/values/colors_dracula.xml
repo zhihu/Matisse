@@ -19,10 +19,10 @@
     <color name="dracula_primary_dark">#1D282C</color>
 
     <color name="dracula_album_popup_bg">#34474E</color>
-    <color name="dracula_album_title_text">#DEFFFFFF</color>
-    <color name="dracula_album_count_text">#89FFFFFF</color>
-    <color name="dracula_album_placeholder">#455A64</color>
-    <color name="dracula_empty_view">#4DFFFFFF</color>
+    <color name="dracula_album_dropdown_title_text">#DEFFFFFF</color>
+    <color name="dracula_album_dropdown_count_text">#89FFFFFF</color>
+    <color name="dracula_album_dropdown_thumbnail_placeholder">#455A64</color>
+    <color name="dracula_album_empty_view">#4DFFFFFF</color>
 
     <color name="dracula_item_placeholder">#37474F</color>
     <color name="dracula_capture">#FFFFFF</color>

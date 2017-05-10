@@ -90,7 +90,7 @@ public class AlbumMediaAdapter extends
             CaptureViewHolder captureViewHolder = (CaptureViewHolder) holder;
             Drawable[] drawables = captureViewHolder.mHint.getCompoundDrawables();
             TypedArray ta = holder.itemView.getContext().getTheme().obtainStyledAttributes(
-                    new int[]{R.attr.capture_color});
+                    new int[]{R.attr.capture_textColor});
             int color = ta.getColor(0, 0);
             ta.recycle();
             for (Drawable drawable : drawables) {

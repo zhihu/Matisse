@@ -41,7 +41,7 @@ public class AlbumsAdapter extends CursorAdapter {
         super(context, c, autoRequery);
 
         TypedArray ta = context.getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_placeholder});
+                new int[]{R.attr.album_thumbnail_placeholder});
         mPlaceholder = ta.getDrawable(0);
         ta.recycle();
     }
@@ -50,7 +50,7 @@ public class AlbumsAdapter extends CursorAdapter {
         super(context, c, flags);
 
         TypedArray ta = context.getTheme().obtainStyledAttributes(
-                new int[]{R.attr.album_placeholder});
+                new int[]{R.attr.album_thumbnail_placeholder});
         mPlaceholder = ta.getDrawable(0);
         ta.recycle();
     }
