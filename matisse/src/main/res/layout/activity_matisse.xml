@@ -37,7 +37,7 @@
             android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
             android:foreground="?selectableItemBackground"
             android:gravity="center"
-            android:textColor="?attr/album.selected.title.color"
+            android:textColor="?attr/album.element.color"
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 

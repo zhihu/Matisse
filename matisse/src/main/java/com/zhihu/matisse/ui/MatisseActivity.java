@@ -17,7 +17,10 @@ package com.zhihu.matisse.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -93,10 +96,16 @@ public class MatisseActivity extends AppCompatActivity implements
             mMediaStoreCompat.setCaptureStrategy(spec.captureStrategy);
         }
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        Drawable navigationIcon = toolbar.getNavigationIcon();
+        TypedArray ta = getTheme().obtainStyledAttributes(new int[]{R.attr.album_element_color});
+        int color = ta.getColor(0, 0);
+        ta.recycle();
+        navigationIcon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
         mButtonPreview = (TextView) findViewById(R.id.button_preview);
         mButtonApply = (TextView) findViewById(R.id.button_apply);
