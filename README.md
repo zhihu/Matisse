@@ -27,6 +27,8 @@ dependencies {
 }
 ```
 
+Check out [Matisse releases](https://github.com/zhihu/Matisse/releases) to see more unstable versions.
+
 ## ProGuard
 If you use [Glide](https://github.com/bumptech/glide) as your image engine, you may need the following rules:
 ```pro
