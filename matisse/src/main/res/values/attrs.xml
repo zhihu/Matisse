@@ -16,18 +16,17 @@
   -->
 <resources>
     <attr name="toolbar" format="reference"/>
-
-    <attr name="album.title.color" format="reference|color"/>
-    <attr name="album.count.color" format="reference|color"/>
-    <attr name="album.selected" format="reference|color"/>
-    <attr name="album.placeholder" format="reference|color"/>
+    <attr name="album.dropdown.title.color" format="reference|color"/>
+    <attr name="album.dropdown.count.color" format="reference|color"/>
+    <attr name="album.selected.title.color" format="reference|color"/>
+    <attr name="album.thumbnail.placeholder" format="reference|color"/>
     <attr name="album.emptyView" format="reference"/>
-    <attr name="album.emptyView.color" format="reference|color"/>
+    <attr name="album.emptyView.textColor" format="reference|color"/>
     <attr name="listPopupWindowStyle" format="reference"/>
     <attr name="page.bg" format="reference|color"/>
     <attr name="bottomToolbar.bg" format="reference|color"/>
-    <attr name="bottomToolbar.preview.color" format="reference|color"/>
-    <attr name="bottomToolbar.apply.color" format="reference|color"/>
+    <attr name="bottomToolbar.preview.textColor" format="reference|color"/>
+    <attr name="bottomToolbar.apply.textColor" format="reference|color"/>
     <attr name="item.placeholder" format="reference|color"/>
-    <attr name="capture.color" format="reference|color"/>
+    <attr name="capture.textColor" format="reference|color"/>
 </resources>

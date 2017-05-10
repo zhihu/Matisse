@@ -30,7 +30,7 @@
         android:drawableTop="@drawable/ic_photo_camera_white_24dp"
         android:gravity="center"
         android:text="@string/photo_grid_capture"
-        android:textColor="?capture.color"
+        android:textColor="?capture.textColor"
         android:textSize="14sp"/>
 
 </com.zhihu.matisse.internal.ui.widget.SquareFrameLayout>

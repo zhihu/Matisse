@@ -19,10 +19,10 @@
     <color name="zhihu_primary_dark">#176EB9</color>
 
     <color name="zhihu_album_popup_bg">#FFFFFF</color>
-    <color name="zhihu_album_title_text">#DE000000</color>
-    <color name="zhihu_album_count_text">#999999</color>
-    <color name="zhihu_album_placeholder">#EAEEF4</color>
-    <color name="zhihu_empty_view">#4D000000</color>
+    <color name="zhihu_album_dropdown_title_text">#DE000000</color>
+    <color name="zhihu_album_dropdown_count_text">#999999</color>
+    <color name="zhihu_album_dropdown_thumbnail_placeholder">#EAEEF4</color>
+    <color name="zhihu_album_empty_view">#4D000000</color>
 
     <color name="zhihu_item_placeholder">#EAEEF4</color>
     <color name="zhihu_capture">#424242</color>

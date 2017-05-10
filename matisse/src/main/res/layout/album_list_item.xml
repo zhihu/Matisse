@@ -34,7 +34,7 @@
         android:layout_toRightOf="@id/album_cover"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="?album.title.color"
+        android:textColor="?attr/album.dropdown.title.color"
         android:textSize="16sp"/>
 
     <TextView
@@ -47,6 +47,6 @@
         android:layout_toRightOf="@id/album_cover"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="?album.count.color"
+        android:textColor="?album.dropdown.count.color"
         android:textSize="14sp"/>
 </RelativeLayout>

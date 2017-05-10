@@ -37,7 +37,7 @@
             android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
             android:foreground="?selectableItemBackground"
             android:gravity="center"
-            android:textColor="?attr/album.selected"
+            android:textColor="?attr/album.selected.title.color"
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
@@ -57,7 +57,7 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:text="@string/button_preview"
-            android:textColor="?attr/bottomToolbar.preview.color"
+            android:textColor="?attr/bottomToolbar.preview.textColor"
             android:textSize="17sp"/>
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_gravity="right"
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
-            android:textColor="?attr/bottomToolbar.apply.color"
+            android:textColor="?attr/bottomToolbar.apply.textColor"
             android:textSize="17sp"/>
     </FrameLayout>
 
@@ -96,7 +96,7 @@
             android:drawableTop="?attr/album.emptyView"
             android:gravity="center"
             android:text="@string/empty_text"
-            android:textColor="?attr/album.emptyView.color"
+            android:textColor="?attr/album.emptyView.textColor"
             android:textSize="16sp"/>
 
     </FrameLayout>
