@@ -18,7 +18,7 @@
     <attr name="toolbar" format="reference"/>
     <attr name="album.dropdown.title.color" format="reference|color"/>
     <attr name="album.dropdown.count.color" format="reference|color"/>
-    <attr name="album.selected.title.color" format="reference|color"/>
+    <attr name="album.element.color" format="reference|color"/>
     <attr name="album.thumbnail.placeholder" format="reference|color"/>
     <attr name="album.emptyView" format="reference"/>
     <attr name="album.emptyView.textColor" format="reference|color"/>
