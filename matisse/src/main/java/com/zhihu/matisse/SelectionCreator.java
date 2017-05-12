@@ -142,6 +142,11 @@ public final class SelectionCreator {
         return this;
     }
 
+    /**
+     * just single select without preview.Default selectmode is multi select
+     * 
+     * @return {@link SelectionCreator} for fluent API.
+     */
     public SelectionCreator justSingle() {
         if (mSelectionSpec.maxSelectable > 0)
             Log.e(" Matisse ","maxSelectable will not effect!");
