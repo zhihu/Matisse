@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
@@ -71,6 +72,7 @@ public class MatisseActivity extends AppCompatActivity implements
 
     private AlbumsSpinner mAlbumsSpinner;
     private AlbumsAdapter mAlbumsAdapter;
+    private View mBottomBar;
     private TextView mButtonPreview;
     private TextView mButtonApply;
     private View mContainer;
@@ -107,6 +109,7 @@ public class MatisseActivity extends AppCompatActivity implements
         ta.recycle();
         navigationIcon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
+        mBottomBar = findViewById(R.id.bottom_toolbar);
         mButtonPreview = (TextView) findViewById(R.id.button_preview);
         mButtonApply = (TextView) findViewById(R.id.button_apply);
         mButtonPreview.setOnClickListener(this);
@@ -126,6 +129,8 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
+        if (spec.singleSelect)
+            mBottomBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -292,11 +297,15 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void onMediaClick(Album album, Item item, int adapterPosition) {
-        Intent intent = new Intent(this, AlbumPreviewActivity.class);
-        intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
-        intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
-        intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
-        startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+        if (SelectionSpec.getInstance().singleSelect) {
+            onJustSingleClick(item);
+        } else {
+            Intent intent = new Intent(this, AlbumPreviewActivity.class);
+            intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
+            intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
+            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
+            startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+        }
     }
 
     @Override
@@ -309,5 +318,14 @@ public class MatisseActivity extends AppCompatActivity implements
         if (mMediaStoreCompat != null) {
             mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
         }
+    }
+
+    public void onJustSingleClick(Item item) {
+        mSelectedCollection.add(item);
+        Intent result = new Intent();
+        ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
+        result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
+        setResult(RESULT_OK, result);
+        finish();
     }
 }

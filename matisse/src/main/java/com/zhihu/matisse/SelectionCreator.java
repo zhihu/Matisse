@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
@@ -135,10 +136,18 @@ public final class SelectionCreator {
     public SelectionCreator maxSelectable(int maxSelectable) {
         if (maxSelectable < 1)
             throw new IllegalArgumentException("maxSelectable must be greater than or equal to one");
+        if (mSelectionSpec.singleSelect)
+            Log.e(" Matisse ","justSingle will not effect!");
         mSelectionSpec.maxSelectable = maxSelectable;
         return this;
     }
 
+    public SelectionCreator justSingle() {
+        if (mSelectionSpec.maxSelectable > 0)
+            Log.e(" Matisse ","maxSelectable will not effect!");
+        mSelectionSpec.singleSelect = true;
+        return this;
+    }
     /**
      * Add filter to filter each selecting item.
      *
