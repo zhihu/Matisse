@@ -143,8 +143,8 @@ public final class SelectionCreator {
     }
 
     /**
-     * just single select without preview.Default selectmode is multi select
-     * 
+     * Just single select without preview.Default selectmode is multi select
+     *
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator justSingle() {
