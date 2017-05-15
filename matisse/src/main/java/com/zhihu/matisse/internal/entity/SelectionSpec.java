@@ -31,6 +31,7 @@ import java.util.Set;
 public final class SelectionSpec {
 
     public Set<MimeType> mimeTypeSet;
+    public boolean mediaTypeExclusive;
     @StyleRes
     public int themeId;
     public int orientation;
@@ -59,6 +60,7 @@ public final class SelectionSpec {
 
     private void reset() {
         mimeTypeSet = null;
+        mediaTypeExclusive = true;
         themeId = R.style.Matisse_Zhihu;
         orientation = 0;
         countable = false;

@@ -114,7 +114,7 @@ public class MatisseActivity extends AppCompatActivity implements
         mContainer = findViewById(R.id.container);
         mEmptyView = findViewById(R.id.empty_view);
 
-        mSelectedCollection.onCreate(savedInstanceState, spec);
+        mSelectedCollection.onCreate(savedInstanceState);
         updateBottomToolbar();
 
         mAlbumsAdapter = new AlbumsAdapter(this, null, false);
