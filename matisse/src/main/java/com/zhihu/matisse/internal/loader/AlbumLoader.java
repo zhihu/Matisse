@@ -62,14 +62,14 @@ public class AlbumLoader extends CursorLoader {
         Cursor albums = super.loadInBackground();
         MatrixCursor allAlbum = new MatrixCursor(COLUMNS);
         int totalCount = 0;
-        while (albums.moveToNext()) {
-            totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
-        }
-        String allAlbumCoverPath;
-        if (albums.moveToFirst()) {
-            allAlbumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
-        } else {
-            allAlbumCoverPath = "";
+        String allAlbumCoverPath = "";
+        if (albums != null) {
+            while (albums.moveToNext()) {
+                totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
+            }
+            if (albums.moveToFirst()) {
+                allAlbumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
+            }
         }
         allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath,
                 String.valueOf(totalCount)});
