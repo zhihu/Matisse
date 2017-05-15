@@ -41,7 +41,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class SampleActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_CHOOSE = 23;
 
@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (aBoolean) {
                             switch (v.getId()) {
                                 case R.id.zhihu:
-                                    Matisse.from(MainActivity.this)
-                                            .choose(MimeType.ofAll())
+                                    Matisse.from(SampleActivity.this)
+                                            .choose(MimeType.ofAll(), false)
                                             .countable(true)
                                             .maxSelectable(9)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                                 case R.id.dracula:
-                                    Matisse.from(MainActivity.this)
-                                            .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
+                                    Matisse.from(SampleActivity.this)
+                                            .choose(MimeType.ofImage())
                                             .theme(R.style.Matisse_Dracula)
                                             .countable(false)
                                             .maxSelectable(9)
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                             mAdapter.setData(null);
                         } else {
-                            Toast.makeText(MainActivity.this, R.string.permission_request_denied, Toast.LENGTH_LONG)
+                            Toast.makeText(SampleActivity.this, R.string.permission_request_denied, Toast.LENGTH_LONG)
                                     .show();
                         }
                     }

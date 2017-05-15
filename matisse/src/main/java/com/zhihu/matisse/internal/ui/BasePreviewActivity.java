@@ -69,9 +69,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         }
 
         if (savedInstanceState == null) {
-            mSelectedCollection.onCreate(getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE), mSpec);
+            mSelectedCollection.onCreate(getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE));
         } else {
-            mSelectedCollection.onCreate(savedInstanceState, mSpec);
+            mSelectedCollection.onCreate(savedInstanceState);
         }
 
         mButtonBack = (TextView) findViewById(R.id.button_back);
