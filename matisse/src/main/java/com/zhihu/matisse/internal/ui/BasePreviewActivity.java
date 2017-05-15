@@ -57,6 +57,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(SelectionSpec.getInstance().themeId);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_preview);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
