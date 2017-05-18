@@ -86,6 +86,17 @@ public final class Matisse {
     }
 
     /**
+     * Obtain user selected media path list in the starting Activity or Fragment.
+     *
+     * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
+     *             {@link Fragment#onActivityResult(int, int, Intent)}.
+     * @return User selected media path list.
+     */
+    public static List<String> obtainPathResult(Intent data) {
+        return data.getStringArrayListExtra(MatisseActivity.EXTRA_RESULT_SELECTION_PATH);
+    }
+
+    /**
      * MIME types the selection constrains on.
      * <p>
      * Types not included in the set will still be shown in the grid but can't be chosen.
