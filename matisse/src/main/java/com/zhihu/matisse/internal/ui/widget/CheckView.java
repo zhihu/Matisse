@@ -16,6 +16,7 @@
 package com.zhihu.matisse.internal.ui.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -84,7 +85,10 @@ public class CheckView extends View {
         mStrokePaint.setStyle(Paint.Style.STROKE);
         mStrokePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         mStrokePaint.setStrokeWidth(STROKE_WIDTH * mDensity);
-        mStrokePaint.setColor(Color.WHITE);
+        TypedArray ta = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.item_checkCircle_borderColor});
+        int color = ta.getColor(0, 0);
+        ta.recycle();
+        mStrokePaint.setColor(color);
 
         mCheckDrawable = ResourcesCompat.getDrawable(context.getResources(),
                 R.drawable.ic_check_white_18dp, context.getTheme());
@@ -188,7 +192,11 @@ public class CheckView extends View {
             mBackgroundPaint = new Paint();
             mBackgroundPaint.setAntiAlias(true);
             mBackgroundPaint.setStyle(Paint.Style.FILL);
-            mBackgroundPaint.setColor(Color.parseColor("#1E8AE8"));
+            TypedArray ta = getContext().getTheme()
+                    .obtainStyledAttributes(new int[]{R.attr.item_checkCircle_backgroundColor});
+            int color = ta.getColor(0, 0);
+            ta.recycle();
+            mBackgroundPaint.setColor(color);
         }
     }
 
