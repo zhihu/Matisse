@@ -39,8 +39,9 @@ public class MediaStoreCompat {
 
     private final WeakReference<Activity> mContext;
     private final WeakReference<Fragment> mFragment;
-    private CaptureStrategy mCaptureStrategy;
-    private Uri mCurrentPhotoUri;
+    private       CaptureStrategy         mCaptureStrategy;
+    private       Uri                     mCurrentPhotoUri;
+    private       String                  mCurrentPhotoPath;
 
     public MediaStoreCompat(Activity activity) {
         mContext = new WeakReference<>(activity);
@@ -73,11 +74,13 @@ public class MediaStoreCompat {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
 
             if (photoFile != null) {
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
                 mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
                         mCaptureStrategy.authority, photoFile);
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
@@ -115,8 +118,11 @@ public class MediaStoreCompat {
         return tempFile;
     }
 
-    public Uri getCurrentPhotoPath() {
+    public Uri getCurrentPhotoUri() {
         return mCurrentPhotoUri;
     }
 
+    public String getCurrentPhotoPath() {
+        return mCurrentPhotoPath;
+    }
 }

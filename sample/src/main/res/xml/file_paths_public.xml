@@ -17,5 +17,5 @@
 <paths>
     <external-path
         name="my_images"
-        path="Pictures"/>
+        path=""/>
 </paths>
