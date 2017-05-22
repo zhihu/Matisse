@@ -86,7 +86,8 @@ public class CheckView extends View {
         mStrokePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         mStrokePaint.setStrokeWidth(STROKE_WIDTH * mDensity);
         TypedArray ta = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.item_checkCircle_borderColor});
-        int color = ta.getColor(0, 0);
+        int defaultColor = ResourcesCompat.getColor(getResources(), R.color.zhihu_item_checkCircle_borderColor, getContext().getTheme());
+        int color = ta.getColor(0, defaultColor);
         ta.recycle();
         mStrokePaint.setColor(color);
 
@@ -194,7 +195,8 @@ public class CheckView extends View {
             mBackgroundPaint.setStyle(Paint.Style.FILL);
             TypedArray ta = getContext().getTheme()
                     .obtainStyledAttributes(new int[]{R.attr.item_checkCircle_backgroundColor});
-            int color = ta.getColor(0, 0);
+            int defaultColor = ResourcesCompat.getColor(getResources(), R.color.zhihu_item_checkCircle_backgroundColor, getContext().getTheme());
+            int color = ta.getColor(0, defaultColor);
             ta.recycle();
             mBackgroundPaint.setColor(color);
         }
