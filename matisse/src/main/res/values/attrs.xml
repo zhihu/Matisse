@@ -25,6 +25,7 @@
     <attr name="listPopupWindowStyle" format="reference"/>
     <attr name="page.bg" format="reference|color"/>
     <attr name="bottomToolbar.bg" format="reference|color"/>
+    <attr name="bottomToolbar.back.textColor" format="reference|color"/>
     <attr name="bottomToolbar.preview.textColor" format="reference|color"/>
     <attr name="bottomToolbar.apply.textColor" format="reference|color"/>
     <attr name="item.placeholder" format="reference|color"/>
