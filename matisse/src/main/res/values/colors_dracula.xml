@@ -34,6 +34,7 @@
 
     <color name="dracula_bottom_toolbar_preview_text">#DEFFFFFF</color>
     <color name="dracula_bottom_toolbar_preview_text_disable">#4DFFFFFF</color>
+    <color name="dracula_bottom_toolbar_back_text">#FFFFFFFF</color>
     <color name="dracula_bottom_toolbar_apply_text">#03A9F4</color>
     <color name="dracula_bottom_toolbar_apply_text_disable">#4D03A9F4</color>
 </resources>
