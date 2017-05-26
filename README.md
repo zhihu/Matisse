@@ -30,20 +30,16 @@ dependencies {
 Check out [Matisse releases](https://github.com/zhihu/Matisse/releases) to see more unstable versions.
 
 ## ProGuard
-If you use [Glide](https://github.com/bumptech/glide) as your image engine, you may need the following rules:
+If you use [Glide](https://github.com/bumptech/glide) as your image engine, add rules as Glide's README says.  
+And add extra rule:
 ```pro
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
-
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+-dontwarn com.squareup.picasso.**
 ```
-If you use [Picasso](https://github.com/square/picasso) as your image engine, you may need the following rules:
+
+If you use [Picasso](https://github.com/square/picasso) as your image engine, add rules as Picasso's README says.  
+And add extra rule:
 ```pro
--dontwarn com.squareup.okhttp.**
+-dontwarn com.bumptech.glide.**
 ```
 
 ## How do I use Matisse?
