@@ -41,7 +41,7 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:text="@string/button_back"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/preview.bottomToolbar.back.textColor"
             android:textSize="16sp"/>
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_gravity="right"
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
-            android:textColor="@color/zhihu_bottom_toolbar_apply"
+            android:textColor="?attr/preview.bottomToolbar.apply.textColor"
             android:textSize="16sp"/>
 
     </FrameLayout>
