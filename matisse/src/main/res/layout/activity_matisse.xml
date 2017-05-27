@@ -58,7 +58,7 @@
             android:padding="16dp"
             android:text="@string/button_preview"
             android:textColor="?attr/bottomToolbar.preview.textColor"
-            android:textSize="17sp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/button_apply"
@@ -68,7 +68,7 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:textColor="?attr/bottomToolbar.apply.textColor"
-            android:textSize="17sp"/>
+            android:textSize="16sp"/>
     </FrameLayout>
 
     <FrameLayout
