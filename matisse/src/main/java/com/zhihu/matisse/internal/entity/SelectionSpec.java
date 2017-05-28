@@ -74,6 +74,10 @@ public final class SelectionSpec {
         imageEngine = new GlideEngine();
     }
 
+    public boolean singleSelectionModeEnabled() {
+        return !countable && maxSelectable == 1;
+    }
+
     public boolean needOrientationRestriction() {
         return orientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     }

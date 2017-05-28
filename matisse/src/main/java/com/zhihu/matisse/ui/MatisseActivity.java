@@ -70,6 +70,7 @@ public class MatisseActivity extends AppCompatActivity implements
     private final AlbumCollection mAlbumCollection = new AlbumCollection();
     private MediaStoreCompat mMediaStoreCompat;
     private SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
+    private SelectionSpec mSpec;
 
     private AlbumsSpinner mAlbumsSpinner;
     private AlbumsAdapter mAlbumsAdapter;
@@ -81,21 +82,21 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // programmatically set theme before super.onCreate()
-        SelectionSpec spec = SelectionSpec.getInstance();
-        setTheme(spec.themeId);
+        mSpec = SelectionSpec.getInstance();
+        setTheme(mSpec.themeId);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_matisse);
 
-        if (spec.needOrientationRestriction()) {
-            setRequestedOrientation(spec.orientation);
+        if (mSpec.needOrientationRestriction()) {
+            setRequestedOrientation(mSpec.orientation);
         }
 
-        if (spec.capture) {
+        if (mSpec.capture) {
             mMediaStoreCompat = new MediaStoreCompat(this);
-            if (spec.captureStrategy == null)
+            if (mSpec.captureStrategy == null)
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
-            mMediaStoreCompat.setCaptureStrategy(spec.captureStrategy);
+            mMediaStoreCompat.setCaptureStrategy(mSpec.captureStrategy);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -214,6 +215,10 @@ public class MatisseActivity extends AppCompatActivity implements
             mButtonPreview.setEnabled(false);
             mButtonApply.setEnabled(false);
             mButtonApply.setText(getString(R.string.button_apply_disable));
+        } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
+            mButtonPreview.setEnabled(true);
+            mButtonApply.setText(R.string.button_apply_disable);
+            mButtonApply.setEnabled(true);
         } else {
             mButtonPreview.setEnabled(true);
             mButtonApply.setEnabled(true);
