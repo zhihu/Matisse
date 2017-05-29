@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Zhihu Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+    <string name="album_name_all">Всі</string>
+
+    <string name="button_preview">Перегляд</string>
+    <string name="button_apply_default">Застосувати</string>
+    <string name="button_apply">Застосувати(%1$d)</string>
+    <string name="button_back">Назад</string>
+    <string name="photo_grid_capture">Камера</string>
+    <string name="empty_text">Пусто</string>
+    <string name="button_ok">OK</string>
+
+    <string name="error_over_count_default">Вы обрали максимальну кількість файлів</string>
+    <plurals name="error_over_count">
+        <item quantity="one">Можливо обрати не більше %1$d файла</item>
+        <item quantity="few">Можливо обрати не більше %1$d файлів</item>
+        <item quantity="many">Можливо обрати не більше %1$d файлів</item>
+        <item quantity="other">Можливо обрати не більше %1$d файлів</item>
+    </plurals>
+    <string name="error_under_quality">Занадто низька якість</string>
+    <string name="error_over_quality">Занадто висока якість</string>
+    <string name="error_file_type">Непідтримуваний тип файла</string>
+    <string name="error_type_conflict">Неможливо обрати зображення і відео одночасно</string>
+    <string name="error_no_video_activity">Застосунок для перегляду відео не знайдений</string>
+</resources>
