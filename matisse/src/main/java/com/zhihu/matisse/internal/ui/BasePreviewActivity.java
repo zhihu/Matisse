@@ -180,10 +180,10 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     private void updateApplyButton() {
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
-            mButtonApply.setText(R.string.button_apply_disable);
+            mButtonApply.setText(R.string.button_apply_default);
             mButtonApply.setEnabled(false);
         } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
-            mButtonApply.setText(R.string.button_apply_disable);
+            mButtonApply.setText(R.string.button_apply_default);
             mButtonApply.setEnabled(true);
         } else {
             mButtonApply.setEnabled(true);
