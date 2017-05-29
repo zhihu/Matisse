@@ -16,13 +16,14 @@
 package com.zhihu.matisse.internal.model;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.zhihu.matisse.R;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
@@ -37,9 +38,6 @@ public class SelectedItemCollection {
 
     public static final String STATE_SELECTION = "state_selection";
     public static final String STATE_COLLECTION_TYPE = "state_collection_type";
-    private final Context mContext;
-    private Set<Item> mItems;
-
     /**
      * Empty collection
      */
@@ -56,7 +54,8 @@ public class SelectedItemCollection {
      * Collection with images and videos.
      */
     public static final int COLLECTION_MIXED = COLLECTION_IMAGE | COLLECTION_VIDEO;
-
+    private final Context mContext;
+    private Set<Item> mItems;
     private int mCollectionType = COLLECTION_UNDEFINED;
 
     public SelectedItemCollection(Context context) {
@@ -169,8 +168,23 @@ public class SelectedItemCollection {
 
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
-            return new IncapableCause(mContext.getString(R.string.error_over_count,
-                    SelectionSpec.getInstance().maxSelectable));
+            int maxSelectable = SelectionSpec.getInstance().maxSelectable;
+            String cause;
+
+            try {
+                cause = mContext.getResources().getQuantityString(
+                        R.plurals.error_over_count,
+                        maxSelectable,
+                        maxSelectable
+                );
+            } catch (Resources.NotFoundException e) {
+                cause = mContext.getString(
+                        R.string.error_over_count,
+                        maxSelectable
+                );
+            }
+
+            return new IncapableCause(cause);
         } else if (typeConflict(item)) {
             return new IncapableCause(mContext.getString(R.string.error_type_conflict));
         }
