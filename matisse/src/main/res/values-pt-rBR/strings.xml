@@ -18,7 +18,7 @@
     <string name="album_name_all">Todas as mídias</string>
 
     <string name="button_preview">Pré-visualizaçao</string>
-    <string name="button_apply_disable">Aplicar</string>
+    <string name="button_apply_default">Aplicar</string>
     <string name="button_apply">Aplicar(%1$d)</string>
     <string name="button_back">Voltar</string>
     <string name="photo_grid_capture">Câmera</string>

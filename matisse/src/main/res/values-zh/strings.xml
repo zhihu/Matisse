@@ -18,7 +18,7 @@
     <string name="album_name_all">全部</string>
 
     <string name="button_preview">预览</string>
-    <string name="button_apply_disable">使用</string>
+    <string name="button_apply_default">使用</string>
     <string name="button_apply">使用(%1$d)</string>
     <string name="button_back">返回</string>
     <string name="photo_grid_capture">拍一张</string>
