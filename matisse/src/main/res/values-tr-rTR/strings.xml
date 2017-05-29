@@ -18,7 +18,7 @@
     <string name="album_name_all">Tüm Medya</string>
 
     <string name="button_preview">Ön İzleme</string>
-    <string name="button_apply_disable">Uygula</string>
+    <string name="button_apply_default">Uygula</string>
     <string name="button_apply">Uygula(%1$d)</string>
     <string name="button_back">Geri</string>
     <string name="photo_grid_capture">Kamera</string>
