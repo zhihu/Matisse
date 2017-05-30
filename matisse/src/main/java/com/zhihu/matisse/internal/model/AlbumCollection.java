@@ -23,17 +23,23 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.loader.AlbumLoader;
+import com.zhihu.matisse.internal.ui.MediaSelectionFragment;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_ID = 1;
     private static final String STATE_CURRENT_SELECTION = "state_current_selection";
     private WeakReference<Context> mContext;
+    private WeakReference<MediaSelectionFragment.SelectionProvider> mSelectionProvider;
     private LoaderManager mLoaderManager;
     private AlbumCallbacks mCallbacks;
+    private Cursor mCursor;
     private int mCurrentSelection;
+    private String mCurrentSelectionId;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -41,7 +47,12 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
         if (context == null) {
             return null;
         }
-        return new AlbumLoader(context);
+        return new AlbumLoader(context, new AlbumLoader.OnAlbumContentChangedListener() {
+            @Override
+            public void onAlbumContentChanged() {
+                loadAlbums(true);
+            }
+        });
     }
 
     @Override
@@ -51,6 +62,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
             return;
         }
 
+        mCursor = data;
         mCallbacks.onAlbumLoad(data);
     }
 
@@ -61,6 +73,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
             return;
         }
 
+        mCursor = null;
         mCallbacks.onAlbumReset();
     }
 
@@ -84,19 +97,53 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public void onDestroy() {
         mLoaderManager.destroyLoader(LOADER_ID);
+        mCursor = null;
         mCallbacks = null;
     }
 
+    public void setSelectionProvider(MediaSelectionFragment.SelectionProvider selectionProvider) {
+        mSelectionProvider =
+                new WeakReference<MediaSelectionFragment.SelectionProvider>(selectionProvider);
+    }
+
     public void loadAlbums() {
+        loadAlbums(false);
+    }
+
+    public void loadAlbums(boolean forceLoad) {
+        if (forceLoad) {
+            mLoaderManager.restartLoader(LOADER_ID, null, this);
+        }
         mLoaderManager.initLoader(LOADER_ID, null, this);
     }
 
     public int getCurrentSelection() {
+        ensureCursor();
+        mCursor.moveToPosition(mCurrentSelection);
+        if (!mCursor.getString(mCursor.getColumnIndex("bucket_id")).equals(mCurrentSelectionId)) {
+            // Albums has changed, we need to invalidate all selections.
+            if (mSelectionProvider != null) {
+                // SelectionProvider's lifespan is longer than this, no need to check its nullity.
+                mSelectionProvider.get()
+                        .provideSelectedItemCollection()
+                        .overwrite(new ArrayList<Item>(), 0 /* this parameter is ignored*/);
+            }
+            setStateCurrentSelection(0);
+        }
         return mCurrentSelection;
     }
 
     public void setStateCurrentSelection(int currentSelection) {
         mCurrentSelection = currentSelection;
+        ensureCursor();
+        mCursor.moveToPosition(currentSelection);
+        mCurrentSelectionId = mCursor.getString(mCursor.getColumnIndex("bucket_id"));
+    }
+
+    private void ensureCursor() {
+        if (mCursor == null || mCursor.isClosed()) {
+            throw new IllegalStateException("Contents is dirty or need reloading");
+        }
     }
 
     public interface AlbumCallbacks {
