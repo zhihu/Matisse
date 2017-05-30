@@ -113,8 +113,9 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     public void loadAlbums(boolean forceLoad) {
         if (forceLoad) {
             mLoaderManager.restartLoader(LOADER_ID, null, this);
+        } else {
+            mLoaderManager.initLoader(LOADER_ID, null, this);
         }
-        mLoaderManager.initLoader(LOADER_ID, null, this);
     }
 
     public int getCurrentSelection() {
