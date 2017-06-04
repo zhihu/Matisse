@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -205,6 +206,9 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selected);
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPath);
             setResult(RESULT_OK, result);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                MatisseActivity.this.revokeUriPermission(contentUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             finish();
         }
     }
