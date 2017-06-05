@@ -104,13 +104,15 @@ public class Item implements Parcelable {
         return (id == ITEM_ID_CAPTURE_PHOTO)
                 || (id == ITEM_ID_CAPTURE_VIDEO);
     }
-    public AlbumMediaLoader.Capture getCapture(){
-        if (id==ITEM_ID_CAPTURE_VIDEO)
+
+    public AlbumMediaLoader.Capture getCapture() {
+        if (id == ITEM_ID_CAPTURE_VIDEO)
             return AlbumMediaLoader.Capture.Video;
-        if (id==ITEM_ID_CAPTURE_PHOTO)
+        if (id == ITEM_ID_CAPTURE_PHOTO)
             return AlbumMediaLoader.Capture.Image;
         return AlbumMediaLoader.Capture.Nothing;
     }
+
     public boolean isImage() {
         return mimeType.equals(MimeType.JPEG.toString())
                 || mimeType.equals(MimeType.PNG.toString())

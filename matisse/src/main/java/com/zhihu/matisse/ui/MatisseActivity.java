@@ -94,7 +94,7 @@ public class MatisseActivity extends AppCompatActivity implements
             setRequestedOrientation(mSpec.orientation);
         }
 
-        if (mSpec.capture!= AlbumMediaLoader.Capture.Nothing) {
+        if (mSpec.capture != AlbumMediaLoader.Capture.Nothing) {
             mMediaStoreCompat = new MediaStoreCompat(this);
             if (mSpec.captureStrategy == null)
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
@@ -250,8 +250,8 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumCollection.setStateCurrentSelection(position);
         mAlbumsAdapter.getCursor().moveToPosition(position);
         Album album = Album.valueOf(mAlbumsAdapter.getCursor());
-        if (album.isAll() ) {
-            switch (SelectionSpec.getInstance().capture){
+        if (album.isAll()) {
+            switch (SelectionSpec.getInstance().capture) {
                 case All:
                     album.addCaptureCount();
                     album.addCaptureCount();
@@ -283,8 +283,8 @@ public class MatisseActivity extends AppCompatActivity implements
                 mAlbumsSpinner.setSelection(MatisseActivity.this,
                         mAlbumCollection.getCurrentSelection());
                 Album album = Album.valueOf(cursor);
-                if (album.isAll() ) {
-                    switch (SelectionSpec.getInstance().capture){
+                if (album.isAll()) {
+                    switch (SelectionSpec.getInstance().capture) {
                         case All:
                             album.addCaptureCount();
                             album.addCaptureCount();
