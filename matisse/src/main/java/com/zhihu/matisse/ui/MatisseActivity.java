@@ -39,6 +39,7 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 import com.zhihu.matisse.internal.model.AlbumCollection;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.AlbumPreviewActivity;
@@ -61,12 +62,13 @@ public class MatisseActivity extends AppCompatActivity implements
         AlbumCollection.AlbumCallbacks, AdapterView.OnItemSelectedListener,
         MediaSelectionFragment.SelectionProvider, View.OnClickListener,
         AlbumMediaAdapter.CheckStateListener, AlbumMediaAdapter.OnMediaClickListener,
-        AlbumMediaAdapter.OnPhotoCapture {
+        AlbumMediaAdapter.OnPhotoCapture, AlbumMediaAdapter.OnVideoCapture {
 
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
     public static final String EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path";
     private static final int REQUEST_CODE_PREVIEW = 23;
-    private static final int REQUEST_CODE_CAPTURE = 24;
+    public static final int REQUEST_CODE_CAPTURE_PHOTO = 24;
+    public static final int REQUEST_CODE_CAPTURE_VIDEO = 25;
     private final AlbumCollection mAlbumCollection = new AlbumCollection();
     private MediaStoreCompat mMediaStoreCompat;
     private SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
@@ -92,7 +94,7 @@ public class MatisseActivity extends AppCompatActivity implements
             setRequestedOrientation(mSpec.orientation);
         }
 
-        if (mSpec.capture) {
+        if (mSpec.capture!= AlbumMediaLoader.Capture.Nothing) {
             mMediaStoreCompat = new MediaStoreCompat(this);
             if (mSpec.captureStrategy == null)
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
@@ -193,10 +195,10 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 updateBottomToolbar();
             }
-        } else if (requestCode == REQUEST_CODE_CAPTURE) {
+        } else if (requestCode == REQUEST_CODE_CAPTURE_PHOTO) {
             // Just pass the data back to previous calling Activity.
-            Uri contentUri = mMediaStoreCompat.getCurrentPhotoUri();
-            String path = mMediaStoreCompat.getCurrentPhotoPath();
+            Uri contentUri = mMediaStoreCompat.getCurrentFileUri();
+            String path = mMediaStoreCompat.getCurrentFilePath();
             ArrayList<Uri> selected = new ArrayList<>();
             selected.add(contentUri);
             ArrayList<String> selectedPath = new ArrayList<>();
@@ -248,8 +250,17 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumCollection.setStateCurrentSelection(position);
         mAlbumsAdapter.getCursor().moveToPosition(position);
         Album album = Album.valueOf(mAlbumsAdapter.getCursor());
-        if (album.isAll() && SelectionSpec.getInstance().capture) {
-            album.addCaptureCount();
+        if (album.isAll() ) {
+            switch (SelectionSpec.getInstance().capture){
+                case All:
+                    album.addCaptureCount();
+                    album.addCaptureCount();
+                    break;
+                case Nothing:
+                    break;
+                default:
+                    album.addCaptureCount();
+            }
         }
         onAlbumSelected(album);
     }
@@ -272,8 +283,17 @@ public class MatisseActivity extends AppCompatActivity implements
                 mAlbumsSpinner.setSelection(MatisseActivity.this,
                         mAlbumCollection.getCurrentSelection());
                 Album album = Album.valueOf(cursor);
-                if (album.isAll() && SelectionSpec.getInstance().capture) {
-                    album.addCaptureCount();
+                if (album.isAll() ) {
+                    switch (SelectionSpec.getInstance().capture){
+                        case All:
+                            album.addCaptureCount();
+                            album.addCaptureCount();
+                            break;
+                        case Nothing:
+                            break;
+                        default:
+                            album.addCaptureCount();
+                    }
                 }
                 onAlbumSelected(album);
             }
@@ -321,9 +341,16 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void capture() {
+    public void capturePhoto() {
         if (mMediaStoreCompat != null) {
-            mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
+            mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE_PHOTO);
+        }
+    }
+
+    @Override
+    public void captureVideo() {
+        if (mMediaStoreCompat != null) {
+            mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE_VIDEO);
         }
     }
 }

@@ -32,6 +32,10 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat;
  * Load images and videos into a single cursor.
  */
 public class AlbumMediaLoader extends CursorLoader {
+    public enum Capture {
+        Video, Image, All, Nothing
+    }
+
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     private static final String[] PROJECTION = {
             MediaStore.Files.FileColumns._ID,
@@ -41,37 +45,39 @@ public class AlbumMediaLoader extends CursorLoader {
             "duration"};
     private static final String SELECTION_ALL =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+                    + " OR "
+                    + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0";
     private static final String[] SELECTION_ALL_ARGS = {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
     };
     private static final String SELECTION_ALBUM =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND "
-            + " bucket_id=?"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+                    + " OR "
+                    + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+                    + " AND "
+                    + " bucket_id=?"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+
     private static String[] getSelectionAlbumArgs(String albumId) {
-        return new String[] {
+        return new String[]{
                 String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
                 String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
                 albumId
         };
     }
+
     private static final String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
-    private final boolean mEnableCapture;
+    private final Capture mCapture;
 
     private AlbumMediaLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
-                             String sortOrder, boolean capture) {
+                             String sortOrder, Capture capture) {
         super(context, uri, projection, selection, selectionArgs, sortOrder);
-        mEnableCapture = capture;
+        mCapture = capture;
     }
 
-    public static CursorLoader newInstance(Context context, Album album, boolean capture) {
+    public static CursorLoader newInstance(Context context, Album album, Capture capture) {
         if (album.isAll()) {
             return new AlbumMediaLoader(
                     context,
@@ -89,18 +95,35 @@ public class AlbumMediaLoader extends CursorLoader {
                     SELECTION_ALBUM,
                     getSelectionAlbumArgs(album.getId()),
                     ORDER_BY,
-                    false);
+                    Capture.Nothing);
         }
     }
 
     @Override
     public Cursor loadInBackground() {
         Cursor result = super.loadInBackground();
-        if (!mEnableCapture || !MediaStoreCompat.hasCameraFeature(getContext())) {
+        if (!MediaStoreCompat.hasCameraFeature(getContext())) {
             return result;
         }
         MatrixCursor dummy = new MatrixCursor(PROJECTION);
-        dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE, Item.ITEM_DISPLAY_NAME_CAPTURE, "", 0, 0});
+        switch (mCapture) {
+            case All:
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_PHOTO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_PHOTO, "", 0, 0});
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_VIDEO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_VIDEO, "", 0, 0});
+                break;
+            case Image:
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_PHOTO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_PHOTO, "", 0, 0});
+                break;
+            case Video:
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_VIDEO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_VIDEO, "", 0, 0});
+                break;
+            default:
+                return result;
+        }
         return new MergeCursor(new Cursor[]{dummy, result});
     }
 
