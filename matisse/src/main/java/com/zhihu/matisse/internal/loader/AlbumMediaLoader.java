@@ -62,7 +62,7 @@ public class AlbumMediaLoader extends CursorLoader {
                 albumId
         };
     }
-    private static final String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
+    private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
     private final boolean mEnableCapture;
 
     private AlbumMediaLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
