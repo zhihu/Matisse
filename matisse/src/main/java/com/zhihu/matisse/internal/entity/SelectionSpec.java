@@ -36,6 +36,7 @@ public final class SelectionSpec {
     public int themeId;
     public int orientation;
     public boolean countable;
+    public boolean singleSelect;
     public int maxSelectable;
     public List<Filter> filters;
     public boolean capture;
@@ -65,6 +66,7 @@ public final class SelectionSpec {
         orientation = 0;
         countable = false;
         maxSelectable = 1;
+        singleSelect = false;
         filters = null;
         capture = false;
         captureStrategy = null;
