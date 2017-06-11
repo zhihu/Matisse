@@ -29,7 +29,7 @@
     <string name="error_over_count">Você só pode selecionar até %1$d arquivos de mídia</string>
     <string name="error_under_quality">Abaixo da qualidade</string>
     <string name="error_over_quality">Acima da qualidade</string>
-    <string name="error_file_type">Este arquivo não pode ser selecionado</string>
+    <string name="error_file_type">Tipo de arquivo não suportado</string>
     <string name="error_type_conflict">Não é possível selecionar arquivos de imagem e vídeo simultaneamente</string>
     <string name="error_no_video_activity">Nenhum player de vídeo disponível para reprodução</string>
 </resources>
