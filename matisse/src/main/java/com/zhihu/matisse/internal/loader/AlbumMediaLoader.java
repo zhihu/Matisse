@@ -133,7 +133,7 @@ public class AlbumMediaLoader extends CursorLoader {
 
     private static boolean restrictedToVideos(SelectionSpec selectionSpec) {
         return selectionSpec.restrictTypes
-                && SelectionSpec.getInstance().mimeTypeSet.equals(MimeType.ofVideo());
+                && selectionSpec.mimeTypeSet.equals(MimeType.ofVideo());
     }
 
     private static boolean restrictedToImages(SelectionSpec selectionSpec) {
