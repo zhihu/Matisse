@@ -140,6 +140,11 @@ public final class SelectionCreator {
         return this;
     }
 
+    public SelectionCreator restrictTypes(boolean restrict) {
+        mSelectionSpec.restrictTypes = restrict;
+        return this;
+    }
+
     /**
      * Add filter to filter each selecting item.
      *

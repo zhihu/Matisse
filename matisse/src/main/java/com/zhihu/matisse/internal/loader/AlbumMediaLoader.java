@@ -24,30 +24,45 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
+import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 
 /**
  * Load images and videos into a single cursor.
  */
 public class AlbumMediaLoader extends CursorLoader {
+
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
+
     private static final String[] PROJECTION = {
             MediaStore.Files.FileColumns._ID,
             MediaStore.MediaColumns.DISPLAY_NAME,
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.SIZE,
             "duration"};
+
     private static final String SELECTION_ALL =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
             + " OR "
             + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
             + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+
     private static final String[] SELECTION_ALL_ARGS = {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
     };
+
+    private static final String[] SELECTION_IMAGE_ARGS = {
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)
+    };
+
+    private static final String[] SELECTION_VIDEO_ARGS = {
+            String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
+    };
+
     private static final String SELECTION_ALBUM =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
             + " OR "
@@ -63,6 +78,7 @@ public class AlbumMediaLoader extends CursorLoader {
         };
     }
     private static final String ORDER_BY = MediaStore.Files.FileColumns._ID + " DESC";
+
     private final boolean mEnableCapture;
 
     private AlbumMediaLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
@@ -73,14 +89,37 @@ public class AlbumMediaLoader extends CursorLoader {
 
     public static CursorLoader newInstance(Context context, Album album, boolean capture) {
         if (album.isAll()) {
-            return new AlbumMediaLoader(
-                    context,
-                    QUERY_URI,
-                    PROJECTION,
-                    SELECTION_ALL,
-                    SELECTION_ALL_ARGS,
-                    ORDER_BY,
-                    capture);
+            SelectionSpec selectionSpec = SelectionSpec.getInstance();
+            if (selectionSpec.restrictTypes &&
+                    selectionSpec.mimeTypeSet.equals(MimeType.ofImage())) {
+                return new AlbumMediaLoader(
+                        context,
+                        QUERY_URI,
+                        PROJECTION,
+                        SELECTION_ALL,
+                        SELECTION_IMAGE_ARGS,
+                        ORDER_BY,
+                        capture);
+            } else if(selectionSpec.restrictTypes &&
+                    SelectionSpec.getInstance().mimeTypeSet.equals(MimeType.ofVideo())) {
+                return new AlbumMediaLoader(
+                        context,
+                        QUERY_URI,
+                        PROJECTION,
+                        SELECTION_ALL,
+                        SELECTION_VIDEO_ARGS,
+                        ORDER_BY,
+                        capture);
+            } else {
+                return new AlbumMediaLoader(
+                        context,
+                        QUERY_URI,
+                        PROJECTION,
+                        SELECTION_ALL,
+                        SELECTION_ALL_ARGS,
+                        ORDER_BY,
+                        capture);
+            }
         } else {
             return new AlbumMediaLoader(
                     context,

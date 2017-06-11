@@ -79,6 +79,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .choose(MimeType.ofAll(), false)
                                             .countable(true)
                                             .capture(true)
+                                            .restrictTypes(false)
                                             .captureStrategy(
                                                     new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                                             .maxSelectable(9)
