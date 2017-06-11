@@ -90,8 +90,8 @@ public class AlbumMediaLoader extends CursorLoader {
     public static CursorLoader newInstance(Context context, Album album, boolean capture) {
         if (album.isAll()) {
             SelectionSpec selectionSpec = SelectionSpec.getInstance();
-            if (selectionSpec.restrictTypes &&
-                    selectionSpec.mimeTypeSet.equals(MimeType.ofImage())) {
+
+            if (restrictedToImages(selectionSpec)) {
                 return new AlbumMediaLoader(
                         context,
                         QUERY_URI,
@@ -100,8 +100,7 @@ public class AlbumMediaLoader extends CursorLoader {
                         SELECTION_IMAGE_ARGS,
                         ORDER_BY,
                         capture);
-            } else if(selectionSpec.restrictTypes &&
-                    SelectionSpec.getInstance().mimeTypeSet.equals(MimeType.ofVideo())) {
+            } else if (restrictedToVideos(selectionSpec)) {
                 return new AlbumMediaLoader(
                         context,
                         QUERY_URI,
@@ -110,16 +109,16 @@ public class AlbumMediaLoader extends CursorLoader {
                         SELECTION_VIDEO_ARGS,
                         ORDER_BY,
                         capture);
-            } else {
-                return new AlbumMediaLoader(
-                        context,
-                        QUERY_URI,
-                        PROJECTION,
-                        SELECTION_ALL,
-                        SELECTION_ALL_ARGS,
-                        ORDER_BY,
-                        capture);
             }
+
+            return new AlbumMediaLoader(
+                    context,
+                    QUERY_URI,
+                    PROJECTION,
+                    SELECTION_ALL,
+                    SELECTION_ALL_ARGS,
+                    ORDER_BY,
+                    capture);
         } else {
             return new AlbumMediaLoader(
                     context,
@@ -130,6 +129,16 @@ public class AlbumMediaLoader extends CursorLoader {
                     ORDER_BY,
                     false);
         }
+    }
+
+    private static boolean restrictedToVideos(SelectionSpec selectionSpec) {
+        return selectionSpec.restrictTypes
+                && SelectionSpec.getInstance().mimeTypeSet.equals(MimeType.ofVideo());
+    }
+
+    private static boolean restrictedToImages(SelectionSpec selectionSpec) {
+        return selectionSpec.restrictTypes
+                && selectionSpec.mimeTypeSet.equals(MimeType.ofImage());
     }
 
     @Override
