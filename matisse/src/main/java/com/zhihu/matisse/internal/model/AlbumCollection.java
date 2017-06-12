@@ -33,7 +33,10 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     private WeakReference<Context> mContext;
     private LoaderManager mLoaderManager;
     private AlbumCallbacks mCallbacks;
-    private int mCurrentSelection;
+    private Cursor mCursor;
+    private int mCurrentSelection = -1;
+    private String mCurrentSelectionId;  // Used to track the real bucket.
+    private boolean mContentsDirty;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -51,6 +54,8 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
             return;
         }
 
+        mCursor = data;
+
         mCallbacks.onAlbumLoad(data);
     }
 
@@ -60,6 +65,8 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
         if (context == null) {
             return;
         }
+
+        mCursor = null;
 
         mCallbacks.onAlbumReset();
     }
@@ -88,15 +95,53 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     public void loadAlbums() {
+        loadAlbums(false);
+    }
+
+    public void loadAlbums(boolean force) {
+        if (force && mLoaderManager.getLoader(LOADER_ID) != null) {
+            mLoaderManager.restartLoader(LOADER_ID, null, this);
+            return;
+        }
+
         mLoaderManager.initLoader(LOADER_ID, null, this);
     }
 
+    /**
+     * Takes and clears the current flag indicating whether the contents are dirty.
+     *
+     * @return the flag
+     */
+    public boolean takeContentsDirty() {
+        boolean res = mContentsDirty;
+        mContentsDirty = false;
+        return res;
+    }
+
     public int getCurrentSelection() {
+        if (mCurrentSelection == -1) {
+            setStateCurrentSelection(0);
+        }
+
+        if (mCurrentSelectionId == null
+            || !mCurrentSelectionId.equals(getBucketId(mCurrentSelection))) {
+            // The bucket current selection underlying is changed, reset the selection.
+            setStateCurrentSelection(0);
+            mContentsDirty = true;
+        }
+
         return mCurrentSelection;
     }
 
     public void setStateCurrentSelection(int currentSelection) {
         mCurrentSelection = currentSelection;
+
+        mCurrentSelectionId = getBucketId(currentSelection);
+    }
+
+    private String getBucketId(int position) {
+        mCursor.moveToPosition(position);
+        return mCursor.getString(mCursor.getColumnIndex("bucket_id"));
     }
 
     public interface AlbumCallbacks {

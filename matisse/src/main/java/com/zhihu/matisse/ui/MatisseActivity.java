@@ -53,6 +53,7 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Main Activity to display albums and media content (images/videos) in each album
@@ -72,6 +73,8 @@ public class MatisseActivity extends AppCompatActivity implements
     private MediaStoreCompat mMediaStoreCompat;
     private SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
     private SelectionSpec mSpec;
+
+    private boolean mNeedInvalidating = false;
 
     private AlbumsSpinner mAlbumsSpinner;
     private AlbumsAdapter mAlbumsAdapter;
@@ -133,10 +136,27 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mNeedInvalidating) {
+            mAlbumCollection.loadAlbums(true);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
         mAlbumCollection.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Set the flag to make sure that activity will invalidate the loader.
+        mNeedInvalidating = true;
     }
 
     @Override
@@ -269,12 +289,15 @@ public class MatisseActivity extends AppCompatActivity implements
         // select default album.
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
-
             @Override
             public void run() {
                 cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
                 mAlbumsSpinner.setSelection(MatisseActivity.this,
                         mAlbumCollection.getCurrentSelection());
+                if (mAlbumCollection.takeContentsDirty()) {
+                    mSelectedCollection.overwrite(Collections.<Item>emptyList(), 0);
+                    updateBottomToolbar();
+                }
                 Album album = Album.valueOf(cursor);
                 if (album.isAll() && SelectionSpec.getInstance().capture) {
                     album.addCaptureCount();

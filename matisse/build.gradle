@@ -19,7 +19,7 @@ apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "26.0.0"
 
     defaultConfig {
         minSdkVersion 11
@@ -60,7 +60,7 @@ publish {
     website = 'https://www.zhihu.com/'
 }
 
-task checkstyle(type:Checkstyle) {
+task checkstyle(type: Checkstyle) {
     description 'Runs Checkstyle inspection against matisse sourcesets.'
     group = 'Code Quality'
     configFile rootProject.file('checkstyle.xml')

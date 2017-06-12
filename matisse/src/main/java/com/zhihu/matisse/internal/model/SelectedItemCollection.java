@@ -127,7 +127,7 @@ public class SelectedItemCollection {
         return removed;
     }
 
-    public void overwrite(ArrayList<Item> items, int collectionType) {
+    public void overwrite(List<Item> items, int collectionType) {
         if (items.size() == 0) {
             mCollectionType = COLLECTION_UNDEFINED;
         } else {
