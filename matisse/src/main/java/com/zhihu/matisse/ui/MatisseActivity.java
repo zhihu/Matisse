@@ -127,6 +127,7 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumsSpinner.setSelectedTextView((TextView) findViewById(R.id.selected_album));
         mAlbumsSpinner.setPopupAnchorView(findViewById(R.id.toolbar));
         mAlbumsSpinner.setAdapter(mAlbumsAdapter);
+        mAlbumCollection.setSelectionProvider(this);
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
@@ -266,6 +267,7 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     public void onAlbumLoad(final Cursor cursor) {
         mAlbumsAdapter.swapCursor(cursor);
+        updateBottomToolbar();
         // select default album.
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
@@ -330,4 +332,5 @@ public class MatisseActivity extends AppCompatActivity implements
             mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
         }
     }
+
 }

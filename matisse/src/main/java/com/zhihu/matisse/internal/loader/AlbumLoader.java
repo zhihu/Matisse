@@ -53,8 +53,11 @@ public class AlbumLoader extends CursorLoader {
     };
     private static final String BUCKET_ORDER_BY = "datetaken DESC";
 
-    public AlbumLoader(Context context) {
+    private OnAlbumContentChangedListener mListener;
+
+    public AlbumLoader(Context context, OnAlbumContentChangedListener listener) {
         super(context, QUERY_URI, PROJECTION, SELECTION, SELECTION_ARGS, BUCKET_ORDER_BY);
+        mListener = listener;
     }
 
     @Override
@@ -79,6 +82,12 @@ public class AlbumLoader extends CursorLoader {
 
     @Override
     public void onContentChanged() {
-        // FIXME a dirty way to fix loading multiple times
+        if (mListener != null) {
+            mListener.onAlbumContentChanged();
+        }
+    }
+
+    public interface OnAlbumContentChangedListener {
+        void onAlbumContentChanged();
     }
 }
