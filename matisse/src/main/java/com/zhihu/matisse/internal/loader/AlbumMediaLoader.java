@@ -26,6 +26,7 @@ import android.support.v4.content.CursorLoader;
 
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 
 /**
@@ -39,58 +40,98 @@ public class AlbumMediaLoader extends CursorLoader {
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.SIZE,
             "duration"};
+
+    // === params for album ALL && showSingleMediaType: false ===
     private static final String SELECTION_ALL =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+                    + " OR "
+                    + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0";
     private static final String[] SELECTION_ALL_ARGS = {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
     };
+    // ===========================================================
+
+    // === params for album ALL && showSingleMediaType: true ===
+    private static final String SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE =
+            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+
+    private static String[] getSelectionArgsForSingleMediaType(int mediaType) {
+        return new String[]{String.valueOf(mediaType)};
+    }
+    // =========================================================
+
+    // === params for ordinary album && showSingleMediaType: false ===
     private static final String SELECTION_ALBUM =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND "
-            + " bucket_id=?"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+                    + " OR "
+                    + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+                    + " AND "
+                    + " bucket_id=?"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+
     private static String[] getSelectionAlbumArgs(String albumId) {
-        return new String[] {
+        return new String[]{
                 String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
                 String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
                 albumId
         };
     }
+    // ===============================================================
+
+    // === params for ordinary album && showSingleMediaType: true ===
+    private static final String SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE =
+            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " AND "
+                    + " bucket_id=?"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0";
+
+    private static String[] getSelectionAlbumArgsForSingleMediaType(int mediaType, String albumId) {
+        return new String[]{String.valueOf(mediaType), albumId};
+    }
+    // ===============================================================
+
     private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
     private final boolean mEnableCapture;
 
-    private AlbumMediaLoader(Context context, Uri uri, String[] projection, String selection, String[] selectionArgs,
-                             String sortOrder, boolean capture) {
-        super(context, uri, projection, selection, selectionArgs, sortOrder);
+    private AlbumMediaLoader(Context context, String selection, String[] selectionArgs, boolean capture) {
+        super(context, QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY);
         mEnableCapture = capture;
     }
 
     public static CursorLoader newInstance(Context context, Album album, boolean capture) {
+        String selection;
+        String[] selectionArgs;
+        boolean enableCapture;
+
         if (album.isAll()) {
-            return new AlbumMediaLoader(
-                    context,
-                    QUERY_URI,
-                    PROJECTION,
-                    SELECTION_ALL,
-                    SELECTION_ALL_ARGS,
-                    ORDER_BY,
-                    capture);
+            if (SelectionSpec.getInstance().onlyShowImages()) {
+                selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+            } else if (SelectionSpec.getInstance().onlyShowVideos()) {
+                selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+            } else {
+                selection = SELECTION_ALL;
+                selectionArgs = SELECTION_ALL_ARGS;
+            }
+            enableCapture = capture;
         } else {
-            return new AlbumMediaLoader(
-                    context,
-                    QUERY_URI,
-                    PROJECTION,
-                    SELECTION_ALBUM,
-                    getSelectionAlbumArgs(album.getId()),
-                    ORDER_BY,
-                    false);
+            if (SelectionSpec.getInstance().onlyShowImages()) {
+                selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE, album.getId());
+            } else if (SelectionSpec.getInstance().onlyShowVideos()) {
+                selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO, album.getId());
+            } else {
+                selection = SELECTION_ALBUM;
+                selectionArgs = getSelectionAlbumArgs(album.getId());
+            }
+            enableCapture = false;
         }
+        return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture);
     }
 
     @Override

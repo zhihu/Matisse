@@ -41,7 +41,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
         if (context == null) {
             return null;
         }
-        return new AlbumLoader(context);
+        return AlbumLoader.newInstance(context);
     }
 
     @Override
