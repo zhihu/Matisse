@@ -208,9 +208,6 @@ public class AlbumMediaAdapter extends
 
     @Override
     public int getItemViewType(int position, Cursor cursor) {
-        if (!Item.valueOf(cursor).isCapture()) {
-            return VIEW_TYPE_MEDIA;
-        }
         switch (Item.valueOf(cursor).getCapture()) {
             case Video:
                 return VIEW_TYPE_CAPTURE_VIDEO;

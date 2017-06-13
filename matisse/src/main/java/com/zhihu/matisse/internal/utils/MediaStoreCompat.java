@@ -114,16 +114,16 @@ public class MediaStoreCompat {
     }
 
     private File createVideoFile() throws IOException {
-        // Create an image file name
+        // Create an video file name
         String timeStamp =
                 new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String videoFileName = String.format("MP4_%s.mp4", timeStamp);
         File storageDir;
         if (mCaptureStrategy.isPublic) {
             storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
+                    Environment.DIRECTORY_DCIM);
         } else {
-            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_DCIM);
         }
 
         // Avoid joining path components manually
@@ -136,6 +136,7 @@ public class MediaStoreCompat {
 
         return tempFile;
     }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp =
@@ -144,14 +145,12 @@ public class MediaStoreCompat {
         File storageDir;
         if (mCaptureStrategy.isPublic) {
             storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
+                    Environment.DIRECTORY_DCIM);
         } else {
-            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_DCIM);
         }
-
         // Avoid joining path components manually
         File tempFile = new File(storageDir, imageFileName);
-
         // Handle the situation that user's external storage is not ready
         if (!Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(tempFile))) {
             return null;

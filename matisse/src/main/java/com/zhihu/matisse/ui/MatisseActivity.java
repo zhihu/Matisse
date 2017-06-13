@@ -195,7 +195,8 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 updateBottomToolbar();
             }
-        } else if (requestCode == REQUEST_CODE_CAPTURE_PHOTO) {
+        } else if (requestCode == REQUEST_CODE_CAPTURE_PHOTO
+                || requestCode == REQUEST_CODE_CAPTURE_VIDEO) {
             // Just pass the data back to previous calling Activity.
             Uri contentUri = mMediaStoreCompat.getCurrentFileUri();
             String path = mMediaStoreCompat.getCurrentFilePath();
