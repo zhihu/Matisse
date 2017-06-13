@@ -61,7 +61,6 @@ public final class SelectionCreator {
     private final Matisse mMatisse;
     private final SelectionSpec mSelectionSpec;
 
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @IntDef({
             SCREEN_ORIENTATION_UNSPECIFIED,
@@ -88,7 +87,7 @@ public final class SelectionCreator {
     /**
      * Constructs a new specification builder on the context.
      *
-     * @param matisse  a requester context wrapper.
+     * @param matisse   a requester context wrapper.
      * @param mimeTypes MIME type set to select.
      */
     SelectionCreator(Matisse matisse, @NonNull Set<MimeType> mimeTypes, boolean mediaTypeExclusive) {
@@ -97,6 +96,19 @@ public final class SelectionCreator {
         mSelectionSpec.mimeTypeSet = mimeTypes;
         mSelectionSpec.mediaTypeExclusive = mediaTypeExclusive;
         mSelectionSpec.orientation = SCREEN_ORIENTATION_UNSPECIFIED;
+    }
+
+    /**
+     * Whether to show only one media type if choosing medias are only images or videos.
+     *
+     * @param showSingleMediaType whether to show only one media type, either images or videos.
+     * @return {@link SelectionCreator} for fluent API.
+     * @see SelectionSpec#onlyShowImages()
+     * @see SelectionSpec#onlyShowVideos()
+     */
+    public SelectionCreator showSingleMediaType(boolean showSingleMediaType) {
+        mSelectionSpec.showSingleMediaType = showSingleMediaType;
+        return this;
     }
 
     /**

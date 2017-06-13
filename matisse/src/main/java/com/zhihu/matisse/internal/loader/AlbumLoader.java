@@ -25,7 +25,11 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 
 import com.zhihu.matisse.internal.entity.Album;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
 
+/**
+ * Load all albums (grouped by bucket_id) into a single cursor.
+ */
 public class AlbumLoader extends CursorLoader {
     public static final String COLUMN_COUNT = "count";
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
@@ -41,20 +45,51 @@ public class AlbumLoader extends CursorLoader {
             "bucket_display_name",
             MediaStore.MediaColumns.DATA,
             "COUNT(*) AS " + COLUMN_COUNT};
+
+    // === params for showSingleMediaType: false ===
     private static final String SELECTION =
             "(" + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-            + " OR "
-            + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
-            + " AND " + MediaStore.MediaColumns.SIZE + ">0"
-            + ") GROUP BY (bucket_id";
+                    + " OR "
+                    + MediaStore.Files.FileColumns.MEDIA_TYPE + "=?)"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0"
+                    + ") GROUP BY (bucket_id";
     private static final String[] SELECTION_ARGS = {
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
             String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
     };
+    // =============================================
+
+    // === params for showSingleMediaType: true ===
+    private static final String SELECTION_FOR_SINGLE_MEDIA_TYPE =
+            MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
+                    + " AND " + MediaStore.MediaColumns.SIZE + ">0"
+                    + ") GROUP BY (bucket_id";
+
+    private static String[] getSelectionArgsForSingleMediaType(int mediaType) {
+        return new String[]{String.valueOf(mediaType)};
+    }
+    // =============================================
+
     private static final String BUCKET_ORDER_BY = "datetaken DESC";
 
-    public AlbumLoader(Context context) {
-        super(context, QUERY_URI, PROJECTION, SELECTION, SELECTION_ARGS, BUCKET_ORDER_BY);
+    private AlbumLoader(Context context, String selection, String[] selectionArgs) {
+        super(context, QUERY_URI, PROJECTION, selection, selectionArgs, BUCKET_ORDER_BY);
+    }
+
+    public static CursorLoader newInstance(Context context) {
+        String selection;
+        String[] selectionArgs;
+        if (SelectionSpec.getInstance().onlyShowImages()) {
+            selection = SELECTION_FOR_SINGLE_MEDIA_TYPE;
+            selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+        } else if (SelectionSpec.getInstance().onlyShowVideos()) {
+            selection = SELECTION_FOR_SINGLE_MEDIA_TYPE;
+            selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+        } else {
+            selection = SELECTION;
+            selectionArgs = SELECTION_ARGS;
+        }
+        return new AlbumLoader(context, selection, selectionArgs);
     }
 
     @Override

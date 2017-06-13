@@ -32,6 +32,7 @@ public final class SelectionSpec {
 
     public Set<MimeType> mimeTypeSet;
     public boolean mediaTypeExclusive;
+    public boolean showSingleMediaType;
     @StyleRes
     public int themeId;
     public int orientation;
@@ -61,6 +62,7 @@ public final class SelectionSpec {
     private void reset() {
         mimeTypeSet = null;
         mediaTypeExclusive = true;
+        showSingleMediaType = false;
         themeId = R.style.Matisse_Zhihu;
         orientation = 0;
         countable = false;
@@ -80,6 +82,14 @@ public final class SelectionSpec {
 
     public boolean needOrientationRestriction() {
         return orientation != ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+    }
+
+    public boolean onlyShowImages() {
+        return showSingleMediaType && MimeType.ofImage().containsAll(mimeTypeSet);
+    }
+
+    public boolean onlyShowVideos() {
+        return showSingleMediaType && MimeType.ofVideo().containsAll(mimeTypeSet);
     }
 
     private static final class InstanceHolder {
