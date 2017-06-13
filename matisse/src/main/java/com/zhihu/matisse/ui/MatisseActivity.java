@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,7 +54,6 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Main Activity to display albums and media content (images/videos) in each album
@@ -294,10 +294,8 @@ public class MatisseActivity extends AppCompatActivity implements
                 cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
                 mAlbumsSpinner.setSelection(MatisseActivity.this,
                         mAlbumCollection.getCurrentSelection());
-                if (mAlbumCollection.takeContentsDirty()) {
-                    mSelectedCollection.overwrite(Collections.<Item>emptyList(), 0);
-                    updateBottomToolbar();
-                }
+                mSelectedCollection.filterInvalidItems();
+                updateBottomToolbar();
                 Album album = Album.valueOf(cursor);
                 if (album.isAll() && SelectionSpec.getInstance().capture) {
                     album.addCaptureCount();
@@ -313,6 +311,20 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     private void onAlbumSelected(Album album) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment currentFragment = fm.findFragmentById(R.id.container);
+
+        if (currentFragment != null && currentFragment instanceof MediaSelectionFragment) {
+            MediaSelectionFragment mediaSelectionFragment =
+                    (MediaSelectionFragment) currentFragment;
+            Album currentAlbum = mediaSelectionFragment.getAlbum();
+            if (currentAlbum != null && album.getId().equals(currentAlbum.getId())) {
+                // User selected the same album, just refresh its content.
+                mediaSelectionFragment.reloadContents();
+                return;
+            }
+        }
+
         if (album.isAll() && album.isEmpty()) {
             mContainer.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
@@ -320,8 +332,7 @@ public class MatisseActivity extends AppCompatActivity implements
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
             Fragment fragment = MediaSelectionFragment.newInstance(album);
-            getSupportFragmentManager()
-                    .beginTransaction()
+            fm.beginTransaction()
                     .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
                     .commitAllowingStateLoss();
         }
