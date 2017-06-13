@@ -30,9 +30,9 @@ import android.widget.TextView;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
+import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.MediaGrid;
@@ -41,8 +41,9 @@ public class AlbumMediaAdapter extends
         RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements
         MediaGrid.OnMediaGridClickListener {
 
-    private static final int VIEW_TYPE_CAPTURE = 0x01;
+    private static final int VIEW_TYPE_CAPTURE_PHOTO = 0x01;
     private static final int VIEW_TYPE_MEDIA = 0x02;
+    private static final int VIEW_TYPE_CAPTURE_VIDEO = 0x03;
     private final SelectedItemCollection mSelectedCollection;
     private final Drawable mPlaceholder;
     private SelectionSpec mSelectionSpec;
@@ -65,23 +66,42 @@ public class AlbumMediaAdapter extends
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_CAPTURE) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_capture_item, parent, false);
-            CaptureViewHolder holder = new CaptureViewHolder(v);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getContext() instanceof OnPhotoCapture) {
-                        ((OnPhotoCapture) v.getContext()).capture();
+        RecyclerView.ViewHolder holder;
+        View v;
+        switch (viewType) {
+            case VIEW_TYPE_CAPTURE_PHOTO:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.photo_capture_item, parent, false);
+                holder = new CaptureViewHolder(v);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (v.getContext() instanceof OnPhotoCapture) {
+                            ((OnPhotoCapture) v.getContext()).capturePhoto();
+                        }
                     }
-                }
-            });
-            return holder;
-        } else if (viewType == VIEW_TYPE_MEDIA) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_grid_item, parent, false);
-            return new MediaViewHolder(v);
+                });
+                break;
+            case VIEW_TYPE_CAPTURE_VIDEO:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.video_capture_item, parent, false);
+                holder = new CaptureViewHolder(v);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (v.getContext() instanceof OnVideoCapture) {
+                            ((OnVideoCapture) v.getContext()).captureVideo();
+                        }
+                    }
+                });
+                break;
+            default:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.media_grid_item, parent, false);
+                holder = new MediaViewHolder(v);
+                break;
         }
-        return null;
+        return holder;
     }
 
     @Override
@@ -188,7 +208,14 @@ public class AlbumMediaAdapter extends
 
     @Override
     public int getItemViewType(int position, Cursor cursor) {
-        return Item.valueOf(cursor).isCapture() ? VIEW_TYPE_CAPTURE : VIEW_TYPE_MEDIA;
+        switch (Item.valueOf(cursor).getCapture()) {
+            case Video:
+                return VIEW_TYPE_CAPTURE_VIDEO;
+            case Image:
+                return VIEW_TYPE_CAPTURE_PHOTO;
+            default:
+                return VIEW_TYPE_MEDIA;
+        }
     }
 
     private boolean assertAddSelection(Context context, Item item) {
@@ -253,7 +280,11 @@ public class AlbumMediaAdapter extends
     }
 
     public interface OnPhotoCapture {
-        void capture();
+        void capturePhoto();
+    }
+
+    public interface OnVideoCapture {
+        void captureVideo();
     }
 
     private static class MediaViewHolder extends RecyclerView.ViewHolder {
