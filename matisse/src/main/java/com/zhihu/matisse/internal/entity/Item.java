@@ -132,7 +132,13 @@ public class Item implements Parcelable {
         }
 
         Item other = (Item) obj;
-        return other.uri.equals(uri);
+        return id == other.id
+                && (mimeType != null && mimeType.equals(other.mimeType)
+                    || (mimeType == null && other.mimeType == null))
+                && (uri != null && uri.equals(other.uri)
+                    || (uri == null && other.uri == null))
+                && size == other.size
+                && duration == other.duration;
     }
 
     @Override
