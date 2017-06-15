@@ -17,5 +17,5 @@
 <resources>
     <string name="app_name">Matisse</string>
     <string name="permission_request_denied">Permís rebutjat</string>
-    <string name="error_gif">x or y ha de ser almenys %1$dpx i el tamany de l'arxiu no ha de ser major que %2$sM</string>
+    <string name="error_gif">x or y ha de ser almenys %1$dpx i el tamany de l\'arxiu no ha de ser major que %2$sM</string>
 </resources>
