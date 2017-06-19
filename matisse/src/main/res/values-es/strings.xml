@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Zhihu Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+    <string name="album_name_all">Todos</string>
+
+    <string name="button_preview">Previsualizar</string>
+    <string name="button_apply_default">Seleccionar</string>
+    <string name="button_apply">Seleccionar(%1$d)</string>
+    <string name="button_back">Atrás</string>
+    <string name="photo_grid_capture">Cámara</string>
+    <string name="empty_text">Ningún archivo seleccionado</string>
+    <string name="button_ok">OK</string>
+
+    <string name="error_over_count_default">Has alcanzado el máximo de archivos seleccionables</string>
+    <string name="error_over_count">Sólo puede seleccionar hasta %1$d archivos multimedia</string>
+    <string name="error_under_quality">Baja calidad</string>
+    <string name="error_over_quality">Exceso calidad</string>
+    <string name="error_file_type">Tipo de fichero no soportado</string>
+    <string name="error_type_conflict">No se puede seleccionar imágenes y vídeos al mismo tiempo</string>
+    <string name="error_no_video_activity">No se ha encontrado ninguna app que soporte la previsualización de vídeo</string>
+</resources>
