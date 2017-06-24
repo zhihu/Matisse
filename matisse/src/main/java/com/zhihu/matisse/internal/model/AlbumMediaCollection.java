@@ -98,8 +98,9 @@ public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Curso
         args.putParcelable(ARGS_ALBUM, target);
         args.putBoolean(ARGS_ENABLE_CAPTURE, enableCapture);
 
-        if (force && mLoaderManager.getLoader(LOADER_ID) != null) {
-            mLoaderManager.restartLoader(LOADER_ID, args, this);
+        Loader<?> existingLoader;
+        if (force && (existingLoader = mLoaderManager.getLoader(LOADER_ID)) != null) {
+            existingLoader.forceLoad();
             return;
         }
 
