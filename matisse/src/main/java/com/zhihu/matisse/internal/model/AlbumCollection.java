@@ -99,10 +99,12 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     public void loadAlbums(boolean force) {
-        Loader<?> existingLoader;
-        if (force && (existingLoader = mLoaderManager.getLoader(LOADER_ID)) != null) {
-            existingLoader.forceLoad();
-            return;
+        if (force) {
+            Loader<?> existingLoader = mLoaderManager.getLoader(LOADER_ID);
+            if (existingLoader != null) {
+                existingLoader.forceLoad();
+                return;
+            }
         }
 
         mLoaderManager.initLoader(LOADER_ID, null, this);
