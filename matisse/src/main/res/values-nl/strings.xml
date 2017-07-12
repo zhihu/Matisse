@@ -25,8 +25,8 @@
     <string name="empty_text">Niets geselecteerd</string>
     <string name="button_ok">OK</string>
 
-    <string name="error_over_count_default">Je hebt het maximum geselecteerd</string>
-    <string name="error_over_count">Je kunt maximaal %1$d media bestanden selecteren</string>
+    <string name="error_over_count_default">Je hebt het maximum aantal geselecteerd</string>
+    <string name="error_over_count">Je kunt maximaal %1$d media bestand(en) selecteren</string>
     <string name="error_under_quality">Te lage kwaliteit</string>
     <string name="error_over_quality">Te hoge kwaliteit</string>
     <string name="error_file_type">Niet ondersteund formaat</string>
