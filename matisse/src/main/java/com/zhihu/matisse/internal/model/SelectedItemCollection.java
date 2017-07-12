@@ -169,6 +169,21 @@ public class SelectedItemCollection {
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
             int maxSelectable = SelectionSpec.getInstance().maxSelectable;
+
+            //In case of 1 we do not want to deselect manually. Just deselect the current selected
+            //item and add the new one
+            if (maxSelectable==1){
+                //There should be one selected
+                final IncapableCause acceptable = PhotoMetadataUtils.isAcceptable(mContext, item);
+                if(acceptable==null){
+                    mItems.clear();
+                    mCollectionType = COLLECTION_UNDEFINED;
+                    return null;
+                }else{
+                    return acceptable;
+                }
+            }
+
             String cause;
 
             try {
