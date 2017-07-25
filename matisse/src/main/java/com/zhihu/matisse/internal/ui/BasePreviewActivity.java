@@ -156,7 +156,8 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                 if (checkedNum > 0) {
                     mCheckView.setEnabled(true);
                 } else {
-                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached() || SelectionSpec.getInstance().maxSelectable==1);
+                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached() ||
+                            SelectionSpec.getInstance().maxSelectable == 1);
                 }
             } else {
                 boolean checked = mSelectedCollection.isSelected(item);
@@ -164,7 +165,8 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                 if (checked) {
                     mCheckView.setEnabled(true);
                 } else {
-                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached() || SelectionSpec.getInstance().maxSelectable==1);
+                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached() ||
+                            SelectionSpec.getInstance().maxSelectable == 1);
                 }
             }
             updateSize(item);

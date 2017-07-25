@@ -172,14 +172,14 @@ public class SelectedItemCollection {
 
             //In case of 1 we do not want to deselect manually. Just deselect the current selected
             //item and add the new one
-            if (maxSelectable==1){
+            if (maxSelectable == 1) {
                 //There should be one selected
                 final IncapableCause acceptable = PhotoMetadataUtils.isAcceptable(mContext, item);
-                if(acceptable==null){
+                if (acceptable == null) {
                     mItems.clear();
                     mCollectionType = COLLECTION_UNDEFINED;
                     return null;
-                }else{
+                } else {
                     return acceptable;
                 }
             }

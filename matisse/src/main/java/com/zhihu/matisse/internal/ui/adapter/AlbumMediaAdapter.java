@@ -121,7 +121,8 @@ public class AlbumMediaAdapter extends
                 mediaGrid.setCheckEnabled(true);
                 mediaGrid.setCheckedNum(checkedNum);
             } else {
-                if (mSelectedCollection.maxSelectableReached() && SelectionSpec.getInstance().maxSelectable>1) {
+                if (mSelectedCollection.maxSelectableReached() &&
+                        SelectionSpec.getInstance().maxSelectable > 1) {
                     mediaGrid.setCheckEnabled(false);
                     mediaGrid.setCheckedNum(CheckView.UNCHECKED);
                 } else {
@@ -135,7 +136,8 @@ public class AlbumMediaAdapter extends
                 mediaGrid.setCheckEnabled(true);
                 mediaGrid.setChecked(true);
             } else {
-                if (mSelectedCollection.maxSelectableReached() && SelectionSpec.getInstance().maxSelectable>1) {
+                if (mSelectedCollection.maxSelectableReached() &&
+                        SelectionSpec.getInstance().maxSelectable > 1) {
                     mediaGrid.setCheckEnabled(false);
                     mediaGrid.setChecked(false);
                 } else {
