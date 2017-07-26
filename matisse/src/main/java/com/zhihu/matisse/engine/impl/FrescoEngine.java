@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -73,7 +74,7 @@ public class FrescoEngine implements ImageEngine {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    public static class FrescoLoader implements View.OnAttachStateChangeListener {
+    public static class FrescoLoader implements View.OnAttachStateChangeListener, View.OnTouchListener {
 
         private Context mContext;
         private ScalingUtils.ScaleType mScaleType = ScalingUtils.ScaleType.CENTER_CROP;
@@ -135,12 +136,14 @@ public class FrescoEngine implements ImageEngine {
             DraweeController draweeController = Fresco.newDraweeControllerBuilder()
                     .setOldController(mDraweeHolder.getController())
                     .setImageRequest(request)
+                    .setAutoPlayAnimations(true)
                     .setTapToRetryEnabled(true)
                     .build();
             mDraweeHolder.setController(draweeController);
 
             targetView.addOnAttachStateChangeListener(this);
             targetView.setImageDrawable(mDraweeHolder.getTopLevelDrawable());
+            targetView.setOnTouchListener(this);
         }
 
 
@@ -154,7 +157,13 @@ public class FrescoEngine implements ImageEngine {
             mDraweeHolder.onDetach();
         }
 
-
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (mDraweeHolder.onTouchEvent(event)) {
+                return true;
+            }
+            return false;
+        }
     }
 
 }
