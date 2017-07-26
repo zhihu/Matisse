@@ -1,26 +1,13 @@
 package com.zhihu.matisse.engine.impl;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.DraweeHolder;
-import com.facebook.imagepipeline.common.Priority;
-import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.zhihu.matisse.engine.ImageEngine;
 
 /**
@@ -36,7 +23,7 @@ public class FrescoEngine implements ImageEngine {
                 .resize(resize, resize)
                 .placeholder(placeholder)
                 .uri(uri)
-                .scaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .actualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .into(imageView);
     }
 
@@ -46,7 +33,7 @@ public class FrescoEngine implements ImageEngine {
                 .resize(resize, resize)
                 .placeholder(placeholder)
                 .uri(uri)
-                .scaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .actualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .into(imageView);
     }
 
@@ -55,7 +42,7 @@ public class FrescoEngine implements ImageEngine {
         FrescoLoader.with(context)
                 .resize(resizeX, resizeY)
                 .uri(uri)
-                .scaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .actualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
                 .into(imageView);
     }
 
@@ -64,106 +51,14 @@ public class FrescoEngine implements ImageEngine {
         FrescoLoader.with(context)
                 .resize(resizeX, resizeY)
                 .uri(uri)
-                .scaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .autoPlayAnimation(true)
+                .actualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)
                 .into(imageView);
     }
 
     @Override
     public boolean supportAnimatedGif() {
         return true;
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    public static class FrescoLoader implements View.OnAttachStateChangeListener, View.OnTouchListener {
-
-        private Context mContext;
-        private ScalingUtils.ScaleType mScaleType = ScalingUtils.ScaleType.CENTER_CROP;
-        private ResizeOptions mResizeOptions;
-        private Drawable mPlaceHolder;
-        private Uri mUri;
-        private DraweeHolder<GenericDraweeHierarchy> mDraweeHolder;
-
-        public FrescoLoader(Context context) {
-            this.mContext = context.getApplicationContext();
-        }
-
-        public static FrescoLoader with(Context context) {
-            return new FrescoLoader(context);
-        }
-
-        public FrescoLoader uri(Uri uri) {
-            this.mUri = uri;
-            return this;
-        }
-
-        public FrescoLoader scaleType(@Nullable ScalingUtils.ScaleType type) {
-            this.mScaleType = type;
-            return this;
-        }
-
-        public FrescoLoader placeholder(Drawable drawable) {
-            this.mPlaceHolder = drawable;
-            return this;
-        }
-
-        public FrescoLoader resize(ResizeOptions resizeOptions) {
-            this.mResizeOptions = resizeOptions;
-            return this;
-        }
-
-        public FrescoLoader resize(int targetWidth, int targetHeight) {
-            this.mResizeOptions = new ResizeOptions(targetWidth, targetHeight);
-            return this;
-        }
-
-        public void into(ImageView targetView) {
-            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(mContext.getResources())
-                    .setFadeDuration(300)
-                    .setPlaceholderImage(mPlaceHolder)
-                    .setFailureImage(mPlaceHolder)
-                    .setRetryImage(mPlaceHolder)
-                    .setActualImageScaleType(mScaleType)
-                    .build();
-            mDraweeHolder = DraweeHolder.create(hierarchy, mContext);
-
-            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(mUri)
-                    .setResizeOptions(mResizeOptions)
-                    .setProgressiveRenderingEnabled(true)
-//                    .setLocalThumbnailPreviewsEnabled(true)
-                    .setRequestPriority(Priority.HIGH)
-                    .build();
-
-            DraweeController draweeController = Fresco.newDraweeControllerBuilder()
-                    .setOldController(mDraweeHolder.getController())
-                    .setImageRequest(request)
-                    .setAutoPlayAnimations(true)
-                    .setTapToRetryEnabled(true)
-                    .build();
-            mDraweeHolder.setController(draweeController);
-
-            targetView.addOnAttachStateChangeListener(this);
-            targetView.setImageDrawable(mDraweeHolder.getTopLevelDrawable());
-            targetView.setOnTouchListener(this);
-        }
-
-
-        @Override
-        public void onViewAttachedToWindow(View v) {
-            mDraweeHolder.onAttach();
-        }
-
-        @Override
-        public void onViewDetachedFromWindow(View v) {
-            mDraweeHolder.onDetach();
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if (mDraweeHolder.onTouchEvent(event)) {
-                return true;
-            }
-            return false;
-        }
     }
 
 }
