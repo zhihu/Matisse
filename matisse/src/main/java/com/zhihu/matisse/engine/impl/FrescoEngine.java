@@ -5,15 +5,18 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeHolder;
+import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
@@ -29,8 +32,9 @@ public class FrescoEngine implements ImageEngine {
     @Override
     public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
         DraweeLoader loader = new DraweeLoaderBuilder(context)
-                .setrResize(resize, resize)
+                .setResize(resize, resize)
                 .setPlaceholder(placeholder)
+                .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 .setUri(uri)
                 .build();
         loader.load(imageView);
@@ -38,17 +42,34 @@ public class FrescoEngine implements ImageEngine {
 
     @Override
     public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+        DraweeLoader loader = new DraweeLoaderBuilder(context)
+                .setResize(resize, resize)
+                .setPlaceholder(placeholder)
+                .setUri(uri)
+                .setScaleType(ScalingUtils.ScaleType.CENTER_CROP)
+                .build();
+        loader.load(imageView);
 
     }
 
     @Override
     public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-
+        DraweeLoader loader = new DraweeLoaderBuilder(context)
+                .setResize(resizeX, resizeY)
+                .setUri(uri)
+                .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .build();
+        loader.load(imageView);
     }
 
     @Override
     public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-
+        DraweeLoader loader = new DraweeLoaderBuilder(context)
+                .setResize(resizeX, resizeY)
+                .setUri(uri)
+                .setScaleType(ScalingUtils.ScaleType.FIT_CENTER)
+                .build();
+        loader.load(imageView);
     }
 
     @Override
@@ -78,6 +99,10 @@ public class FrescoEngine implements ImageEngine {
         private void initHolder() {
             GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(builder.getContext().getResources())
                     .setPlaceholderImage(builder.getPlaceholder())
+                    .setFadeDuration(300)
+                    .setFailureImage(builder.getPlaceholder())
+                    .setRetryImage(builder.getPlaceholder())
+                    .setActualImageScaleType(builder.getScaleType())
                     .build();
             mDraweeHolder = DraweeHolder.create(hierarchy, builder.getContext());
         }
@@ -85,11 +110,15 @@ public class FrescoEngine implements ImageEngine {
         private void initController() {
             ImageRequest request = ImageRequestBuilder.newBuilderWithSource(builder.getUri())
                     .setResizeOptions(builder.getResize())
+                    .setProgressiveRenderingEnabled(true)
+//                    .setLocalThumbnailPreviewsEnabled(true)
+                    .setRequestPriority(Priority.HIGH)
                     .build();
 
             DraweeController draweeController = Fresco.newDraweeControllerBuilder()
                     .setOldController(mDraweeHolder.getController())
                     .setImageRequest(request)
+                    .setTapToRetryEnabled(true)
                     .build();
             mDraweeHolder.setController(draweeController);
         }
@@ -112,7 +141,8 @@ public class FrescoEngine implements ImageEngine {
     }
 
     public class DraweeLoaderBuilder {
-        public Context mContext;
+        private Context mContext;
+        private ScalingUtils.ScaleType mScaleType = ScalingUtils.ScaleType.CENTER_CROP;
         private ResizeOptions mResizeOptions;
         private Drawable mPlaceHolder;
         private Uri mUri;
@@ -134,7 +164,16 @@ public class FrescoEngine implements ImageEngine {
             return mUri;
         }
 
-        public DraweeLoaderBuilder setrResize(int width, int height) {
+        public DraweeLoaderBuilder setScaleType(@Nullable ScalingUtils.ScaleType type) {
+            this.mScaleType = type;
+            return this;
+        }
+
+        public ScalingUtils.ScaleType getScaleType() {
+            return mScaleType;
+        }
+
+        public DraweeLoaderBuilder setResize(int width, int height) {
             mResizeOptions = new ResizeOptions(width, height);
             return this;
         }
