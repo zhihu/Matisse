@@ -4,15 +4,7 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
-/**
- * 文件描述
- *
- * @author chenfeng
- * @since 2017-07-26 13:38
- */
-
-public class MyApplication extends Application {
-
+public class SampleApplication extends Application {
 
     @Override
     public void onCreate() {

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.components.DeferredReleaser;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
@@ -56,6 +55,7 @@ public class FrescoLoader implements View.OnAttachStateChangeListener {
     private Drawable mBackgroundDrawable;
     private RoundingParams mRoundingParams;
     private int mFadeDuration;
+    //need dependencies 'com.facebook.fresco:animated-gif:x.x.x'
     private boolean mAutoPlayAnimations;
     private boolean mLocalThumbnailPreviewsEnabled;
 
