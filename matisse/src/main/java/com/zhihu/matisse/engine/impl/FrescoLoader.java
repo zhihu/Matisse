@@ -288,9 +288,11 @@ public class FrescoLoader implements View.OnAttachStateChangeListener {
     }
 
     private static boolean isAttachedToWindow(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             return view.isAttachedToWindow();
-        else return view.getWindowToken() != null;
+        } else {
+            return view.getWindowToken() != null;
+        }
     }
 
 
