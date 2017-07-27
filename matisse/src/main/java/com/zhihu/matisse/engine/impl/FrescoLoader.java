@@ -16,6 +16,7 @@ import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.interfaces.DraweeHierarchy;
 import com.facebook.drawee.view.DraweeHolder;
 import com.facebook.imagepipeline.common.Priority;
 import com.facebook.imagepipeline.common.ResizeOptions;
@@ -35,7 +36,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 public class FrescoLoader implements View.OnAttachStateChangeListener {
 
     private Context mContext;
-    private DraweeHolder<GenericDraweeHierarchy> mDraweeHolder;
+    private DraweeHolder<DraweeHierarchy> mDraweeHolder;
     private Uri mUri;
     //placeholder
     private Drawable mPlaceHolderDrawable;
@@ -81,7 +82,7 @@ public class FrescoLoader implements View.OnAttachStateChangeListener {
         mAutoPlayAnimations = false;
         mLocalThumbnailPreviewsEnabled = true;
 
-        mDraweeHolder = DraweeHolder.create(null, mContext);
+        mDraweeHolder = null;
     }
 
     public static FrescoLoader with(Context context) {
@@ -203,36 +204,93 @@ public class FrescoLoader implements View.OnAttachStateChangeListener {
     }
 
     public void into(ImageView targetView) {
-        GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(mContext.getResources())
-                .setFadeDuration(mFadeDuration)
-                .setPlaceholderImage(mPlaceHolderDrawable, mPlaceholderScaleType)
-                .setFailureImage(mFailureDrawable, mFailureScaleType)
-                .setProgressBarImage(mProgressBarDrawable, mProgressBarScaleType)
-                .setActualImageScaleType(mActualImageScaleType)
-                .setActualImageFocusPoint(mActualImageFocusPoint)
-                .setBackground(mBackgroundDrawable)
-                .setDesiredAspectRatio(mDesiredAspectRatio)
-                .setRoundingParams(mRoundingParams)
-                .build();
-        mDraweeHolder.setHierarchy(hierarchy);
+        if (targetView == null) {
+            return;
+        }
 
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(mUri)
-                .setResizeOptions(mResizeOptions)
-                .setLocalThumbnailPreviewsEnabled(mLocalThumbnailPreviewsEnabled)
-                .setRequestPriority(Priority.HIGH)
-                .setRotationOptions(mRotationOptions)
-                .build();
-        DraweeController draweeController = Fresco.newDraweeControllerBuilder()
-                .setOldController(mDraweeHolder.getController())
-                .setImageRequest(request)
-                .setAutoPlayAnimations(mAutoPlayAnimations)
-                .setTapToRetryEnabled(false)
-                .build();
-        mDraweeHolder.setController(draweeController);
+        if (mUri == null) {
+            return;
+        }
 
-        targetView.removeOnAttachStateChangeListener(this);
-        targetView.addOnAttachStateChangeListener(this);
+        if (mDraweeHolder == null) {
+            Object tag = targetView.getTag();
+            if (tag instanceof DraweeHolder) {
+                mDraweeHolder = (DraweeHolder<DraweeHierarchy>) tag;
+            }
+        }
+
+        if (mDraweeHolder == null) {
+            mDraweeHolder = DraweeHolder.create(null, targetView.getContext());
+
+            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(targetView.getResources())
+                    .setFadeDuration(mFadeDuration)
+                    .setPlaceholderImage(mPlaceHolderDrawable, mPlaceholderScaleType)
+                    .setFailureImage(mFailureDrawable, mFailureScaleType)
+                    .setProgressBarImage(mProgressBarDrawable, mProgressBarScaleType)
+                    .setActualImageScaleType(mActualImageScaleType)
+                    .setActualImageFocusPoint(mActualImageFocusPoint)
+                    .setBackground(mBackgroundDrawable)
+                    .setDesiredAspectRatio(mDesiredAspectRatio)
+                    .setRoundingParams(mRoundingParams)
+                    .build();
+            mDraweeHolder.setHierarchy(hierarchy);
+
+            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(mUri)
+                    .setResizeOptions(mResizeOptions)
+                    .setLocalThumbnailPreviewsEnabled(mLocalThumbnailPreviewsEnabled)
+                    .setRequestPriority(Priority.HIGH)
+                    .setRotationOptions(mRotationOptions)
+                    .build();
+            DraweeController draweeController = Fresco.newDraweeControllerBuilder()
+                    .setOldController(mDraweeHolder.getController())
+                    .setImageRequest(request)
+                    .setAutoPlayAnimations(mAutoPlayAnimations)
+                    .setTapToRetryEnabled(false)
+                    .build();
+            mDraweeHolder.setController(draweeController);
+
+            if (isAttachedToWindow(targetView)) {
+                mDraweeHolder.onAttach();
+            }
+
+            targetView.addOnAttachStateChangeListener(this);
+            targetView.setTag(mDraweeHolder);
+        } else {
+            GenericDraweeHierarchy hierarchy = new GenericDraweeHierarchyBuilder(targetView.getResources())
+                    .setFadeDuration(mFadeDuration)
+                    .setPlaceholderImage(mPlaceHolderDrawable, mPlaceholderScaleType)
+                    .setFailureImage(mFailureDrawable, mFailureScaleType)
+                    .setProgressBarImage(mProgressBarDrawable, mProgressBarScaleType)
+                    .setActualImageScaleType(mActualImageScaleType)
+                    .setActualImageFocusPoint(mActualImageFocusPoint)
+                    .setBackground(mBackgroundDrawable)
+                    .setDesiredAspectRatio(mDesiredAspectRatio)
+                    .setRoundingParams(mRoundingParams)
+                    .build();
+            mDraweeHolder.setHierarchy(hierarchy);
+
+            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(mUri)
+                    .setResizeOptions(mResizeOptions)
+                    .setLocalThumbnailPreviewsEnabled(mLocalThumbnailPreviewsEnabled)
+                    .setRequestPriority(Priority.HIGH)
+                    .setRotationOptions(mRotationOptions)
+                    .build();
+            DraweeController draweeController = Fresco.newDraweeControllerBuilder()
+                    .setOldController(mDraweeHolder.getController())
+                    .setImageRequest(request)
+                    .setAutoPlayAnimations(mAutoPlayAnimations)
+                    .setTapToRetryEnabled(false)
+                    .build();
+            mDraweeHolder.setController(draweeController);
+
+        }
         targetView.setImageDrawable(mDraweeHolder.getTopLevelDrawable());
+    }
+
+    private static boolean isAttachedToWindow(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            return view.isAttachedToWindow();
+        else return view.getWindowToken() != null;
     }
 
 
