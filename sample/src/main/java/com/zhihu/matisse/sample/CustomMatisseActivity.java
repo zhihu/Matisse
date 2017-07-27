@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.ImageEngine;
@@ -70,6 +72,7 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
         RadioButton draculaRadioButton = (RadioButton) findViewById(R.id.rb_theme_dracula);
         RadioButton glideRadioButton = (RadioButton) findViewById(R.id.rb_glide);
         RadioButton picassoRadioButton = (RadioButton) findViewById(R.id.rb_picasso);
+        RadioButton uilRadioButton = (RadioButton) findViewById(R.id.rb_uil);
         EditText selectCountEditor = (EditText) findViewById(R.id.et_selectable_count);
         CheckBox countableCheckBox = (CheckBox) findViewById(R.id.cb_countable);
 
@@ -87,6 +90,9 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
             imageEngine = new GlideEngine();
         } else if (picassoRadioButton.isChecked()) {
             imageEngine = new PicassoEngine();
+        } else if (uilRadioButton.isChecked()) {
+            ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
+            imageEngine = new UILEngine();
         }
 
         String maxCount = selectCountEditor.getText().toString();
