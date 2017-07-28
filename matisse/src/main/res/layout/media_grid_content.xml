@@ -16,7 +16,7 @@
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
+    <com.zhihu.matisse.internal.ui.widget.MatisseImageView
         android:id="@+id/media_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

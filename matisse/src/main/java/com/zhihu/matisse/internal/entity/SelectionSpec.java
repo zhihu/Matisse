@@ -17,6 +17,7 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.StyleRes;
 
 import com.zhihu.matisse.MimeType;
@@ -35,6 +36,8 @@ public final class SelectionSpec {
     public boolean showSingleMediaType;
     @StyleRes
     public int themeId;
+    @LayoutRes
+    public int previewItemLayoutId;
     public int orientation;
     public boolean countable;
     public int maxSelectable;
@@ -64,6 +67,7 @@ public final class SelectionSpec {
         mediaTypeExclusive = true;
         showSingleMediaType = false;
         themeId = R.style.Matisse_Zhihu;
+        previewItemLayoutId = R.layout.fragment_preview_item;
         orientation = 0;
         countable = false;
         maxSelectable = 1;
