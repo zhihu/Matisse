@@ -27,7 +27,8 @@ public class MatisseImageView extends AppCompatImageView implements EngineView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override public void setOnEngineViewAttachListener(OnEngineViewAttachListener l) {
+    @Override
+    public void setOnEngineViewAttachListener(OnEngineViewAttachListener l) {
         if (mOnEngineViewAttachListener != null) {
             mOnEngineViewAttachListener.onViewDetachedFromWindow(this);
         }
@@ -38,34 +39,39 @@ public class MatisseImageView extends AppCompatImageView implements EngineView {
         }
     }
 
-    @Override public OnEngineViewAttachListener getOnEngineViewAttachListener() {
+    @Override
+    public OnEngineViewAttachListener getOnEngineViewAttachListener() {
         return mOnEngineViewAttachListener;
     }
 
-    @Override protected void onAttachedToWindow() {
+    @Override
+    protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if(mOnEngineViewAttachListener != null){
+        if (mOnEngineViewAttachListener != null) {
             mOnEngineViewAttachListener.onViewAttachedToWindow(this);
         }
     }
 
-    @Override protected void onDetachedFromWindow() {
+    @Override
+    protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mOnEngineViewAttachListener != null){
+        if (mOnEngineViewAttachListener != null) {
             mOnEngineViewAttachListener.onViewDetachedFromWindow(this);
         }
     }
 
-    @Override public void onStartTemporaryDetach() {
+    @Override
+    public void onStartTemporaryDetach() {
         super.onStartTemporaryDetach();
-        if(mOnEngineViewAttachListener != null){
+        if (mOnEngineViewAttachListener != null) {
             mOnEngineViewAttachListener.onViewStartTemporaryDetach(this);
         }
     }
 
-    @Override public void onFinishTemporaryDetach() {
+    @Override
+    public void onFinishTemporaryDetach() {
         super.onFinishTemporaryDetach();
-        if(mOnEngineViewAttachListener != null){
+        if (mOnEngineViewAttachListener != null) {
             mOnEngineViewAttachListener.onViewFinishTemporaryDetach(this);
         }
     }
