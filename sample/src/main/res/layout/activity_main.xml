@@ -26,14 +26,31 @@
         android:elevation="4dp"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/item_margin_horizontal"
-            android:text="@string/app_name"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/item_margin_horizontal"
+                android:paddingRight="@dimen/item_margin_horizontal"
+                android:text="@string/app_name"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"/>
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/engine_spinner"
+                android:layout_marginLeft="@dimen/item_margin_horizontal"
+                android:layout_marginRight="@dimen/item_margin_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/zhihu"

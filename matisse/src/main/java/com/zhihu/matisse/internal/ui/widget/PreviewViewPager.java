@@ -18,9 +18,10 @@ package com.zhihu.matisse.internal.ui.widget;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
-import it.sephiroth.android.library.imagezoom.ImageViewTouch;
+import com.zhihu.matisse.ui.PhotoView;
 
 public class PreviewViewPager extends ViewPager {
 
@@ -30,9 +31,19 @@ public class PreviewViewPager extends ViewPager {
 
     @Override
     protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-        if (v instanceof ImageViewTouch) {
-            return ((ImageViewTouch) v).canScroll(dx) || super.canScroll(v, checkV, dx, x, y);
+        if (v instanceof PhotoView) {
+            return ((PhotoView) v).canScroll(dx) || super.canScroll(v, checkV, dx, x, y);
         }
         return super.canScroll(v, checkV, dx, x, y);
+    }
+
+    @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
+        try {
+            return super.onInterceptTouchEvent(ev);
+        } catch (IllegalArgumentException e) {
+            //uncomment if you really want to see these errors
+            //e.printStackTrace();
+            return false;
+        }
     }
 }

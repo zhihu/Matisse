@@ -20,23 +20,30 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -47,13 +54,40 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     private static final int REQUEST_CODE_CHOOSE = 23;
 
     private UriAdapter mAdapter;
+    private List<ImageEngine> mImageEngines = new ArrayList<>();
+    private ImageEngine mImageEngine;
+    @LayoutRes
+    private int mPreviewLayoutId = R.layout.fragment_fresco_preview_item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
+
+        mImageEngines.add(new FrescoImageEngine());
+        mImageEngines.add(new GlideEngine());
+        mImageEngines.add(new PicassoEngine());
+
+        mImageEngine = mImageEngines.get(0);
+        Spinner spinner = (Spinner) findViewById(R.id.engine_spinner);
+        String[] engines = new String[]{"Fresco","Glide","Picasso"};
+        spinner.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,engines));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mImageEngine = mImageEngines.get(position);
+                if (position == 0) {
+                    mPreviewLayoutId = R.layout.fragment_fresco_preview_item;
+                } else {
+                    mPreviewLayoutId = R.layout.fragment_preview_item;
+                }
+            }
+
+            @Override public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,6 +113,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .choose(MimeType.ofAll(), false)
                                             .countable(true)
                                             .capture(true)
+                                            .previewItemLayoutId(mPreviewLayoutId)
                                             .captureStrategy(
                                                     new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                                             .maxSelectable(9)
@@ -87,16 +122,17 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                                     getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .thumbnailScale(0.85f)
-                                            .imageEngine(new GlideEngine())
+                                            .imageEngine(mImageEngine)
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                                 case R.id.dracula:
                                     Matisse.from(SampleActivity.this)
                                             .choose(MimeType.ofImage())
                                             .theme(R.style.Matisse_Dracula)
+                                            .previewItemLayoutId(mPreviewLayoutId)
                                             .countable(false)
                                             .maxSelectable(9)
-                                            .imageEngine(new PicassoEngine())
+                                            .imageEngine(mImageEngine)
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                             }
