@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.IntDef;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
@@ -124,6 +125,21 @@ public final class SelectionCreator {
      */
     public SelectionCreator theme(@StyleRes int themeId) {
         mSelectionSpec.themeId = themeId;
+        return this;
+    }
+
+    /**
+     * Layout for media selecting preview item.
+     * <p>
+     * There are two built-in layout:
+     * 1. com.zhihu.matisse.R.layout.fragment_preview_item;
+     * you can define a custom theme derived from the above ones or other layout.
+     *
+     * @param layoutId layout resource id. Default value is com.zhihu.matisse.R.layout.fragment_preview_item.
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator previewItemLayoutId(@LayoutRes int layoutId) {
+        mSelectionSpec.previewItemLayoutId = layoutId;
         return this;
     }
 

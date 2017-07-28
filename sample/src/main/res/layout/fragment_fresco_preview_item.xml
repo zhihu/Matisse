@@ -18,7 +18,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <com.zhihu.matisse.internal.ui.widget.MatissePhotoView
+    <me.relex.photodraweeview.PhotoDraweeView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
