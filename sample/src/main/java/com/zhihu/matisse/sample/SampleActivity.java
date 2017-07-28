@@ -73,7 +73,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
         mImageEngine = mImageEngines.get(0);
         Spinner spinner = (Spinner) findViewById(R.id.engine_spinner);
-        String[] engines = getResources().getStringArray(R.array.matisse_image_engines);
+        String[] engines = new String[]{"Fresco","Glide","Picasso"};
         spinner.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,engines));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

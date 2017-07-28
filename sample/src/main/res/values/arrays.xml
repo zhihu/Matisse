@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="matisse_image_engines">
-        <item>Fresco</item>
-        <item>Glide</item>
-        <item>Picasso</item>
-    </string-array>
-</resources>
