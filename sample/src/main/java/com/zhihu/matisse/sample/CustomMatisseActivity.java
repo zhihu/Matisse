@@ -70,6 +70,7 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
         CheckBox videoCheckBox = (CheckBox) findViewById(R.id.cb_choice_video);
         RadioButton zhihuRadioButton = (RadioButton) findViewById(R.id.rb_theme_zhihu);
         RadioButton draculaRadioButton = (RadioButton) findViewById(R.id.rb_theme_dracula);
+        RadioButton customThemeButton = (RadioButton) findViewById(R.id.rb_theme_custom);
         RadioButton glideRadioButton = (RadioButton) findViewById(R.id.rb_glide);
         RadioButton picassoRadioButton = (RadioButton) findViewById(R.id.rb_picasso);
         RadioButton uilRadioButton = (RadioButton) findViewById(R.id.rb_uil);
@@ -104,6 +105,8 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
             theme = R.style.Matisse_Zhihu;
         } else if (draculaRadioButton.isChecked()) {
             theme = R.style.Matisse_Dracula;
+        } else if (customThemeButton.isChecked()) {
+            theme = R.style.CustomTheme;
         } else {
             // custom theme
         }

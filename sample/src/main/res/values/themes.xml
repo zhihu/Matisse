@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Matisse.Zhihu.Ext">
+        <!-- balabala -->
+    </style>
+
+    <style name="CustomTheme" parent="Matisse.Zhihu">
+        <item name="page.bg">#F4FFDB</item>
+        <item name="bottomToolbar.bg">@color/zhihu_primary</item>
+        <item name="bottomToolbar.preview.textColor">@android:color/white</item>
+        <item name="bottomToolbar.apply.textColor">@android:color/white</item>
+        <item name="preview.bottomToolbar.back.textColor">@android:color/white</item>
+        <item name="preview.bottomToolbar.apply.textColor">@android:color/white</item>
+        <item name="capture.textColor">#26FF8C</item>
+    </style>
+
+</resources>
