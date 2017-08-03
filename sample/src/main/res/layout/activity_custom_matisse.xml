@@ -125,6 +125,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capture" />
+
+            <CheckBox
+                android:id="@+id/cb_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </TableRow>
     </TableLayout>
 
     <Button

@@ -75,6 +75,7 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
         RadioButton uilRadioButton = (RadioButton) findViewById(R.id.rb_uil);
         EditText selectCountEditor = (EditText) findViewById(R.id.et_selectable_count);
         CheckBox countableCheckBox = (CheckBox) findViewById(R.id.cb_countable);
+        CheckBox captureCheckBox = (CheckBox) findViewById(R.id.cb_capture);
 
         Set<MimeType> mimeTypes;
         if (imageCheckBox.isChecked() && videoCheckBox.isChecked()) {
@@ -108,11 +109,12 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
         }
 
         boolean countable = countableCheckBox.isChecked();
+        boolean capture = captureCheckBox.isChecked();
 
         Matisse.from(this)
                 .choose(mimeTypes, false)
                 .showSingleMediaType(true)
-                .capture(true)
+                .capture(capture)
                 .captureStrategy(
                         new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                 .countable(countable)
