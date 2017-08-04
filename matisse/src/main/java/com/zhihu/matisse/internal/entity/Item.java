@@ -76,8 +76,7 @@ public class Item implements Parcelable {
         return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
-                cursor.getLong(cursor.getColumnIndex("duration") == -1
-                        ? 0 : cursor.getColumnIndex("duration")));
+                cursor.getLong(cursor.getColumnIndex("duration")));
     }
 
     @Override

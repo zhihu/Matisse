@@ -17,9 +17,7 @@
 package com.zhihu.matisse;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.FloatRange;
@@ -34,6 +32,7 @@ import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.ui.MatisseActivity;
 
@@ -282,7 +281,7 @@ public final class SelectionCreator {
 
         Intent intent = new Intent(activity, MatisseActivity.class);
         if (selectedUris != null && selectedUris.size() > 0) {
-            ArrayList<Item> selection = querySelection(activity, selectedUris);
+            ArrayList<Item> selection = AlbumMediaLoader.querySelection(activity, selectedUris);
             intent.putExtra(SelectedItemCollection.STATE_SELECTION, selection);
         }
         Fragment fragment = mMatisse.getFragment();
@@ -295,20 +294,6 @@ public final class SelectionCreator {
 
     public void forResult(int requestCode) {
         forResult(requestCode, null);
-    }
-
-    // FIXME: 2017/8/4 0004  Could be other best way.
-    private static ArrayList<Item> querySelection(Context context, List<Uri> uris) {
-        ArrayList<Item> list = new ArrayList<>();
-        for (Uri uri : uris) {
-            Cursor query = context.getContentResolver().query(uri, null, null, null, null);
-            if (query != null && query.moveToNext()) {
-                Item item = Item.valueOf(query);
-                list.add(item);
-                query.close();
-            }
-        }
-        return list;
     }
 
 }
