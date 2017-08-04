@@ -17,7 +17,10 @@
 package com.zhihu.matisse;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
@@ -29,12 +32,15 @@ import android.support.v4.app.Fragment;
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND;
@@ -268,20 +274,41 @@ public final class SelectionCreator {
      *
      * @param requestCode Identity of the request Activity or Fragment.
      */
-    public void forResult(int requestCode) {
+    public void forResult(int requestCode, List<Uri> selectedUris) {
         Activity activity = mMatisse.getActivity();
         if (activity == null) {
             return;
         }
 
         Intent intent = new Intent(activity, MatisseActivity.class);
-
+        if (selectedUris != null && selectedUris.size() > 0) {
+            ArrayList<Item> selection = querySelection(activity, selectedUris);
+            intent.putExtra(SelectedItemCollection.STATE_SELECTION, selection);
+        }
         Fragment fragment = mMatisse.getFragment();
         if (fragment != null) {
             fragment.startActivityForResult(intent, requestCode);
         } else {
             activity.startActivityForResult(intent, requestCode);
         }
+    }
+
+    public void forResult(int requestCode) {
+        forResult(requestCode, null);
+    }
+
+    // FIXME: 2017/8/4 0004  Could be other best way.
+    private static ArrayList<Item> querySelection(Context context, List<Uri> uris) {
+        ArrayList<Item> list = new ArrayList<>();
+        for (Uri uri : uris) {
+            Cursor query = context.getContentResolver().query(uri, null, null, null, null);
+            if (query != null && query.moveToNext()) {
+                Item item = Item.valueOf(query);
+                list.add(item);
+                query.close();
+            }
+        }
+        return list;
     }
 
 }

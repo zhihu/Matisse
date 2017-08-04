@@ -32,6 +32,8 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
 
     private static final int REQUEST_CODE_CHOOSE = 23;
 
+    private List<Uri> mSelectedUris;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +49,8 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
             // Use Uri result
             TextView resultTextView = (TextView) findViewById(R.id.tv_result);
             resultTextView.setText("");
-            List<Uri> uris = Matisse.obtainResult(data);
-            for (Uri uri : uris) {
+            mSelectedUris = Matisse.obtainResult(data);
+            for (Uri uri : mSelectedUris) {
                 resultTextView.append(uri.toString());
                 resultTextView.append("\n");
             }
@@ -129,6 +131,6 @@ public class CustomMatisseActivity extends AppCompatActivity implements View.OnC
                 .thumbnailScale(0.85f)
                 .imageEngine(imageEngine)
                 .theme(theme)
-                .forResult(REQUEST_CODE_CHOOSE);
+                .forResult(REQUEST_CODE_CHOOSE, mSelectedUris);
     }
 }
