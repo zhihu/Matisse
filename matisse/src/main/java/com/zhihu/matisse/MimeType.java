@@ -18,6 +18,7 @@ package com.zhihu.matisse;
 
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
@@ -150,12 +151,22 @@ public enum MimeType {
             return false;
         }
         String type = map.getExtensionFromMimeType(resolver.getType(uri));
+        String path = null;
+        // lazy load the path and prevent resolve for multiple times
+        boolean pathParsed = false;
         for (String extension : mExtensions) {
             if (extension.equals(type)) {
                 return true;
             }
-            String path = PhotoMetadataUtils.getPath(resolver, uri);
-            if (path != null && path.toLowerCase(Locale.US).endsWith(extension)) {
+            if (!pathParsed) {
+                // we only resolve the path for one time
+                path = PhotoMetadataUtils.getPath(resolver, uri);
+                if (!TextUtils.isEmpty(path)) {
+                    path = path.toLowerCase(Locale.US);
+                }
+                pathParsed = true;
+            }
+            if (path != null && path.endsWith(extension)) {
                 return true;
             }
         }
