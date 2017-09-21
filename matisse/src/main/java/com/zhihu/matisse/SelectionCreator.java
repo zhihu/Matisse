@@ -19,6 +19,7 @@ package com.zhihu.matisse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.FloatRange;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -239,7 +240,7 @@ public final class SelectionCreator {
      * @param scale Thumbnail's scale in (0.0, 1.0]. Default value is 0.5.
      * @return {@link SelectionCreator} for fluent API.
      */
-    public SelectionCreator thumbnailScale(float scale) {
+    public SelectionCreator thumbnailScale(@FloatRange(from = 0, to = 1.0f, fromInclusive = false) float scale) {
         if (scale <= 0f || scale > 1f)
             throw new IllegalArgumentException("Thumbnail scale must be between (0.0, 1.0]");
         mSelectionSpec.thumbnailScale = scale;
