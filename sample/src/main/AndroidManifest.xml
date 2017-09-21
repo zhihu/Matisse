@@ -15,7 +15,7 @@
   limitations under the License.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.zhihu.matisse.sample">
+    package="com.zhihu.matisse.sample">
 
     <application
         android:allowBackup="true"
@@ -24,11 +24,14 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.zhihu.matisse.sample.SampleActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CustomMatisseActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.zhihu.matisse.sample.fileprovider"
@@ -36,7 +39,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_public"></meta-data>
+                android:resource="@xml/file_paths_public" />
         </provider>
     </application>
 

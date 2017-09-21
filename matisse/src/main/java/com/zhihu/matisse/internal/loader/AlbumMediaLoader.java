@@ -16,6 +16,7 @@
  */
 package com.zhihu.matisse.internal.loader;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -28,6 +29,9 @@ import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Load images and videos into a single cursor.
@@ -150,5 +154,27 @@ public class AlbumMediaLoader extends CursorLoader {
     @Override
     public void onContentChanged() {
         // FIXME a dirty way to fix loading multiple times
+    }
+
+    // FIXME: 2017/8/4 0004  Could be other best way.
+    public static ArrayList<Item> querySelection(Context context, List<Uri> uris) {
+        ArrayList<Item> list = new ArrayList<>(uris.size());
+        for (Uri uri : uris) {
+            Cursor query = query(context, uri);
+            if (query != null && query.moveToNext()) {
+                Item item = Item.valueOf(query);
+                list.add(item);
+                query.close();
+            }
+        }
+        return list;
+    }
+
+    private static Cursor query(Context context, Uri uri) {
+        return context.getContentResolver()
+                .query(QUERY_URI, PROJECTION,
+                        MediaStore.Files.FileColumns._ID + "=?",
+                        new String[]{String.valueOf(ContentUris.parseId(uri))},
+                        ORDER_BY);
     }
 }
