@@ -41,6 +41,7 @@ And add extra rule:
 ```pro
 -dontwarn com.bumptech.glide.**
 ```
+**Attention**: The above progurad rules are correct.
 
 ## How do I use Matisse?
 #### Permission
