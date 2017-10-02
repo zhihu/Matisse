@@ -20,14 +20,19 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.util.LogTime;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
@@ -37,12 +42,22 @@ import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.MediaGrid;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 public class AlbumMediaAdapter extends
         RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements
         MediaGrid.OnMediaGridClickListener {
-
+    private static final String TAG = "AlbumMediaAdapter";
     private static final int VIEW_TYPE_CAPTURE = 0x01;
     private static final int VIEW_TYPE_MEDIA = 0x02;
+    private static final int VIEW_TYPE_DATE = 0x03;
     private final SelectedItemCollection mSelectedCollection;
     private final Drawable mPlaceholder;
     private SelectionSpec mSelectionSpec;
@@ -50,6 +65,18 @@ public class AlbumMediaAdapter extends
     private OnMediaClickListener mOnMediaClickListener;
     private RecyclerView mRecyclerView;
     private int mImageResize;
+    private int mDateCount = 0;
+    /**
+     * key: the position of RecyclerView position
+     * value: the position of cursor position
+     */
+    private Map<Integer, Integer> viewToCursorMap = new HashMap<>();
+    /**
+     * key: the position of cursor position
+     * value: the position of relative date position
+     */
+    private SparseIntArray cursorToDateMap = new SparseIntArray();
+    private List<String> mDateList = new ArrayList<>();
 
     public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView) {
         super(null);
@@ -61,6 +88,47 @@ public class AlbumMediaAdapter extends
         ta.recycle();
 
         mRecyclerView = recyclerView;
+    }
+
+    @Override
+    public int getItemCount() {
+        if (isDataValid(mCursor)) {
+            if (mSelectionSpec.groupByDate) {
+                return mCursor.getCount() + getDateCountFromCursor(mCursor);
+            }
+            return mCursor.getCount();
+        } else {
+            return 0;
+        }
+    }
+
+    private int getDateCountFromCursor(Cursor mCursor) {
+        if (mDateCount != 0) {
+            return mDateCount;
+        }
+        viewToCursorMap.clear();
+        cursorToDateMap.clear();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 EEEE", Locale.CHINA);
+        mDateList = new ArrayList<>();
+        viewToCursorMap.put(0, null);
+        while (mCursor.moveToNext()) {
+            String date = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+            if (!TextUtils.isEmpty(date)) {
+                String format = dateFormat.format(new Date(Long.valueOf(date)));
+                if (!mDateList.contains(format)) {
+                    mDateList.add(format);
+                }
+                int cursorPos = mCursor.getPosition();
+                cursorToDateMap.put(mCursor.getPosition(), mDateList.size() - 1);
+
+                if (cursorToDateMap.size() > 1 && cursorToDateMap.get(cursorPos) != cursorToDateMap.get(cursorPos - 1)) {
+                    viewToCursorMap.put(viewToCursorMap.size(), null);
+                }
+                viewToCursorMap.put(viewToCursorMap.size(), cursorPos);
+            }
+        }
+        mDateCount = mDateList.size();
+        return mDateList.size();
     }
 
     @Override
@@ -80,8 +148,29 @@ public class AlbumMediaAdapter extends
         } else if (viewType == VIEW_TYPE_MEDIA) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_grid_item, parent, false);
             return new MediaViewHolder(v);
+        } else if (viewType == VIEW_TYPE_DATE) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_date_item, parent, false);
+            return new MediaDateViewHolder(v);
         }
         return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (!mSelectionSpec.groupByDate) {
+            super.onBindViewHolder(holder, position);
+        } else {
+            if (!isDataValid(mCursor)) {
+                throw new IllegalStateException("Cannot bind view holder when cursor is in invalid state.");
+            }
+
+            Integer cursorPos = viewToCursorMap.get(position);
+            if (cursorPos != null) {
+                mCursor.moveToPosition(cursorPos);
+            }
+
+            onBindViewHolder(holder, mCursor);
+        }
     }
 
     @Override
@@ -111,6 +200,16 @@ public class AlbumMediaAdapter extends
             mediaViewHolder.mMediaGrid.bindMedia(item);
             mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
             setCheckStatus(item, mediaViewHolder.mMediaGrid);
+        } else if (holder instanceof MediaDateViewHolder) {
+            MediaDateViewHolder mediaDateViewHolder = (MediaDateViewHolder) holder;
+            mediaDateViewHolder.mDate.setText("");
+            int curPos;
+            if (viewToCursorMap.get(holder.getAdapterPosition()) == null) {
+                curPos = viewToCursorMap.get(holder.getAdapterPosition() + 1);
+            } else {
+                curPos = viewToCursorMap.get(holder.getAdapterPosition());
+            }
+            mediaDateViewHolder.mDate.setText(mDateList.get(cursorToDateMap.get(curPos)));
         }
     }
 
@@ -187,8 +286,61 @@ public class AlbumMediaAdapter extends
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (!mSelectionSpec.groupByDate) {
+            return super.getItemViewType(position);
+        }
+        //enable groupByDate
+        if (viewToCursorMap.get(position) == null) {
+            return VIEW_TYPE_DATE;
+        } else {
+            return VIEW_TYPE_MEDIA;
+        } 
+
+        /*int currentDatePos = cursorToDateMap.get(viewToCursorMap.get(position));
+        int lastDatePos = cursorToDateMap.get(viewToCursorMap.get(position - 1));
+        //represent this image is in same day with last image
+        if (mDateList.get(currentDatePos).equals(mDateList.get(lastDatePos))) {
+            return VIEW_TYPE_MEDIA;
+        } else {
+            return VIEW_TYPE_DATE;
+        }*/
+    }
+
+    @Override
     public int getItemViewType(int position, Cursor cursor) {
         return Item.valueOf(cursor).isCapture() ? VIEW_TYPE_CAPTURE : VIEW_TYPE_MEDIA;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (!mSelectionSpec.groupByDate) {
+            return super.getItemId(position);
+        }
+
+        //enable groupByDate
+        if (!isDataValid(mCursor)) {
+            throw new IllegalStateException("Cannot lookup item id when cursor is in invalid state.");
+        }
+
+        return position;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        GridLayoutManager manager = (GridLayoutManager) recyclerView.getLayoutManager();
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (getItemViewType(position) == VIEW_TYPE_DATE) {
+                    return mSelectionSpec.spanCount;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
     }
 
     private boolean assertAddSelection(Context context, Item item) {
@@ -274,6 +426,15 @@ public class AlbumMediaAdapter extends
             super(itemView);
 
             mHint = (TextView) itemView.findViewById(R.id.hint);
+        }
+    }
+
+    private static class MediaDateViewHolder extends RecyclerView.ViewHolder {
+        private TextView mDate;
+
+        public MediaDateViewHolder(View itemView) {
+            super(itemView);
+            mDate = (TextView) itemView;
         }
     }
 

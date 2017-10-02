@@ -17,13 +17,19 @@ package com.zhihu.matisse.internal.ui.adapter;
 
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseIntArray;
+import android.view.View;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHolder> extends
         RecyclerView.Adapter<VH> {
 
-    private Cursor mCursor;
-    private int mRowIDColumn;
+    Cursor mCursor;
+    int mRowIDColumn;
 
     RecyclerViewCursorAdapter(Cursor c) {
         setHasStableIds(true);
@@ -37,6 +43,7 @@ public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHold
         if (!isDataValid(mCursor)) {
             throw new IllegalStateException("Cannot bind view holder when cursor is in invalid state.");
         }
+        
         if (!mCursor.moveToPosition(position)) {
             throw new IllegalStateException("Could not move cursor to position " + position
                     + " when trying to bind view holder");
@@ -99,7 +106,7 @@ public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHold
         return mCursor;
     }
 
-    private boolean isDataValid(Cursor cursor) {
+    protected boolean isDataValid(Cursor cursor) {
         return cursor != null && !cursor.isClosed();
     }
 }

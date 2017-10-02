@@ -45,6 +45,7 @@ public final class SelectionSpec {
     public int gridExpectedSize;
     public float thumbnailScale;
     public ImageEngine imageEngine;
+    public boolean groupByDate;
 
     private SelectionSpec() {
     }
@@ -74,6 +75,7 @@ public final class SelectionSpec {
         gridExpectedSize = 0;
         thumbnailScale = 0.5f;
         imageEngine = new GlideEngine();
+        groupByDate = false;
     }
 
     public boolean singleSelectionModeEnabled() {

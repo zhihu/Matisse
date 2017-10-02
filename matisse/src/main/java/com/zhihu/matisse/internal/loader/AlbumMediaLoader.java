@@ -29,6 +29,9 @@ import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 
+import java.util.Date;
+
+
 /**
  * Load images and videos into a single cursor.
  */
@@ -39,6 +42,7 @@ public class AlbumMediaLoader extends CursorLoader {
             MediaStore.MediaColumns.DISPLAY_NAME,
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.SIZE,
+            MediaStore.Images.ImageColumns.DATE_TAKEN,
             "duration"};
 
     // === params for album ALL && showSingleMediaType: false ===
@@ -143,7 +147,7 @@ public class AlbumMediaLoader extends CursorLoader {
             return result;
         }
         MatrixCursor dummy = new MatrixCursor(PROJECTION);
-        dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE, Item.ITEM_DISPLAY_NAME_CAPTURE, "", 0, 0});
+        dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE, Item.ITEM_DISPLAY_NAME_CAPTURE, "", 0, new Date(), 0});
         return new MergeCursor(new Cursor[]{dummy, result});
     }
 

@@ -283,4 +283,15 @@ public final class SelectionCreator {
         }
     }
 
+    /**
+     * Determines whether the photo list is group by date.
+     * @param groupByDate true for group by date list and false for nothing
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator groupByDate(boolean groupByDate) {
+        mSelectionSpec.groupByDate = groupByDate;
+        //it should not enable groupBy and capture as same time
+        mSelectionSpec.capture = false;
+        return this;
+    }
 }
