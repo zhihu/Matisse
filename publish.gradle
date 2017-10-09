@@ -1,0 +1,45 @@
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'maven-publish'
+
+def artifactory_user = System.getenv("ARTIFACTORY_USER") ?: "no_user_set"
+def artifactory_password = System.getenv("ARTIFACTORY_PASSWORD") ?: "no_password_set"
+def artifactory_server = System.getenv("ARTIFACTORY_SERVER") ?: "no_server_set"
+def artifactory_repo = System.getenv("ARTIFACTORY_REPO") ?: "no_repo_set"
+def artifactory_artifact_type = System.getenv("ARTIFACTORY_ARTIFACT_TYPE") ?: "no_type_set"
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.4.17'
+    }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId 'com.chewy.android.matisse'
+      version = "1.0.0"
+      artifactId 'matisse'
+      artifact("${rootDir}/matisse/build/outputs/aar/matisse-${artifactory_artifact_type}.aar")
+    }
+  }
+}
+
+artifactory {
+  contextUrl = "${artifactory_server}"   // The base Artifactory URL if not overridden by the publisher/resolver
+  publish {
+    repository {
+      repoKey = "${artifactory_repo}"   // The Artifactory repository key to publish to
+      username = "${artifactory_user}"       // The publisher user name
+      password = "${artifactory_password}"   // The publisher password
+      maven = true
+    }
+    defaults {
+        publishArtifacts = true
+        publications ('maven')
+        publishPom = false
+    }
+  }
+}
