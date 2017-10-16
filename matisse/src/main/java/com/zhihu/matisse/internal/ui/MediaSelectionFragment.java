@@ -83,7 +83,7 @@ public class MediaSelectionFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        mRecyclerView = view.findViewById(R.id.recyclerview);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class MediaSelectionFragment extends Fragment implements
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
 
         int spacing = getResources().getDimensionPixelSize(R.dimen.media_grid_spacing);
-        mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
+        mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, true));
         mRecyclerView.setAdapter(mAdapter);
         mAlbumMediaCollection.onCreate(getActivity(), this);
         mAlbumMediaCollection.load(album, selectionSpec.capture);

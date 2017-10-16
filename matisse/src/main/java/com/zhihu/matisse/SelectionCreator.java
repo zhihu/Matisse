@@ -112,6 +112,19 @@ public final class SelectionCreator {
     }
 
     /**
+     * Whether to show only items contained in the mime type set or not.
+     *
+     * @param showOnlyItemsWithMimeTypeProvided whether to show items contained within the mime type set or not.
+     * @return {@link SelectionCreator} for fluent API.
+     * @see SelectionSpec#onlyShowImages()
+     * @see SelectionSpec#onlyShowVideos()
+     */
+    public SelectionCreator showOnlyItemsWithMimeTypeProvided(boolean showOnlyItemsWithMimeTypeProvided) {
+        mSelectionSpec.showOnlyItemsWithMimeTypeProvided = showOnlyItemsWithMimeTypeProvided;
+        return this;
+    }
+
+    /**
      * Theme for media selecting Activity.
      * <p>
      * There are two built-in themes:
@@ -249,9 +262,6 @@ public final class SelectionCreator {
     /**
      * Provide an image engine.
      * <p>
-     * There are two built-in image engines:
-     * 1. {@link com.zhihu.matisse.engine.impl.GlideEngine}
-     * 2. {@link com.zhihu.matisse.engine.impl.PicassoEngine}
      * And you can implement your own image engine.
      *
      * @param imageEngine {@link ImageEngine}

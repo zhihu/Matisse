@@ -22,12 +22,20 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
 
+import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Load images and videos into a single cursor.
@@ -93,6 +101,33 @@ public class AlbumMediaLoader extends CursorLoader {
     }
     // ===============================================================
 
+    private static String getSelectionForMimeTypes(Set<MimeType> mimeTypes) {
+        StringBuilder selection = new StringBuilder(" AND (");
+
+        if (mimeTypes != null && !mimeTypes.isEmpty()) {
+            ArrayList<String> mimeTypesSelection = new ArrayList<>();
+            for (int i = 0; i < mimeTypes.size(); i++) {
+                mimeTypesSelection.add(MediaStore.Files.FileColumns.MIME_TYPE + "=?");
+            }
+            selection.append(TextUtils.join(" OR ", mimeTypesSelection));
+        }
+        selection.append(")");
+
+        return selection.toString();
+    }
+
+    private static String[] getSelectionArgsForMimeTypes(@Nullable Set<MimeType> mimeTypes, @NonNull String[] args) {
+        ArrayList<String> selectionArgs = null;
+        if (mimeTypes != null && !mimeTypes.isEmpty()) {
+            selectionArgs = new ArrayList<>(Arrays.asList(args));
+            for (MimeType mimeType : mimeTypes) {
+                selectionArgs.add(mimeType.toString());
+            }
+        }
+
+        return (selectionArgs != null) ? Arrays.copyOf(selectionArgs.toArray(),selectionArgs.toArray().length,String[].class) : args;
+    }
+
     private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
     private final boolean mEnableCapture;
 
@@ -108,11 +143,21 @@ public class AlbumMediaLoader extends CursorLoader {
 
         if (album.isAll()) {
             if (SelectionSpec.getInstance().onlyShowImages()) {
-                selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+                selection = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE + getSelectionForMimeTypes(SelectionSpec.getInstance().mimeTypeSet) :
+                        SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        getSelectionArgsForMimeTypes(SelectionSpec.getInstance().mimeTypeSet,
+                                getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)) :
+                        getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
             } else if (SelectionSpec.getInstance().onlyShowVideos()) {
-                selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+                selection = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE + getSelectionForMimeTypes(SelectionSpec.getInstance().mimeTypeSet) :
+                        SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        getSelectionArgsForMimeTypes(SelectionSpec.getInstance().mimeTypeSet,
+                                getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)) :
+                        getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
             } else {
                 selection = SELECTION_ALL;
                 selectionArgs = SELECTION_ALL_ARGS;
@@ -120,12 +165,18 @@ public class AlbumMediaLoader extends CursorLoader {
             enableCapture = capture;
         } else {
             if (SelectionSpec.getInstance().onlyShowImages()) {
-                selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
+                selection = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE + getSelectionForMimeTypes(SelectionSpec.getInstance().mimeTypeSet) : SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        getSelectionArgsForMimeTypes(SelectionSpec.getInstance().mimeTypeSet, getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
+                                album.getId())) : getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
                         album.getId());
             } else if (SelectionSpec.getInstance().onlyShowVideos()) {
-                selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO,
+                selection = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE + getSelectionForMimeTypes(SelectionSpec.getInstance().mimeTypeSet) : SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
+                selectionArgs = (SelectionSpec.getInstance().onlyShowMimeTypeItems()) ?
+                        getSelectionArgsForMimeTypes(SelectionSpec.getInstance().mimeTypeSet, getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO,
+                                album.getId())) : getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO,
                         album.getId());
             } else {
                 selection = SELECTION_ALBUM;

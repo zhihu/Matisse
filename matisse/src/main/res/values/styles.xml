@@ -83,4 +83,36 @@
         <item name="android:popupBackground">@color/dracula_album_popup_bg</item>
     </style>
 
+    //====================================== Theme Cwy ===========================================
+
+    <style name="Matisse.Cwy" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/cwy_primary</item>
+        <item name="colorPrimaryDark">@color/cwy_primary_dark</item>
+        <item name="toolbar">@style/Toolbar.Cwy</item>
+        <item name="album.dropdown.title.color">@color/cwy_album_dropdown_title_text</item>
+        <item name="album.dropdown.count.color">@color/cwy_album_dropdown_count_text</item>
+        <item name="album.element.color">@android:color/white</item>
+        <item name="album.thumbnail.placeholder">@color/cwy_album_dropdown_thumbnail_placeholder</item>
+        <item name="album.emptyView">@drawable/ic_empty_zhihu</item>
+        <item name="album.emptyView.textColor">@color/cwy_album_empty_view</item>
+        <item name="item.placeholder">@color/cwy_item_placeholder</item>
+        <item name="item.checkCircle.backgroundColor">@color/cwy_item_checkCircle_backgroundColor</item>
+        <item name="item.checkCircle.borderColor">@color/cwy_item_checkCircle_borderColor</item>
+        <item name="page.bg">@color/cwy_page_bg</item>
+        <item name="bottomToolbar.bg">@color/cwy_bottom_toolbar_bg</item>
+        <item name="preview.bottomToolbar.back.textColor">@color/cwy_preview_bottom_toolbar_back_text</item>
+        <item name="listPopupWindowStyle">@style/Popup.Cwy</item>
+        <item name="capture.textColor">@color/cwy_capture_text</item>
+    </style>
+
+    <style name="Toolbar.Cwy" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+
+    <style name="Popup.Cwy" parent="Widget.AppCompat.Light.ListPopupWindow">
+        <item name="android:popupBackground">@color/cwy_album_popup_bg</item>
+    </style>
+
+    //===================================== Theme Chewy ==========================================
+
 </resources>

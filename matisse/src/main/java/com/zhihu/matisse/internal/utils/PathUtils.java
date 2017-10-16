@@ -132,4 +132,14 @@ public class PathUtils {
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
+
+    /**
+     * @param uri The Url to check.
+     * @return the url or null if the uri is null or empty.
+     */
+    public static String getSafeImageUrl(String uri) {
+        return (uri == null || uri.length() == 0) ? null : uri;
+    }
+
 }
