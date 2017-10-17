@@ -218,7 +218,8 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     private void updateBottomToolbar() {
-        int selectedCount = mSelectedCollection.count();
+        //int selectedCount = mSelectedCollection.count();
+        int selectedCount = SelectionSpec.selectedUris.size();
         if (selectedCount == 0) {
             mButtonPreview.setEnabled(false);
             mButtonApply.setEnabled(false);

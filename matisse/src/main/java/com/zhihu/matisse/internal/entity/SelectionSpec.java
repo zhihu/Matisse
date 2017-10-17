@@ -17,6 +17,7 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.annotation.StyleRes;
 
 import com.zhihu.matisse.MimeType;
@@ -46,6 +47,7 @@ public final class SelectionSpec {
     public float thumbnailScale;
     public ImageEngine imageEngine;
     public boolean groupByDate;
+    public static List<Uri> selectedUris;
 
     private SelectionSpec() {
     }

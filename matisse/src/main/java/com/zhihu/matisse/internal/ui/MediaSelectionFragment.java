@@ -87,36 +87,36 @@ public class MediaSelectionFragment extends Fragment implements
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mAlbumMediaCollection.onDestroy();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Album album = getArguments().getParcelable(EXTRA_ALBUM);
+        SelectionSpec selectionSpec = SelectionSpec.getInstance();
 
         mAdapter = new AlbumMediaAdapter(getContext(),
-                mSelectionProvider.provideSelectedItemCollection(), mRecyclerView);
+                mSelectionProvider.provideSelectedItemCollection(), mRecyclerView, selectionSpec.selectedUris);
         mAdapter.registerCheckStateListener(this);
         mAdapter.registerOnMediaClickListener(this);
         mRecyclerView.setHasFixedSize(true);
 
         int spanCount;
-        SelectionSpec selectionSpec = SelectionSpec.getInstance();
         if (selectionSpec.gridExpectedSize > 0) {
             spanCount = UIUtils.spanCount(getContext(), selectionSpec.gridExpectedSize);
         } else {
             spanCount = selectionSpec.spanCount;
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
+
+            int spacing = getResources().getDimensionPixelSize(R.dimen.media_grid_spacing);
+            //mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
+            mRecyclerView.setAdapter(mAdapter);
+            mAlbumMediaCollection.onCreate(getActivity(), this);
+            mAlbumMediaCollection.load(album, selectionSpec.capture);
         }
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
-
-        int spacing = getResources().getDimensionPixelSize(R.dimen.media_grid_spacing);
-        mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
-        mRecyclerView.setAdapter(mAdapter);
-        mAlbumMediaCollection.onCreate(getActivity(), this);
-        mAlbumMediaCollection.load(album, selectionSpec.capture);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mAlbumMediaCollection.onDestroy();
     }
 
     public void refreshMediaGrid() {

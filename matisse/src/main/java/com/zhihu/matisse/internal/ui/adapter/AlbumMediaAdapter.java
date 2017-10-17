@@ -20,6 +20,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,12 +78,13 @@ public class AlbumMediaAdapter extends
      */
     private SparseIntArray cursorToDateMap = new SparseIntArray();
     private List<String> mDateList = new ArrayList<>();
+    private List<Uri> mSelectedUris ;
 
-    public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView) {
+    public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView, List<Uri> selectedUris) {
         super(null);
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = selectedCollection;
-
+        mSelectedUris = selectedUris;
         TypedArray ta = context.getTheme().obtainStyledAttributes(new int[]{R.attr.item_placeholder});
         mPlaceholder = ta.getDrawable(0);
         ta.recycle();
@@ -191,6 +193,15 @@ public class AlbumMediaAdapter extends
             MediaViewHolder mediaViewHolder = (MediaViewHolder) holder;
 
             final Item item = Item.valueOf(cursor);
+
+            if (mSelectedUris.contains(item.uri) && !mSelectedCollection.isSelected(item)) {
+                mSelectedCollection.add(item);
+                if (mCheckStateListener != null) {
+                    mCheckStateListener.onUpdate();
+                }
+                //onCheckViewClicked((CheckView) mediaViewHolder.mMediaGrid.findViewById(R.id.check_view), item, mediaViewHolder);
+            }
+            
             mediaViewHolder.mMediaGrid.preBindMedia(new MediaGrid.PreBindInfo(
                     getImageResize(mediaViewHolder.mMediaGrid.getContext()),
                     mPlaceholder,
@@ -259,19 +270,27 @@ public class AlbumMediaAdapter extends
             if (checkedNum == CheckView.UNCHECKED) {
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
+                    if (!mSelectedUris.contains(item.uri)) {
+                        mSelectedUris.add(item.uri);
+                    }
                     notifyCheckStateChanged();
                 }
             } else {
                 mSelectedCollection.remove(item);
+                mSelectedUris.remove(item.uri);
                 notifyCheckStateChanged();
             }
         } else {
             if (mSelectedCollection.isSelected(item)) {
                 mSelectedCollection.remove(item);
+                mSelectedUris.remove(item.uri);
                 notifyCheckStateChanged();
             } else {
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
+                    if (mSelectedUris.contains(item.uri)) {
+                        mSelectedUris.add(item.uri);
+                    }
                     notifyCheckStateChanged();
                 }
             }
