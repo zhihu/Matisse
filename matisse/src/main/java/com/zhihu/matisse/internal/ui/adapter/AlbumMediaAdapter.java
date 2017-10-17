@@ -25,7 +25,6 @@ import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.util.LogTime;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
@@ -45,9 +43,9 @@ import com.zhihu.matisse.internal.ui.widget.MediaGrid;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -67,6 +65,7 @@ public class AlbumMediaAdapter extends
     private RecyclerView mRecyclerView;
     private int mImageResize;
     private int mDateCount = 0;
+    private Context mContext;
     /**
      * key: the position of RecyclerView position
      * value: the position of cursor position
@@ -82,6 +81,7 @@ public class AlbumMediaAdapter extends
 
     public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView, List<Uri> selectedUris) {
         super(null);
+        mContext = context;
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = selectedCollection;
         mSelectedUris = selectedUris;
@@ -110,13 +110,12 @@ public class AlbumMediaAdapter extends
         }
         viewToCursorMap.clear();
         cursorToDateMap.clear();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 EEEE", Locale.CHINA);
         mDateList = new ArrayList<>();
         viewToCursorMap.put(0, null);
         while (mCursor.moveToNext()) {
             String date = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
             if (!TextUtils.isEmpty(date)) {
-                String format = dateFormat.format(new Date(Long.valueOf(date)));
+                String format = getFormatDate(new Date(Long.valueOf(date)));
                 if (!mDateList.contains(format)) {
                     mDateList.add(format);
                 }
@@ -359,7 +358,6 @@ public class AlbumMediaAdapter extends
                 }
             }
         });
-
     }
 
     private boolean assertAddSelection(Context context, Item item) {
@@ -413,6 +411,23 @@ public class AlbumMediaAdapter extends
             mImageResize = (int) (mImageResize * mSelectionSpec.thumbnailScale);
         }
         return mImageResize;
+    }
+
+    private String getFormatDate(Date date) {
+        Calendar today = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat format = new SimpleDateFormat(mContext.getString(R.string.date_format), Locale.CHINA);
+
+        if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) 
+                && today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) 
+                && today.get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)) {
+            return mContext.getString(R.string.today);
+        } else if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+            return format.format(date).substring(5);
+        } else {
+            return format.format(date);
+        } 
     }
 
     public interface CheckStateListener {

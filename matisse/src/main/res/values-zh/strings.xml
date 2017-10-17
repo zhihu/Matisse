@@ -32,4 +32,7 @@
     <string name="error_file_type">不支持的文件类型</string>
     <string name="error_type_conflict">不能同时选择图片和视频</string>
     <string name="error_no_video_activity">没有支持视频预览的应用</string>
+    
+    <string name="date_format">yyyy年MM月dd日</string>
+    <string name="today">今天</string>
 </resources>
