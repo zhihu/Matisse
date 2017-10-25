@@ -22,7 +22,7 @@ android {
     buildToolsVersion "26.0.2"
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 26
     }
     compileOptions {
@@ -43,9 +43,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:support-annotations:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
-
-    provided 'com.github.bumptech.glide:glide:3.7.0'
-    provided 'com.squareup.picasso:picasso:2.5.2'
 
     //Facebook SDK
     provided 'com.facebook.fresco:fresco:1.1.0'
