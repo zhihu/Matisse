@@ -22,7 +22,7 @@ import android.support.annotation.StyleRes;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
-import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.engine.impl.FrescoEngine;
 import com.zhihu.matisse.filter.Filter;
 
 import java.util.List;
@@ -33,6 +33,7 @@ public final class SelectionSpec {
     public Set<MimeType> mimeTypeSet;
     public boolean mediaTypeExclusive;
     public boolean showSingleMediaType;
+    public boolean showOnlyItemsWithMimeTypeProvided = true;
     @StyleRes
     public int themeId;
     public int orientation;
@@ -73,7 +74,7 @@ public final class SelectionSpec {
         spanCount = 3;
         gridExpectedSize = 0;
         thumbnailScale = 0.5f;
-        imageEngine = new GlideEngine();
+        imageEngine = new FrescoEngine();
     }
 
     public boolean singleSelectionModeEnabled() {
@@ -86,6 +87,10 @@ public final class SelectionSpec {
 
     public boolean onlyShowImages() {
         return showSingleMediaType && MimeType.ofImage().containsAll(mimeTypeSet);
+    }
+
+    public boolean onlyShowMimeTypeItems() {
+        return showOnlyItemsWithMimeTypeProvided;
     }
 
     public boolean onlyShowVideos() {

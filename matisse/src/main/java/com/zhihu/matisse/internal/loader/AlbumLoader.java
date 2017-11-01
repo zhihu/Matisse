@@ -23,9 +23,15 @@ import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
+import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Load all albums (grouped by bucket_id) into a single cursor.
@@ -68,6 +74,7 @@ public class AlbumLoader extends CursorLoader {
     private static String[] getSelectionArgsForSingleMediaType(int mediaType) {
         return new String[]{String.valueOf(mediaType)};
     }
+
     // =============================================
 
     private static final String BUCKET_ORDER_BY = "datetaken DESC";
@@ -79,7 +86,7 @@ public class AlbumLoader extends CursorLoader {
     public static CursorLoader newInstance(Context context) {
         String selection;
         String[] selectionArgs;
-        if (SelectionSpec.getInstance().onlyShowImages()) {
+         if (SelectionSpec.getInstance().onlyShowImages()) {
             selection = SELECTION_FOR_SINGLE_MEDIA_TYPE;
             selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
         } else if (SelectionSpec.getInstance().onlyShowVideos()) {

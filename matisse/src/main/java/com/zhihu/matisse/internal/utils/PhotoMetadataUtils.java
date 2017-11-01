@@ -149,7 +149,7 @@ public final class PhotoMetadataUtils {
                 return true;
             }
         }
-        return false;
+         return false;
     }
 
     private static boolean shouldRotate(ContentResolver resolver, Uri uri) {

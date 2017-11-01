@@ -24,6 +24,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RadialGradient;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -37,7 +38,7 @@ import com.zhihu.matisse.R;
 public class CheckView extends View {
 
     public static final int UNCHECKED = Integer.MIN_VALUE;
-    private static final float STROKE_WIDTH = 3.0f; // dp
+    private static final float STROKE_WIDTH = 2.0f; // dp
     private static final float SHADOW_WIDTH = 6.0f; // dp
     private static final int SIZE = 48; // dp
     private static final float STROKE_RADIUS = 11.5f; // dp
@@ -52,7 +53,8 @@ public class CheckView extends View {
     private Paint mShadowPaint;
     private Drawable mCheckDrawable;
     private float mDensity;
-    private Rect mCheckRect;
+    private Rect mBoundingRect;
+    private RectF mCheckRect;
     private boolean mEnabled = true;
 
     public CheckView(Context context) {
@@ -94,7 +96,7 @@ public class CheckView extends View {
         mStrokePaint.setColor(color);
 
         mCheckDrawable = ResourcesCompat.getDrawable(context.getResources(),
-                R.drawable.ic_check_white_18dp, context.getTheme());
+                R.drawable.ic_filled_checkbox, context.getTheme());
     }
 
     public void setChecked(boolean checked) {
@@ -131,21 +133,16 @@ public class CheckView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // draw outer and inner shadow
-        initShadowPaint();
-        canvas.drawCircle((float) SIZE * mDensity / 2, (float) SIZE * mDensity / 2,
-                (STROKE_RADIUS + STROKE_WIDTH / 2 + SHADOW_WIDTH) * mDensity, mShadowPaint);
-
         // draw white stroke
-        canvas.drawCircle((float) SIZE * mDensity / 2, (float) SIZE * mDensity / 2,
-                STROKE_RADIUS * mDensity, mStrokePaint);
+        canvas.drawRoundRect(getCheckRect(), 3, 3, mStrokePaint);
+
+        // enable hint
+        setAlpha(mEnabled ? .7f : 0.5f);
 
         // draw content
         if (mCountable) {
             if (mCheckedNum != UNCHECKED) {
                 initBackgroundPaint();
-                canvas.drawCircle((float) SIZE * mDensity / 2, (float) SIZE * mDensity / 2,
-                        BG_RADIUS * mDensity, mBackgroundPaint);
                 initTextPaint();
                 String text = String.valueOf(mCheckedNum);
                 int baseX = (int) (canvas.getWidth() - mTextPaint.measureText(text)) / 2;
@@ -154,17 +151,13 @@ public class CheckView extends View {
             }
         } else {
             if (mChecked) {
-                initBackgroundPaint();
-                canvas.drawCircle((float) SIZE * mDensity / 2, (float) SIZE * mDensity / 2,
-                        BG_RADIUS * mDensity, mBackgroundPaint);
-
-                mCheckDrawable.setBounds(getCheckRect());
+                mCheckDrawable.setBounds(getCheckBoundingRect());
                 mCheckDrawable.draw(canvas);
+                setAlpha(1.0f);
             }
         }
 
-        // enable hint
-        setAlpha(mEnabled ? 1.0f : 0.5f);
+
     }
 
     private void initShadowPaint() {
@@ -217,13 +210,24 @@ public class CheckView extends View {
     }
 
     // rect for drawing checked number or mark
-    private Rect getCheckRect() {
-        if (mCheckRect == null) {
+    private Rect getCheckBoundingRect() {
+        if (mBoundingRect == null) {
             int rectPadding = (int) (SIZE * mDensity / 2 - CONTENT_SIZE * mDensity / 2);
-            mCheckRect = new Rect(rectPadding, rectPadding,
+            mBoundingRect = new Rect(rectPadding, rectPadding,
                     (int) (SIZE * mDensity - rectPadding), (int) (SIZE * mDensity - rectPadding));
+        }
+
+        return mBoundingRect;
+    }
+
+    // rect for drawing checked number or mark
+    private RectF getCheckRect() {
+        if (mCheckRect == null) {
+            mCheckRect = new RectF(getCheckBoundingRect());
         }
 
         return mCheckRect;
     }
+
+
 }

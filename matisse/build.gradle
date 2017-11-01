@@ -18,12 +18,12 @@ apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 26
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -34,7 +34,7 @@ android {
     }
 }
 
-ext.supportLibVersion = '25.3.1'
+ext.supportLibVersion = '26.1.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -43,10 +43,9 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:support-annotations:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
-    compile 'it.sephiroth.android.library.imagezoom:library:1.0.4'
 
-    provided 'com.github.bumptech.glide:glide:3.7.0'
-    provided 'com.squareup.picasso:picasso:2.5.2'
+    //Facebook SDK
+    provided 'com.facebook.fresco:fresco:1.1.0'
 }
 
 // jcenter configuration for novoda's bintray-release
@@ -60,7 +59,7 @@ publish {
     website = 'https://www.zhihu.com/'
 }
 
-task checkstyle(type:Checkstyle) {
+task checkstyle(type: Checkstyle) {
     description 'Runs Checkstyle inspection against matisse sourcesets.'
     group = 'Code Quality'
     configFile rootProject.file('checkstyle.xml')

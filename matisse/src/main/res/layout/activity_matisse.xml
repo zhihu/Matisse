@@ -35,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="?actionBarSize"
             android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_white_24dp"
             android:foreground="?selectableItemBackground"
             android:gravity="center"
             android:textColor="?attr/album.element.color"
@@ -42,41 +43,9 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/bottom_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/bottomToolbar.bg"
-        android:elevation="4dp"
-        tools:targetApi="lollipop">
-
-        <TextView
-            android:id="@+id/button_preview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:layout_gravity="start"
-            android:text="@string/button_preview"
-            android:textColor="?attr/bottomToolbar.preview.textColor"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/button_apply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:textColor="?attr/bottomToolbar.apply.textColor"
-            android:textSize="16sp"/>
-    </FrameLayout>
-
-    <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_toolbar"
         android:layout_below="@id/toolbar"
         android:visibility="gone"/>
 
@@ -84,7 +53,6 @@
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_toolbar"
         android:layout_below="@id/toolbar"
         android:visibility="gone">
 

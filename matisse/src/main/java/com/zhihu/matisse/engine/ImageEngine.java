@@ -20,23 +20,25 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 /**
- * Image loader interface. There are predefined {@link com.zhihu.matisse.engine.impl.GlideEngine}
- * and {@link com.zhihu.matisse.engine.impl.PicassoEngine}.
+ * Image loader interface. There are predefined {@link com.zhihu.matisse.engine.impl.FrescoEngine}
  */
 @SuppressWarnings("unused")
 public interface ImageEngine {
+
 
     /**
      * Load thumbnail of a static image resource.
      *
      * @param context     Context
      * @param resize      Desired size of the origin image
-     * @param placeholder Placeholder drawable when image is not loaded yet
-     * @param imageView   ImageView widget
+     * @param placeHolderDrawable Placeholder drawable when image is not loaded yet
+     * @param simpleDraweeView   ImageView widget
      * @param uri         Uri of the loaded image
      */
-    void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri);
+    void loadThumbnail(Context context, int resize, Drawable placeHolderDrawable, SimpleDraweeView simpleDraweeView, Uri uri);
 
     /**
      * Load thumbnail of a gif image resource. You don't have to load an animated gif when it's only
@@ -45,10 +47,10 @@ public interface ImageEngine {
      * @param context     Context
      * @param resize      Desired size of the origin image
      * @param placeholder Placeholder drawable when image is not loaded yet
-     * @param imageView   ImageView widget
+     * @param simpleDraweeView   ImageView widget
      * @param uri         Uri of the loaded image
      */
-    void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri);
+    void loadGifThumbnail(Context context, int resize, Drawable placeholder, SimpleDraweeView simpleDraweeView, Uri uri);
 
     /**
      * Load a static image resource.
@@ -56,10 +58,10 @@ public interface ImageEngine {
      * @param context   Context
      * @param resizeX   Desired x-size of the origin image
      * @param resizeY   Desired y-size of the origin image
-     * @param imageView ImageView widget
+     * @param simpleDraweeView      SimpleDraweeView widget
      * @param uri       Uri of the loaded image
      */
-    void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri);
+    void loadImage(Context context, int resizeX, int resizeY, SimpleDraweeView simpleDraweeView, Uri uri);
 
     /**
      * Load a gif image resource.
@@ -67,10 +69,10 @@ public interface ImageEngine {
      * @param context   Context
      * @param resizeX   Desired x-size of the origin image
      * @param resizeY   Desired y-size of the origin image
-     * @param imageView ImageView widget
+     * @param simpleDraweeView ImageView widget
      * @param uri       Uri of the loaded image
      */
-    void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri);
+    void loadGifImage(Context context, int resizeX, int resizeY, SimpleDraweeView simpleDraweeView, Uri uri);
 
     /**
      * Whether this implementation supports animated gif.

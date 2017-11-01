@@ -32,8 +32,7 @@ import android.widget.Toast;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zhihu.matisse.engine.impl.FrescoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
@@ -76,18 +75,21 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                             switch (v.getId()) {
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
-                                            .choose(MimeType.ofAll(), false)
-                                            .countable(true)
+                                            .choose(MimeType.of(MimeType.PNG, MimeType.JPEG))
+                                            .showSingleMediaType(true)
+                                            .showOnlyItemsWithMimeTypeProvided(true)
+                                            .countable(false)
                                             .capture(true)
+                                            .theme(R.style.Matisse_Cwy)
                                             .captureStrategy(
                                                     new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
-                                            .maxSelectable(9)
-                                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                                            .maxSelectable(6)
+                                            .addFilter(new ImageSizeFilter(533, 533, 50 * Filter.K * Filter.K))
                                             .gridExpectedSize(
                                                     getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .thumbnailScale(0.85f)
-                                            .imageEngine(new GlideEngine())
+                                            .imageEngine(new FrescoEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                                 case R.id.dracula:
@@ -96,7 +98,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .theme(R.style.Matisse_Dracula)
                                             .countable(false)
                                             .maxSelectable(9)
-                                            .imageEngine(new PicassoEngine())
+                                            .imageEngine(new FrescoEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                             }
