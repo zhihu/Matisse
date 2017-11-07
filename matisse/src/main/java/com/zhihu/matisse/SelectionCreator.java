@@ -148,7 +148,26 @@ public final class SelectionCreator {
     public SelectionCreator maxSelectable(int maxSelectable) {
         if (maxSelectable < 1)
             throw new IllegalArgumentException("maxSelectable must be greater than or equal to one");
+        if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0)
+            throw new IllegalStateException("already set maxImageSelectable and maxVideoSelectable");
         mSelectionSpec.maxSelectable = maxSelectable;
+        return this;
+    }
+
+    /**
+     * Only useful when {@link SelectionSpec#mediaTypeExclusive} set true and you want to set different maximum
+     * selectable files for image and video media types.
+     *
+     * @param maxImageSelectable Maximum selectable count for image.
+     * @param maxVideoSelectable Maximum selectable count for video.
+     * @return
+     */
+    public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
+        if (maxImageSelectable < 1 || maxVideoSelectable < 1)
+            throw new IllegalArgumentException(("max selectable must be greater than or equal to one"));
+        mSelectionSpec.maxSelectable = -1;
+        mSelectionSpec.maxImageSelectable = maxImageSelectable;
+        mSelectionSpec.maxVideoSelectable = maxVideoSelectable;
         return this;
     }
 
