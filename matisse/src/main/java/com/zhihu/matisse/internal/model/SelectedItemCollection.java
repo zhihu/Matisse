@@ -29,6 +29,7 @@ import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -127,7 +128,7 @@ public class SelectedItemCollection {
         return removed;
     }
 
-    public void overwrite(ArrayList<Item> items, int collectionType) {
+    public void overwrite(List<Item> items, int collectionType) {
         if (items.size() == 0) {
             mCollectionType = COLLECTION_UNDEFINED;
         } else {
@@ -135,6 +136,16 @@ public class SelectedItemCollection {
         }
         mItems.clear();
         mItems.addAll(items);
+    }
+
+    public void filterInvalidItems() {
+        Iterator<Item> iterator = mItems.iterator();
+        while (iterator.hasNext()) {
+            final Uri uri = iterator.next().getContentUri();
+            if (PathUtils.getPath(mContext, uri) == null) {
+                iterator.remove();
+            }
+        }
     }
 
 

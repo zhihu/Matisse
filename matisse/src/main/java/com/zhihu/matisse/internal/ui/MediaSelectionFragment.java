@@ -46,6 +46,7 @@ public class MediaSelectionFragment extends Fragment implements
     private RecyclerView mRecyclerView;
     private AlbumMediaAdapter mAdapter;
     private SelectionProvider mSelectionProvider;
+    private Album mAlbum;
     private AlbumMediaAdapter.CheckStateListener mCheckStateListener;
     private AlbumMediaAdapter.OnMediaClickListener mOnMediaClickListener;
 
@@ -73,6 +74,13 @@ public class MediaSelectionFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mAlbum = getArguments().getParcelable(EXTRA_ALBUM);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -89,7 +97,6 @@ public class MediaSelectionFragment extends Fragment implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Album album = getArguments().getParcelable(EXTRA_ALBUM);
 
         mAdapter = new AlbumMediaAdapter(getContext(),
                 mSelectionProvider.provideSelectedItemCollection(), mRecyclerView);
@@ -110,7 +117,7 @@ public class MediaSelectionFragment extends Fragment implements
         mRecyclerView.addItemDecoration(new MediaGridInset(spanCount, spacing, false));
         mRecyclerView.setAdapter(mAdapter);
         mAlbumMediaCollection.onCreate(getActivity(), this);
-        mAlbumMediaCollection.load(album, selectionSpec.capture);
+        mAlbumMediaCollection.load(mAlbum, selectionSpec.capture);
     }
 
     @Override
@@ -151,6 +158,15 @@ public class MediaSelectionFragment extends Fragment implements
             mOnMediaClickListener.onMediaClick((Album) getArguments().getParcelable(EXTRA_ALBUM),
                     item, adapterPosition);
         }
+    }
+
+    public Album getAlbum() {
+        return mAlbum;
+    }
+
+    public void reloadContents() {
+        SelectionSpec selectionSpec = SelectionSpec.getInstance();
+        mAlbumMediaCollection.load(mAlbum, selectionSpec.capture, true);
     }
 
     public interface SelectionProvider {

@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -72,6 +73,8 @@ public class MatisseActivity extends AppCompatActivity implements
     private MediaStoreCompat mMediaStoreCompat;
     private SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
     private SelectionSpec mSpec;
+
+    private boolean mNeedInvalidating = false;
 
     private AlbumsSpinner mAlbumsSpinner;
     private AlbumsAdapter mAlbumsAdapter;
@@ -133,10 +136,27 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mNeedInvalidating) {
+            mAlbumCollection.loadAlbums(true);
+        }
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
         mAlbumCollection.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Set the flag to make sure that activity will invalidate the loader.
+        mNeedInvalidating = true;
     }
 
     @Override
@@ -269,12 +289,13 @@ public class MatisseActivity extends AppCompatActivity implements
         // select default album.
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
-
             @Override
             public void run() {
                 cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
                 mAlbumsSpinner.setSelection(MatisseActivity.this,
                         mAlbumCollection.getCurrentSelection());
+                mSelectedCollection.filterInvalidItems();
+                updateBottomToolbar();
                 Album album = Album.valueOf(cursor);
                 if (album.isAll() && SelectionSpec.getInstance().capture) {
                     album.addCaptureCount();
@@ -290,6 +311,20 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     private void onAlbumSelected(Album album) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment currentFragment = fm.findFragmentById(R.id.container);
+
+        if (currentFragment != null && currentFragment instanceof MediaSelectionFragment) {
+            MediaSelectionFragment mediaSelectionFragment =
+                    (MediaSelectionFragment) currentFragment;
+            Album currentAlbum = mediaSelectionFragment.getAlbum();
+            if (currentAlbum != null && album.getId().equals(currentAlbum.getId())) {
+                // User selected the same album, just refresh its content.
+                mediaSelectionFragment.reloadContents();
+                return;
+            }
+        }
+
         if (album.isAll() && album.isEmpty()) {
             mContainer.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
@@ -297,8 +332,7 @@ public class MatisseActivity extends AppCompatActivity implements
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
             Fragment fragment = MediaSelectionFragment.newInstance(album);
-            getSupportFragmentManager()
-                    .beginTransaction()
+            fm.beginTransaction()
                     .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
                     .commitAllowingStateLoss();
         }
