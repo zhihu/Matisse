@@ -126,29 +126,38 @@ public class Item implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Item)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        Item other = (Item) obj;
-        return id == other.id
-                && (mimeType != null && mimeType.equals(other.mimeType)
-                    || (mimeType == null && other.mimeType == null))
-                && (uri != null && uri.equals(other.uri)
-                    || (uri == null && other.uri == null))
-                && size == other.size
-                && duration == other.duration;
+        Item item = (Item) o;
+
+        if (id != item.id) {
+            return false;
+        }
+        if (size != item.size) {
+            return false;
+        }
+        if (duration != item.duration) {
+            return false;
+        }
+        if (mimeType != null ? !mimeType.equals(item.mimeType) : item.mimeType != null) {
+            return false;
+        }
+        return uri != null ? uri.equals(item.uri) : item.uri == null;
     }
 
     @Override
     public int hashCode() {
-        int result = 1;
-        result = 31 * result + Long.valueOf(id).hashCode();
-        result = 31 * result + mimeType.hashCode();
-        result = 31 * result + uri.hashCode();
-        result = 31 * result + Long.valueOf(size).hashCode();
-        result = 31 * result + Long.valueOf(duration).hashCode();
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (mimeType != null ? mimeType.hashCode() : 0);
+        result = 31 * result + (uri != null ? uri.hashCode() : 0);
+        result = 31 * result + (int) (size ^ (size >>> 32));
+        result = 31 * result + (int) (duration ^ (duration >>> 32));
         return result;
     }
 }
