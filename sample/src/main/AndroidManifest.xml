@@ -17,6 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.zhihu.matisse.sample">
 
+    <uses-permission android:name="Manifest.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

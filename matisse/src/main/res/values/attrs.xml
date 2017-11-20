@@ -33,4 +33,36 @@
     <attr name="item.checkCircle.backgroundColor" format="reference|color"/>
     <attr name="item.checkCircle.borderColor" format="reference|color"/>
     <attr name="capture.textColor" format="reference|color"/>
+
+    <attr name="crop.mode" format="enum">
+        <enum name="fit_image" value="0"/>
+        <enum name="ratio_4_3" value="1"/>
+        <enum name="ratio_3_4" value="2"/>
+        <enum name="square" value="3"/>
+        <enum name="ratio_16_9" value="4"/>
+        <enum name="ratio_9_16" value="5"/>
+        <enum name="free" value="6"/>
+        <enum name="custom" value="7"/>
+        <enum name="circle" value="8"/>
+        <enum name="circle_square" value="9"/>
+    </attr>
+    <attr name="crop.background.color" format="reference|color"/>
+    <attr name="crop.overlay.color" format="reference|color"/>
+    <attr name="crop.frame.color" format="reference|color"/>
+    <attr name="crop.handle.color" format="reference|color"/>
+    <attr name="crop.min.frame.size" format="dimension"/>
+    <attr name="crop.handle.size" format="dimension"/>
+    <attr name="crop.touch.padding" format="dimension"/>
+    <attr name="crop.initial.frame.scale" format="float"/>
+    <attr name="crop.guide.show.mode" format="enum">
+        <enum name="show_always" value="1"/>
+        <enum name="show_on_touch" value="2"/>
+        <enum name="not_show" value="3"/>
+    </attr>
+    <attr name="crop.handle.show.mode" format="enum">
+        <enum name="show_always" value="1"/>
+        <enum name="show_on_touch" value="2"/>
+        <enum name="not_show" value="3"/>
+    </attr>
+
 </resources>

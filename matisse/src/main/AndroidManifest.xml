@@ -13,17 +13,21 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zhihu.matisse">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.zhihu.matisse"
+        >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application>
-        <activity android:name="com.zhihu.matisse.ui.MatisseActivity"/>
-        <activity android:name="com.zhihu.matisse.internal.ui.AlbumPreviewActivity"/>
-        <activity android:name="com.zhihu.matisse.internal.ui.SelectedPreviewActivity"/>
+        <activity android:name=".ui.MatisseActivity"/>
+        <activity android:name=".internal.ui.AlbumPreviewActivity"/>
+        <activity android:name=".internal.ui.SelectedPreviewActivity"/>
+        <activity android:name=".internal.ui.CropActivity">
+        </activity>
     </application>
+
 </manifest>

@@ -15,6 +15,13 @@
  */
 package com.zhihu.matisse.sample;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zhihu.matisse.filter.Filter;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -28,14 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
-import com.zhihu.matisse.filter.Filter;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.List;
 
@@ -54,6 +53,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_main);
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
+        findViewById(R.id.tongzhuo).setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -77,11 +77,10 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
                                             .choose(MimeType.ofAll(), false)
+                                            .theme(R.style.Matisse_Zhihu)
                                             .countable(true)
-                                            .capture(true)
-                                            .captureStrategy(
-                                                    new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                                             .maxSelectable(9)
+                                            .showSingleMediaType(true)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                                             .gridExpectedSize(
                                                     getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
@@ -95,7 +94,26 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .choose(MimeType.ofImage())
                                             .theme(R.style.Matisse_Dracula)
                                             .countable(false)
-                                            .maxSelectable(9)
+                                            .maxSelectable(1)
+                                            .spanCount(3)
+                                            .thumbnailScale(0.85f)
+                                            .singleImageCrop(false)
+                                            .singleMediaPreview(false)
+                                            .showSingleMediaType(true)
+                                            .imageEngine(new PicassoEngine())
+                                            .forResult(REQUEST_CODE_CHOOSE);
+                                    break;
+                                case R.id.tongzhuo:
+                                    Matisse.from(SampleActivity.this)
+                                            .choose(MimeType.ofStaticImage())
+                                            .theme(R.style.Matisse_Tongzhuo)
+                                            .countable(false)
+                                            .maxSelectable(1)
+                                            .spanCount(3)
+                                            .thumbnailScale(0.85f)
+                                            .singleMediaPreview(false)
+                                            .singleImageCrop(true)
+                                            .showSingleMediaType(true)
                                             .imageEngine(new PicassoEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;

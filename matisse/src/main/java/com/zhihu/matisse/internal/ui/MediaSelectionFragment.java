@@ -15,6 +15,16 @@
  */
 package com.zhihu.matisse.internal.ui;
 
+import com.zhihu.matisse.R;
+import com.zhihu.matisse.internal.entity.Album;
+import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.model.AlbumMediaCollection;
+import com.zhihu.matisse.internal.model.SelectedItemCollection;
+import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
+import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
+import com.zhihu.matisse.internal.utils.UIUtils;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,16 +35,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.zhihu.matisse.R;
-import com.zhihu.matisse.internal.entity.Album;
-import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.model.AlbumMediaCollection;
-import com.zhihu.matisse.internal.model.SelectedItemCollection;
-import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
-import com.zhihu.matisse.internal.ui.widget.MediaGridInset;
-import com.zhihu.matisse.internal.utils.UIUtils;
 
 public class MediaSelectionFragment extends Fragment implements
         AlbumMediaCollection.AlbumMediaCallbacks, AlbumMediaAdapter.CheckStateListener,

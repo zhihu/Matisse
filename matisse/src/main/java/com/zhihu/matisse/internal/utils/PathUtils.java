@@ -10,11 +10,14 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.io.File;
+
 /**
  * http://stackoverflow.com/a/27271131/4739220
  */
 
 public class PathUtils {
+
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and
@@ -76,6 +79,19 @@ public class PathUtils {
         return null;
     }
 
+    public static File getCropImagePath(Context context) {
+        File dir = context.getExternalCacheDir();
+        if (dir == null) {
+            dir = context.getCacheDir();
+        }
+        String footDir = dir.getAbsolutePath();
+        File path = new File(footDir + File.separator + "crop");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        return path;
+    }
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -87,7 +103,7 @@ public class PathUtils {
      * @return The value of the _data column, which is typically a file path.
      */
     public static String getDataColumn(Context context, Uri uri, String selection,
-                                       String[] selectionArgs) {
+            String[] selectionArgs) {
 
         Cursor cursor = null;
         final String column = "_data";
@@ -96,14 +112,16 @@ public class PathUtils {
         };
 
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            cursor = context.getContentResolver()
+                    .query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int columnIndex = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(columnIndex);
             }
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
         return null;
     }

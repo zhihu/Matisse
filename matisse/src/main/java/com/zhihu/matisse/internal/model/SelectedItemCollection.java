@@ -15,11 +15,6 @@
  */
 package com.zhihu.matisse.internal.model;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.net.Uri;
-import android.os.Bundle;
-
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.entity.Item;
@@ -27,6 +22,11 @@ import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -125,6 +125,11 @@ public class SelectedItemCollection {
             }
         }
         return removed;
+    }
+
+    public void clear() {
+        mItems.clear();
+        mCollectionType = COLLECTION_UNDEFINED;
     }
 
     public void overwrite(ArrayList<Item> items, int collectionType) {

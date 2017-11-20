@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 26
+        minSdkVersion 11
+        targetSdkVersion 25
+        versionCode 1
+        versionName "0.5.1"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -34,33 +35,24 @@ android {
     }
 }
 
-ext.supportLibVersion = '26.1.0'
+ext.supportLibVersion = '25.3.1'
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:support-v4:${supportLibVersion}"
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    implementation "com.android.support:support-annotations:${supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
-    implementation 'it.sephiroth.android.library.imagezoom:library:1.0.4'
+    compile "com.android.support:support-v4:${supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:support-annotations:${supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
 
-    compileOnly 'com.github.bumptech.glide:glide:3.7.0'
-    compileOnly 'com.squareup.picasso:picasso:2.5.2'
+    compile 'it.sephiroth.android.library.imagezoom:library:1.0.4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.isseiaoki:simplecropview:1.1.6'
+    provided 'com.github.bumptech.glide:glide:3.7.0'
+    provided 'com.squareup.picasso:picasso:2.5.2'
 }
 
-// jcenter configuration for novoda's bintray-release
-// $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
-publish {
-    userOrg = 'zhihu'
-    groupId = 'com.zhihu.android'
-    artifactId = 'matisse'
-    publishVersion = '0.5.0-beta1'
-    desc = 'A well-designed local image selector for Android'
-    website = 'https://www.zhihu.com/'
-}
-
-task checkstyle(type:Checkstyle) {
+task checkstyle(type: Checkstyle) {
     description 'Runs Checkstyle inspection against matisse sourcesets.'
     group = 'Code Quality'
     configFile rootProject.file('checkstyle.xml')
@@ -69,3 +61,5 @@ task checkstyle(type:Checkstyle) {
     classpath = files()
     source 'src/main/java'
 }
+
+apply from: 'https://raw.githubusercontent.com/chaichuanfa/BintrayUpload/master/bintrayUpload.gradle'

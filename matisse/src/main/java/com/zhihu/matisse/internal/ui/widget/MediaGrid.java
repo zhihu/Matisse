@@ -15,6 +15,10 @@
  */
 package com.zhihu.matisse.internal.ui.widget;
 
+import com.zhihu.matisse.R;
+import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -24,10 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.zhihu.matisse.R;
-import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.entity.SelectionSpec;
 
 public class MediaGrid extends SquareFrameLayout implements View.OnClickListener {
 
@@ -83,6 +83,11 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
         initCheckView();
         setImage();
         setVideoDuration();
+        if(mPreBindInfo.mCheckViewVisible) {
+            mCheckView.setVisibility(VISIBLE);
+        } else {
+            mCheckView.setVisibility(GONE);
+        }
     }
 
     public Item getMedia() {
@@ -147,14 +152,16 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
         int mResize;
         Drawable mPlaceholder;
         boolean mCheckViewCountable;
+        boolean mCheckViewVisible;
         RecyclerView.ViewHolder mViewHolder;
 
         public PreBindInfo(int resize, Drawable placeholder, boolean checkViewCountable,
-                           RecyclerView.ViewHolder viewHolder) {
+                           boolean checkViewVisible, RecyclerView.ViewHolder viewHolder) {
             mResize = resize;
             mPlaceholder = placeholder;
             mCheckViewCountable = checkViewCountable;
             mViewHolder = viewHolder;
+            mCheckViewVisible = checkViewVisible;
         }
     }
 

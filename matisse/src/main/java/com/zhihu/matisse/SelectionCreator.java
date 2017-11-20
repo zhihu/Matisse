@@ -16,20 +16,21 @@
  */
 package com.zhihu.matisse;
 
+import com.zhihu.matisse.engine.ImageEngine;
+import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.ui.MatisseActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.RequiresPermission;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
-
-import com.zhihu.matisse.engine.ImageEngine;
-import com.zhihu.matisse.filter.Filter;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -58,7 +59,9 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
  */
 @SuppressWarnings("unused")
 public final class SelectionCreator {
+
     private final Matisse mMatisse;
+
     private final SelectionSpec mSelectionSpec;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -82,6 +85,7 @@ public final class SelectionCreator {
     })
     @Retention(RetentionPolicy.SOURCE)
     @interface ScreenOrientation {
+
     }
 
     /**
@@ -90,7 +94,8 @@ public final class SelectionCreator {
      * @param matisse   a requester context wrapper.
      * @param mimeTypes MIME type set to select.
      */
-    SelectionCreator(Matisse matisse, @NonNull Set<MimeType> mimeTypes, boolean mediaTypeExclusive) {
+    SelectionCreator(Matisse matisse, @NonNull Set<MimeType> mimeTypes,
+            boolean mediaTypeExclusive) {
         mMatisse = matisse;
         mSelectionSpec = SelectionSpec.getCleanInstance();
         mSelectionSpec.mimeTypeSet = mimeTypes;
@@ -108,6 +113,29 @@ public final class SelectionCreator {
      */
     public SelectionCreator showSingleMediaType(boolean showSingleMediaType) {
         mSelectionSpec.showSingleMediaType = showSingleMediaType;
+        return this;
+    }
+
+    /**
+     * Whether to preview if choose only one image or video
+     *
+     * @return {@link SelectionCreator} for fluent API.
+     * @see SelectionSpec#singleSelectionModeEnabled
+     */
+    public SelectionCreator singleMediaPreview(boolean singleMediaPreview) {
+        mSelectionSpec.singleMediaPreview = singleMediaPreview;
+        return this;
+    }
+
+    /**
+     * Whether to crop if choose only one static image
+     *
+     * @return {@link SelectionCreator} for fluent API.
+     * @see SelectionSpec#singleSelectionModeEnabled
+     * @see
+     */
+    public SelectionCreator singleImageCrop(boolean singleImageCrop) {
+        mSelectionSpec.singleImageCrop = singleImageCrop;
         return this;
     }
 
@@ -146,25 +174,32 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectable(int maxSelectable) {
-        if (maxSelectable < 1)
-            throw new IllegalArgumentException("maxSelectable must be greater than or equal to one");
-        if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0)
-            throw new IllegalStateException("already set maxImageSelectable and maxVideoSelectable");
+        if (maxSelectable < 1) {
+            throw new IllegalArgumentException(
+                    "maxSelectable must be greater than or equal to one");
+        }
+        if (mSelectionSpec.maxImageSelectable > 0 || mSelectionSpec.maxVideoSelectable > 0) {
+            throw new IllegalStateException(
+                    "already set maxImageSelectable and maxVideoSelectable");
+        }
         mSelectionSpec.maxSelectable = maxSelectable;
         return this;
     }
 
     /**
-     * Only useful when {@link SelectionSpec#mediaTypeExclusive} set true and you want to set different maximum
+     * Only useful when {@link SelectionSpec#mediaTypeExclusive} set true and you want to set
+     * different maximum
      * selectable files for image and video media types.
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return
      */
-    public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
-        if (maxImageSelectable < 1 || maxVideoSelectable < 1)
-            throw new IllegalArgumentException(("max selectable must be greater than or equal to one"));
+    public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable,
+            int maxVideoSelectable) {
+        if (maxImageSelectable < 1 || maxVideoSelectable < 1) {
+            throw new IllegalArgumentException(
+                    ("max selectable must be greater than or equal to one"));
+        }
         mSelectionSpec.maxSelectable = -1;
         mSelectionSpec.maxImageSelectable = maxImageSelectable;
         mSelectionSpec.maxVideoSelectable = maxVideoSelectable;
@@ -181,7 +216,9 @@ public final class SelectionCreator {
         if (mSelectionSpec.filters == null) {
             mSelectionSpec.filters = new ArrayList<>();
         }
-        if (filter == null) throw new IllegalArgumentException("filter cannot be null");
+        if (filter == null) {
+            throw new IllegalArgumentException("filter cannot be null");
+        }
         mSelectionSpec.filters.add(filter);
         return this;
     }
@@ -233,7 +270,9 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator spanCount(int spanCount) {
-        if (spanCount < 1) throw new IllegalArgumentException("spanCount cannot be less than 1");
+        if (spanCount < 1) {
+            throw new IllegalArgumentException("spanCount cannot be less than 1");
+        }
         mSelectionSpec.spanCount = spanCount;
         return this;
     }
@@ -259,8 +298,9 @@ public final class SelectionCreator {
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator thumbnailScale(float scale) {
-        if (scale <= 0f || scale > 1f)
+        if (scale <= 0f || scale > 1f) {
             throw new IllegalArgumentException("Thumbnail scale must be between (0.0, 1.0]");
+        }
         mSelectionSpec.thumbnailScale = scale;
         return this;
     }
@@ -286,6 +326,7 @@ public final class SelectionCreator {
      *
      * @param requestCode Identity of the request Activity or Fragment.
      */
+    @RequiresPermission("Manifest.permission.WRITE_EXTERNAL_STORAGE")
     public void forResult(int requestCode) {
         Activity activity = mMatisse.getActivity();
         if (activity == null) {

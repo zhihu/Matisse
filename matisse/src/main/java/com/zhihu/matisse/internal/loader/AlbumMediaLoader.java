@@ -16,6 +16,11 @@
  */
 package com.zhihu.matisse.internal.loader;
 
+import com.zhihu.matisse.internal.entity.Album;
+import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.utils.MediaStoreCompat;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -23,11 +28,6 @@ import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
-
-import com.zhihu.matisse.internal.entity.Album;
-import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 
 /**
  * Load images and videos into a single cursor.
@@ -139,6 +139,22 @@ public class AlbumMediaLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         Cursor result = super.loadInBackground();
+
+        //filter by MimeType
+//        MatrixCursor cursor = new MatrixCursor(PROJECTION);
+//        while (result.moveToNext()) {
+//            long id = result.getLong(result.getColumnIndex(MediaStore.Files.FileColumns._ID));
+//            String mimeType = result.getString(result.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
+//            long size = result.getLong(result.getColumnIndex(MediaStore.MediaColumns.SIZE));
+//            long duration = result.getLong(result.getColumnIndex("duration"));
+//            for (MimeType type : SelectionSpec.getInstance().mimeTypeSet) {
+//                if (TextUtils.equals(mimeType, type.toString())) {
+//                    cursor.addRow(new Object[]{id, "", mimeType, size, duration});
+//                    continue;
+//                }
+//            }
+//        }
+
         if (!mEnableCapture || !MediaStoreCompat.hasCameraFeature(getContext())) {
             return result;
         }

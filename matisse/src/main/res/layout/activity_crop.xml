@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.zhihu.matisse.internal.ui.CropActivity"
+        >
+
+    <com.isseiaoki.simplecropview.CropImageView
+            android:id="@+id/cropImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:scv_frame_stroke_weight="1dp"
+            app:scv_guide_stroke_weight="1dp"
+            app:scv_crop_mode="?attr/crop.mode"
+            app:scv_handle_size="?attr/crop.handle.size"
+            app:scv_touch_padding="?attr/crop.touch.padding"
+            app:scv_handle_show_mode="?attr/crop.handle.show.mode"
+            app:scv_guide_show_mode="?attr/crop.guide.show.mode"
+            app:scv_min_frame_size="?attr/crop.min.frame.size"
+            app:scv_background_color="?attr/crop.background.color"
+            app:scv_handle_color="?attr/crop.handle.color"
+            app:scv_overlay_color="?attr/crop.overlay.color"
+            app:scv_frame_color="?attr/crop.frame.color"
+            app:scv_initial_frame_scale="?attr/crop.initial.frame.scale"
+            />
+
+    <FrameLayout
+            android:id="@+id/bottom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/preview_bottom_toolbar_bg"
+            android:elevation="4dp"
+            android:visibility="gone"
+            tools:targetApi="lollipop"
+            tools:visibility="visible"
+            >
+
+        <TextView
+                android:id="@+id/button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:layout_gravity="start"
+                android:text="@string/button_back"
+                android:textColor="?attr/preview.bottomToolbar.back.textColor"
+                android:textSize="16sp"
+                />
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+            <ImageButton
+                    android:id="@+id/rotate_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="6dp"
+                    android:padding="16dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:background="@drawable/ic_rotate_left"
+                    />
+
+            <ImageButton
+                    android:id="@+id/rotate_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="6dp"
+                    android:padding="16dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:background="@drawable/ic_rotate_right"
+                    />
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/button_apply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:textColor="?attr/preview.bottomToolbar.apply.textColor"
+                android:textSize="16sp"
+                android:text="@string/button_apply_default"
+                />
+
+    </FrameLayout>
+
+</RelativeLayout>

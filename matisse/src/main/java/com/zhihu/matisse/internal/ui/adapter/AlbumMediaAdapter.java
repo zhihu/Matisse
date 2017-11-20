@@ -15,6 +15,15 @@
  */
 package com.zhihu.matisse.internal.ui.adapter;
 
+import com.zhihu.matisse.R;
+import com.zhihu.matisse.internal.entity.Album;
+import com.zhihu.matisse.internal.entity.IncapableCause;
+import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.model.SelectedItemCollection;
+import com.zhihu.matisse.internal.ui.widget.CheckView;
+import com.zhihu.matisse.internal.ui.widget.MediaGrid;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -27,15 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.zhihu.matisse.R;
-import com.zhihu.matisse.internal.entity.Album;
-import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.entity.SelectionSpec;
-import com.zhihu.matisse.internal.entity.IncapableCause;
-import com.zhihu.matisse.internal.model.SelectedItemCollection;
-import com.zhihu.matisse.internal.ui.widget.CheckView;
-import com.zhihu.matisse.internal.ui.widget.MediaGrid;
 
 public class AlbumMediaAdapter extends
         RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements
@@ -117,6 +117,7 @@ public class AlbumMediaAdapter extends
                     getImageResize(mediaViewHolder.mMediaGrid.getContext()),
                     mPlaceholder,
                     mSelectionSpec.countable,
+                    !mSelectionSpec.singleMediaClosePreview(),
                     holder
             ));
             mediaViewHolder.mMediaGrid.bindMedia(item);
@@ -160,7 +161,13 @@ public class AlbumMediaAdapter extends
     @Override
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
         if (mOnMediaClickListener != null) {
-            mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+            if(mSelectionSpec.singleMediaClosePreview()) {
+                if (assertAddSelection(holder.itemView.getContext(), item)) {
+                    mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+                }
+            } else {
+                mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+            }
         }
     }
 
