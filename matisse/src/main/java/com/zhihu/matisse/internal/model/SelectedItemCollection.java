@@ -37,25 +37,33 @@ import java.util.Set;
 public class SelectedItemCollection {
 
     public static final String STATE_SELECTION = "state_selection";
+
     public static final String STATE_COLLECTION_TYPE = "state_collection_type";
+
     /**
      * Empty collection
      */
     public static final int COLLECTION_UNDEFINED = 0x00;
+
     /**
      * Collection only with images
      */
     public static final int COLLECTION_IMAGE = 0x01;
+
     /**
      * Collection only with videos
      */
     public static final int COLLECTION_VIDEO = 0x01 << 1;
+
     /**
      * Collection with images and videos.
      */
     public static final int COLLECTION_MIXED = COLLECTION_IMAGE | COLLECTION_VIDEO;
+
     private final Context mContext;
+
     private Set<Item> mItems;
+
     private int mCollectionType = COLLECTION_UNDEFINED;
 
     public SelectedItemCollection(Context context) {
@@ -77,6 +85,9 @@ public class SelectedItemCollection {
     }
 
     public void onSaveInstanceState(Bundle outState) {
+        if (mItems == null) {
+            return;
+        }
         outState.putParcelableArrayList(STATE_SELECTION, new ArrayList<>(mItems));
         outState.putInt(STATE_COLLECTION_TYPE, mCollectionType);
     }
@@ -128,8 +139,10 @@ public class SelectedItemCollection {
     }
 
     public void clear() {
-        mItems.clear();
-        mCollectionType = COLLECTION_UNDEFINED;
+        if (mItems != null) {
+            mItems.clear();
+            mCollectionType = COLLECTION_UNDEFINED;
+        }
     }
 
     public void overwrite(ArrayList<Item> items, int collectionType) {
@@ -223,8 +236,12 @@ public class SelectedItemCollection {
         boolean hasImage = false;
         boolean hasVideo = false;
         for (Item i : mItems) {
-            if (i.isImage() && !hasImage) hasImage = true;
-            if (i.isVideo() && !hasVideo) hasVideo = true;
+            if (i.isImage() && !hasImage) {
+                hasImage = true;
+            }
+            if (i.isVideo() && !hasVideo) {
+                hasVideo = true;
+            }
         }
         if (hasImage && hasVideo) {
             mCollectionType = COLLECTION_MIXED;
@@ -236,13 +253,16 @@ public class SelectedItemCollection {
     }
 
     /**
-     * Determine whether there will be conflict media types. A user can only select images and videos at the same time
+     * Determine whether there will be conflict media types. A user can only select images and
+     * videos at the same time
      * while {@link SelectionSpec#mediaTypeExclusive} is set to false.
      */
     public boolean typeConflict(Item item) {
         return SelectionSpec.getInstance().mediaTypeExclusive
-                && ((item.isImage() && (mCollectionType == COLLECTION_VIDEO || mCollectionType == COLLECTION_MIXED))
-                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE || mCollectionType == COLLECTION_MIXED)));
+                && ((item.isImage() && (mCollectionType == COLLECTION_VIDEO
+                || mCollectionType == COLLECTION_MIXED))
+                || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE
+                || mCollectionType == COLLECTION_MIXED)));
     }
 
     public int count() {

@@ -40,6 +40,8 @@ public final class SelectionSpec {
 
     public boolean singleImageCrop;
 
+    public boolean openCameraNow;
+
     @StyleRes
     public int themeId;
 
@@ -98,6 +100,7 @@ public final class SelectionSpec {
         thumbnailScale = 0.5f;
         singleMediaPreview = false;
         singleImageCrop = false;
+        openCameraNow = false;
         imageEngine = new GlideEngine();
     }
 

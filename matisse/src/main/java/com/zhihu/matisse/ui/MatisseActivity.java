@@ -101,6 +101,10 @@ public class MatisseActivity extends AppCompatActivity implements
             if (mSpec.captureStrategy == null)
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
             mMediaStoreCompat.setCaptureStrategy(mSpec.captureStrategy);
+            if(mSpec.openCameraNow) {
+                mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
+                return;
+            }
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -144,8 +148,12 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mSelectedCollection.onSaveInstanceState(outState);
-        mAlbumCollection.onSaveInstanceState(outState);
+        if(mSelectedCollection != null) {
+            mSelectedCollection.onSaveInstanceState(outState);
+        }
+        if(mAlbumCollection != null) {
+            mAlbumCollection.onSaveInstanceState(outState);
+        }
     }
 
     @Override
@@ -174,7 +182,15 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             if(requestCode == REQUEST_CODE_CROP) {
-                mSelectedCollection.clear();
+                if(mSpec.openCameraNow) {
+                    finish();
+                } else {
+                    mSelectedCollection.clear();
+                }
+            } else if(requestCode == REQUEST_CODE_CAPTURE) {
+                if(mSpec.openCameraNow) {
+                    finish();
+                }
             }
             return;
         }

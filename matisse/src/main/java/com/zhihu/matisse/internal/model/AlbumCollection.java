@@ -16,14 +16,14 @@
  */
 package com.zhihu.matisse.internal.model;
 
+import com.zhihu.matisse.internal.loader.AlbumLoader;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-
-import com.zhihu.matisse.internal.loader.AlbumLoader;
 
 import java.lang.ref.WeakReference;
 
@@ -83,8 +83,10 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     public void onDestroy() {
-        mLoaderManager.destroyLoader(LOADER_ID);
-        mCallbacks = null;
+        if(mLoaderManager != null) {
+            mLoaderManager.destroyLoader(LOADER_ID);
+            mCallbacks = null;
+        }
     }
 
     public void loadAlbums() {

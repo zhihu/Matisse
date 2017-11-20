@@ -21,6 +21,7 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import android.Manifest;
 import android.content.Intent;
@@ -113,8 +114,12 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .countable(false)
                                             .maxSelectable(1)
                                             .spanCount(3)
+                                            .capture(true)
+                                            .captureStrategy(
+                                                    new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                                             .thumbnailScale(0.85f)
                                             .singleMediaPreview(false)
+                                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .singleImageCrop(true)
                                             .showSingleMediaType(true)
                                             .imageEngine(new PicassoEngine())

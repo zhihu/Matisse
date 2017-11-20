@@ -50,15 +50,15 @@ dependencies {
     provided 'com.squareup.picasso:picasso:2.5.2'
 }
 
-task checkstyle(type: Checkstyle) {
-    description 'Runs Checkstyle inspection against matisse sourcesets.'
-    group = 'Code Quality'
-    configFile rootProject.file('checkstyle.xml')
-    ignoreFailures = false
-    showViolations true
-    classpath = files()
-    source 'src/main/java'
-}
+//task checkstyle(type: Checkstyle) {
+//    description 'Runs Checkstyle inspection against matisse sourcesets.'
+//    group = 'Code Quality'
+//    configFile rootProject.file('checkstyle.xml')
+//    ignoreFailures = false
+//    showViolations true
+//    classpath = files()
+//    source 'src/main/java'
+//}
 
 tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
