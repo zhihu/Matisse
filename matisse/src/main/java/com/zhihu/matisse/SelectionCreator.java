@@ -22,6 +22,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.ui.MatisseActivity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -326,8 +327,9 @@ public final class SelectionCreator {
      *
      * @param requestCode Identity of the request Activity or Fragment.
      */
-    @RequiresPermission("Manifest.permission.WRITE_EXTERNAL_STORAGE")
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void forResult(int requestCode) {
+
         Activity activity = mMatisse.getActivity();
         if (activity == null) {
             return;

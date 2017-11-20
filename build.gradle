@@ -30,9 +30,22 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://dl.bintray.com/felix0503/maven"
+        }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    androidCompileSdkVersion = 24
+    androidBuildToolsVersion = '25.0.2'
+    supportLibVersion = '25.3.0'
+    minSdkVersion = 11
+    targetSdkVersion = 24
+    versionCode = 3
+    versionName = "0.5.2"
 }

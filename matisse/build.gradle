@@ -17,14 +17,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    buildToolsVersion rootProject.ext.androidBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 25
-        versionCode 1
-        versionName "0.5.1"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -35,15 +35,13 @@ android {
     }
 }
 
-ext.supportLibVersion = '25.3.1'
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile "com.android.support:support-v4:${supportLibVersion}"
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.android.support:support-annotations:${supportLibVersion}"
-    compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:support-annotations:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
 
     compile 'it.sephiroth.android.library.imagezoom:library:1.0.4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -60,6 +58,12 @@ task checkstyle(type: Checkstyle) {
     showViolations true
     classpath = files()
     source 'src/main/java'
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
 }
 
 apply from: 'https://raw.githubusercontent.com/chaichuanfa/BintrayUpload/master/bintrayUpload.gradle'

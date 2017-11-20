@@ -16,7 +16,7 @@
   -->
 <resources>
     <color name="tongzhuo_primary">#6F5FFF</color>
-    <color name="tongzhuo_primary_dark">#6050F9</color>
+    <color name="tongzhuo_primary_dark">#6F5FFF</color>
 
     <color name="tongzhuo_album_popup_bg">#FFFFFF</color>
     <color name="tongzhuo_album_dropdown_title_text">#DE000000</color>
