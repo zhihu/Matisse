@@ -89,10 +89,10 @@
         <item name="crop.overlay.color">#aa1c1c1c</item>
         <item name="crop.frame.color">#FFFFFF</item>
         <item name="crop.handle.color">#FFFFFF</item>
-        <item name="crop.min.frame.size">80dp</item>
+        <item name="crop.min.frame.size">240dp</item>
         <item name="crop.handle.size">10dp</item>
         <item name="crop.touch.padding">12dp</item>
-        <item name="crop.initial.frame.scale">0.75</item>
+        <item name="crop.initial.frame.scale">1</item>
         <item name="crop.guide.show.mode">not_show</item>
         <item name="crop.handle.show.mode">show_always</item>
     </style>

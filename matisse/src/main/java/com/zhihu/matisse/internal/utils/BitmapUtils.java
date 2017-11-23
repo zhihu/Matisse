@@ -1,6 +1,5 @@
 package com.zhihu.matisse.internal.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import java.io.File;
@@ -16,8 +15,8 @@ public class BitmapUtils {
     private BitmapUtils() {
     }
 
-    public static File saveBitmap(Context context, Bitmap bitmap, File path) throws IOException {
-        String fileName = "crop_" + System.currentTimeMillis() + ".png";
+    public static File saveBitmap(Bitmap bitmap, File path) throws IOException {
+        String fileName = "crop_" + System.currentTimeMillis() + ".jpeg";
         if (!path.exists()) {
             path.mkdirs();
         }
@@ -25,13 +24,14 @@ public class BitmapUtils {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(localFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
             return localFile;
         } finally {
             if(outputStream != null) {
                 outputStream.flush();
                 outputStream.close();
             }
+            bitmap.recycle();
         }
     }
 }

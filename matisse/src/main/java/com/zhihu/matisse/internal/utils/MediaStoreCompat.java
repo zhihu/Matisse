@@ -15,6 +15,8 @@
  */
 package com.zhihu.matisse.internal.utils;
 
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,8 +30,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.os.EnvironmentCompat;
 
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -41,10 +41,14 @@ import java.util.Locale;
 public class MediaStoreCompat {
 
     private final WeakReference<Activity> mContext;
+
     private final WeakReference<Fragment> mFragment;
-    private       CaptureStrategy         mCaptureStrategy;
-    private       Uri                     mCurrentPhotoUri;
-    private       String                  mCurrentPhotoPath;
+
+    private CaptureStrategy mCaptureStrategy;
+
+    private Uri mCurrentPhotoUri;
+
+    private String mCurrentPhotoPath;
 
     public MediaStoreCompat(Activity activity) {
         mContext = new WeakReference<>(activity);
@@ -89,11 +93,13 @@ public class MediaStoreCompat {
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     List<ResolveInfo> resInfoList = context.getPackageManager()
-                            .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                            .queryIntentActivities(captureIntent,
+                                    PackageManager.MATCH_DEFAULT_ONLY);
                     for (ResolveInfo resolveInfo : resInfoList) {
                         String packageName = resolveInfo.activityInfo.packageName;
                         context.grantUriPermission(packageName, mCurrentPhotoUri,
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                        | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     }
                 }
                 if (mFragment != null) {
@@ -116,6 +122,10 @@ public class MediaStoreCompat {
                     Environment.DIRECTORY_PICTURES);
         } else {
             storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        }
+
+        if(!storageDir.exists()) {
+            storageDir.mkdirs();
         }
 
         // Avoid joining path components manually

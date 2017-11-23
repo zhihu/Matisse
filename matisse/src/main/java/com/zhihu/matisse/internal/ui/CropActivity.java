@@ -1,7 +1,6 @@
 package com.zhihu.matisse.internal.ui;
 
 import com.isseiaoki.simplecropview.CropImageView;
-import com.isseiaoki.simplecropview.callback.LoadCallback;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.BitmapUtils;
@@ -12,13 +11,18 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.opengl.GLES10;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
@@ -39,6 +43,10 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
     public static final String CROP_IMAGE_PATH = "crop_image_path";
 
     private static final String ARGS_ITEM = "args_uri";
+
+    private static final int SIZE_DEFAULT = 2048;
+
+    private static final int SIZE_LIMIT = 4096;
 
     private CropImageView mCropImageView;
 
@@ -75,18 +83,65 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.button_apply).setOnClickListener(this);
         findViewById(R.id.rotate_left).setOnClickListener(this);
         findViewById(R.id.rotate_right).setOnClickListener(this);
-        mCropImageView.setCompressFormat(Bitmap.CompressFormat.PNG);
-        mCropImageView.load(mUri).execute(new LoadCallback() {
-            @Override
-            public void onSuccess() {
-                mBottomBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
+        InputStream is = null;
+        try {
+            int sampleSize = calculateBitmapSampleSize(mUri);
+            is = getContentResolver().openInputStream(mUri);
+            BitmapFactory.Options option = new BitmapFactory.Options();
+            option.inSampleSize = sampleSize;
+            Bitmap sizeBitmap = BitmapFactory.decodeStream(is, null, option);
+            if (sizeBitmap == null) {
                 finish();
+                return;
             }
-        });
+            mCropImageView.setImageBitmap(sizeBitmap);
+            mBottomBar.setVisibility(View.VISIBLE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int calculateBitmapSampleSize(Uri bitmapUri) throws IOException {
+        InputStream is = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        try {
+            is = getContentResolver().openInputStream(bitmapUri);
+            BitmapFactory.decodeStream(is, null, options); // Just get image size
+        } finally {
+            is.close();
+        }
+
+        int maxSize = getMaxImageSize();
+        int sampleSize = 1;
+        while (options.outHeight / sampleSize > maxSize
+                || options.outWidth / sampleSize > maxSize) {
+            sampleSize = sampleSize << 1;
+        }
+        return sampleSize;
+    }
+
+    private int getMaxImageSize() {
+        int textureLimit = getMaxTextureSize();
+        if (textureLimit == 0) {
+            return SIZE_DEFAULT;
+        } else {
+            return Math.min(textureLimit, SIZE_LIMIT);
+        }
+    }
+
+    private int getMaxTextureSize() {
+        int[] maxSize = new int[1];
+        GLES10.glGetIntegerv(GLES10.GL_MAX_TEXTURE_SIZE, maxSize, 0);
+        return maxSize[0];
     }
 
     @Override
@@ -115,15 +170,19 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
         mDialog.setCancelable(false);
         mDialog.setMessage(getString(R.string.crop_clipping));
         mDialog.show();
-        mDisposable = mCropImageView.crop(mUri)
-                .executeAsSingle()
-                .flatMap(new Function<Bitmap, SingleSource<File>>() {
-                    @Override
-                    public SingleSource<File> apply(@NonNull Bitmap bitmap) throws Exception {
-                        return Single.just(BitmapUtils.saveBitmap(CropActivity.this, bitmap,
-                                PathUtils.getCropImagePath(CropActivity.this)));
-                    }
-                })
+        mDisposable = Single.fromCallable(new Callable<Bitmap>() {
+            @Override
+            public Bitmap call() throws Exception {
+                Bitmap crop = mCropImageView.getCroppedBitmap();
+                return crop;
+            }
+        }).flatMap(new Function<Bitmap, SingleSource<File>>() {
+            @Override
+            public SingleSource<File> apply(@NonNull Bitmap bitmap) throws Exception {
+                return Single.just(BitmapUtils.saveBitmap(bitmap,
+                        PathUtils.getCropImagePath(CropActivity.this)));
+            }
+        })
                 .doFinally(new Action() {
                     @Override
                     public void run() throws Exception {
