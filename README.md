@@ -9,7 +9,7 @@ Base on [Matisse](https://github.com/zhihu/Matisse),add crop image function and 
 Gradle:
 
 ```groovy
-compile 'com.github.chaichuanfa:matisse:1.0.1'
+compile 'com.github.chaichuanfa:matisse:1.0.2'
 ``` 
 
 ## Add Themes
@@ -33,6 +33,20 @@ Matisse.from(SampleActivity.this)
     .forResult(REQUEST_CODE_CHOOSE);
 ```
 single static image can crop and close preview.
+
+## Add open camera right now
+```Java
+Matisse.from(EditProfileFragment.this)
+    .choose(MimeType.ofStaticImage())
+    .openCameraNow(true)
+    .capture(true)
+    .captureStrategy(new CaptureStrategy(true,
+            "com.tongzhuo.tongzhuogame.fileprovider"))
+    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    .theme(R.style.Matisse_Tongzhuo)
+    .singleImageCrop(true)
+    .forResult(OPEN_CAMERA_REQUEST_CODE);
+```
 
 ## More
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).    
