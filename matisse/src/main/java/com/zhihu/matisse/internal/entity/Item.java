@@ -102,6 +102,7 @@ public class Item implements Parcelable {
     }
 
     public boolean isImage() {
+        if (mimeType == null) return false;
         return mimeType.equals(MimeType.JPEG.toString())
                 || mimeType.equals(MimeType.PNG.toString())
                 || mimeType.equals(MimeType.GIF.toString())
@@ -110,10 +111,12 @@ public class Item implements Parcelable {
     }
 
     public boolean isGif() {
+        if (mimeType == null) return false;
         return mimeType.equals(MimeType.GIF.toString());
     }
 
     public boolean isVideo() {
+        if (mimeType == null) return false;
         return mimeType.equals(MimeType.MPEG.toString())
                 || mimeType.equals(MimeType.MP4.toString())
                 || mimeType.equals(MimeType.QUICKTIME.toString())
@@ -145,7 +148,9 @@ public class Item implements Parcelable {
     public int hashCode() {
         int result = 1;
         result = 31 * result + Long.valueOf(id).hashCode();
-        result = 31 * result + mimeType.hashCode();
+        if (mimeType != null) {
+            result = 31 * result + mimeType.hashCode();
+        }
         result = 31 * result + uri.hashCode();
         result = 31 * result + Long.valueOf(size).hashCode();
         result = 31 * result + Long.valueOf(duration).hashCode();
