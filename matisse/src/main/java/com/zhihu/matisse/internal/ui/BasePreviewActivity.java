@@ -93,24 +93,26 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             @Override
             public void onClick(View v) {
                 Item item = mAdapter.getMediaItem(mPager.getCurrentItem());
-                if (mSelectedCollection.isSelected(item)) {
-                    mSelectedCollection.remove(item);
-                    if (mSpec.countable) {
-                        mCheckView.setCheckedNum(CheckView.UNCHECKED);
-                    } else {
-                        mCheckView.setChecked(false);
-                    }
-                } else {
-                    if (assertAddSelection(item)) {
-                        mSelectedCollection.add(item);
+                if(!mSelectedCollection.isDisabledChoice(item)){
+                    if (mSelectedCollection.isSelected(item)) {
+                        mSelectedCollection.remove(item);
                         if (mSpec.countable) {
-                            mCheckView.setCheckedNum(mSelectedCollection.checkedNumOf(item));
+                            mCheckView.setCheckedNum(CheckView.UNCHECKED);
                         } else {
-                            mCheckView.setChecked(true);
+                            mCheckView.setChecked(false);
+                        }
+                    } else {
+                        if (assertAddSelection(item)) {
+                            mSelectedCollection.add(item);
+                            if (mSpec.countable) {
+                                mCheckView.setCheckedNum(mSelectedCollection.checkedNumOf(item));
+                            } else {
+                                mCheckView.setChecked(true);
+                            }
                         }
                     }
+                    updateApplyButton();
                 }
-                updateApplyButton();
             }
         });
         updateApplyButton();
@@ -154,17 +156,23 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                 int checkedNum = mSelectedCollection.checkedNumOf(item);
                 mCheckView.setCheckedNum(checkedNum);
                 if (checkedNum > 0) {
-                    mCheckView.setEnabled(true);
+                    mCheckView.setEnabled(!mSelectedCollection.isDisabledChoice(item));
                 } else {
                     mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
                 }
             } else {
                 boolean checked = mSelectedCollection.isSelected(item);
-                mCheckView.setChecked(checked);
-                if (checked) {
-                    mCheckView.setEnabled(true);
-                } else {
-                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
+                boolean isDisabled = mSelectedCollection.isDisabledChoice(item);
+                if(isDisabled){
+                    mCheckView.setChecked(true);
+                    mCheckView.setEnabled(false);
+                }else{
+                    mCheckView.setChecked(checked);
+                    if (checked) {
+                        mCheckView.setEnabled(true);
+                    } else {
+                        mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
+                    }
                 }
             }
             updateSize(item);

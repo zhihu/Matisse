@@ -129,7 +129,7 @@ public class AlbumMediaAdapter extends
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum > 0) {
-                mediaGrid.setCheckEnabled(true);
+                mediaGrid.setCheckEnabled(!mSelectedCollection.isDisabledChoice(item));
                 mediaGrid.setCheckedNum(checkedNum);
             } else {
                 if (mSelectedCollection.maxSelectableReached()) {
@@ -142,7 +142,11 @@ public class AlbumMediaAdapter extends
             }
         } else {
             boolean selected = mSelectedCollection.isSelected(item);
-            if (selected) {
+            boolean isDisabled = mSelectedCollection.isDisabledChoice(item);
+            if(isDisabled){
+                mediaGrid.setCheckEnabled(false);
+                mediaGrid.setChecked(true);
+            }else if (selected) {
                 mediaGrid.setCheckEnabled(true);
                 mediaGrid.setChecked(true);
             } else {
@@ -174,15 +178,17 @@ public class AlbumMediaAdapter extends
                     notifyCheckStateChanged();
                 }
             } else {
-                mSelectedCollection.remove(item);
-                notifyCheckStateChanged();
+                if(!mSelectedCollection.isDisabledChoice(item)){
+                    mSelectedCollection.remove(item);
+                    notifyCheckStateChanged();
+                }
             }
         } else {
             if (mSelectedCollection.isSelected(item)) {
-                mSelectedCollection.remove(item);
-                notifyCheckStateChanged();
+                    mSelectedCollection.remove(item);
+                    notifyCheckStateChanged();
             } else {
-                if (assertAddSelection(holder.itemView.getContext(), item)) {
+                if (!mSelectedCollection.isDisabledChoice(item) && assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
                     notifyCheckStateChanged();
                 }

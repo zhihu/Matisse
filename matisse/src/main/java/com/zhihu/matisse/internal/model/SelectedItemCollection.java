@@ -193,7 +193,12 @@ public class SelectedItemCollection {
     }
 
     public boolean maxSelectableReached() {
-        return mItems.size() == currentMaxSelectable();
+        SelectionSpec spec = SelectionSpec.getInstance();
+        int disabledChoiceImageCount = 0;
+        if (spec.disabledChoiceImageUriList != null && spec.disabledChoiceImageUriList.size() > 0) {
+            disabledChoiceImageCount = spec.disabledChoiceImageUriList.size();
+        }
+        return mItems.size() + disabledChoiceImageCount == currentMaxSelectable();
     }
 
     // depends
@@ -245,7 +250,34 @@ public class SelectedItemCollection {
     }
 
     public int checkedNumOf(Item item) {
-        int index = new ArrayList<>(mItems).indexOf(item);
-        return index == -1 ? CheckView.UNCHECKED : index + 1;
+        SelectionSpec spec = SelectionSpec.getInstance();
+        int w = spec.disabledChoiceImageUriList != null ? spec.disabledChoiceImageUriList.size() : 0;
+        if (w > 0) {
+            Uri uri = item.getContentUri();
+            for (int i = 0; i < spec.disabledChoiceImageUriList.size(); i++) {
+                if (uri.equals(spec.disabledChoiceImageUriList.get(i))) {
+                    return i + 1;
+                }
+            }
+            int index = new ArrayList<>(mItems).indexOf(item);
+            return index == -1 ? CheckView.UNCHECKED : index + 1 + w;
+        } else {
+            int index = new ArrayList<>(mItems).indexOf(item);
+            return index == -1 ? CheckView.UNCHECKED : index + 1;
+        }
     }
+
+    public boolean isDisabledChoice(Item item) {
+        SelectionSpec spec = SelectionSpec.getInstance();
+        if (spec.disabledChoiceImageUriList != null && !spec.disabledChoiceImageUriList.isEmpty()) {
+            Uri uri = item.getContentUri();
+            for (int i = 0; i < spec.disabledChoiceImageUriList.size(); i++) {
+                if (uri.equals(spec.disabledChoiceImageUriList.get(i))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

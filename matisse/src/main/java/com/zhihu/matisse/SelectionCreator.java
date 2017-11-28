@@ -18,6 +18,7 @@ package com.zhihu.matisse;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ import com.zhihu.matisse.ui.MatisseActivity;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND;
@@ -278,6 +280,18 @@ public final class SelectionCreator {
      */
     public SelectionCreator imageEngine(ImageEngine imageEngine) {
         mSelectionSpec.imageEngine = imageEngine;
+        return this;
+    }
+
+    /**
+     * Set the disabled choice image uri list .
+     * When you need select multiple times, the last selected images sometimes need to be excluded.
+     * <p>
+     * @param uriList the image uri list need to be excluded.
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator disabledImageUriList(List<Uri> uriList) {
+        mSelectionSpec.disabledChoiceImageUriList = uriList;
         return this;
     }
 
