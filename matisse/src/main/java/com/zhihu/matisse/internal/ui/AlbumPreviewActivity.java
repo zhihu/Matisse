@@ -58,13 +58,13 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
             if (mSelectedCollection.isDisabledChoice(item)) {
                 mCheckView.setEnabled(false);
                 mCheckView.setChecked(true);
-            }else{
+            } else {
                 boolean checked = mSelectedCollection.isSelected(item);
                 boolean isDisabled = mSelectedCollection.isDisabledChoice(item);
-                if(isDisabled){
+                if (isDisabled) {
                     mCheckView.setChecked(true);
                     mCheckView.setEnabled(false);
-                }else{
+                } else {
                     mCheckView.setChecked(checked);
                     if (checked) {
                         mCheckView.setEnabled(true);

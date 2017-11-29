@@ -60,6 +60,10 @@ publish {
     website = 'https://www.zhihu.com/'
 }
 
+checkstyle {
+    toolVersion = '5.9'
+}
+
 task checkstyle(type:Checkstyle) {
     description 'Runs Checkstyle inspection against matisse sourcesets.'
     group = 'Code Quality'

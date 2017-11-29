@@ -93,7 +93,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             @Override
             public void onClick(View v) {
                 Item item = mAdapter.getMediaItem(mPager.getCurrentItem());
-                if(!mSelectedCollection.isDisabledChoice(item)){
+                if (!mSelectedCollection.isDisabledChoice(item)) {
                     if (mSelectedCollection.isSelected(item)) {
                         mSelectedCollection.remove(item);
                         if (mSpec.countable) {
@@ -163,10 +163,10 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             } else {
                 boolean checked = mSelectedCollection.isSelected(item);
                 boolean isDisabled = mSelectedCollection.isDisabledChoice(item);
-                if(isDisabled){
+                if (isDisabled) {
                     mCheckView.setChecked(true);
                     mCheckView.setEnabled(false);
-                }else{
+                } else {
                     mCheckView.setChecked(checked);
                     if (checked) {
                         mCheckView.setEnabled(true);

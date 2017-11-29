@@ -143,10 +143,10 @@ public class AlbumMediaAdapter extends
         } else {
             boolean selected = mSelectedCollection.isSelected(item);
             boolean isDisabled = mSelectedCollection.isDisabledChoice(item);
-            if(isDisabled){
+            if (isDisabled) {
                 mediaGrid.setCheckEnabled(false);
                 mediaGrid.setChecked(true);
-            }else if (selected) {
+            } else if (selected) {
                 mediaGrid.setCheckEnabled(true);
                 mediaGrid.setChecked(true);
             } else {
@@ -178,17 +178,18 @@ public class AlbumMediaAdapter extends
                     notifyCheckStateChanged();
                 }
             } else {
-                if(!mSelectedCollection.isDisabledChoice(item)){
+                if (!mSelectedCollection.isDisabledChoice(item)) {
                     mSelectedCollection.remove(item);
                     notifyCheckStateChanged();
                 }
             }
         } else {
             if (mSelectedCollection.isSelected(item)) {
-                    mSelectedCollection.remove(item);
-                    notifyCheckStateChanged();
+                mSelectedCollection.remove(item);
+                notifyCheckStateChanged();
             } else {
-                if (!mSelectedCollection.isDisabledChoice(item) && assertAddSelection(holder.itemView.getContext(), item)) {
+                if (!mSelectedCollection.isDisabledChoice(item)
+                        && assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
                     notifyCheckStateChanged();
                 }
