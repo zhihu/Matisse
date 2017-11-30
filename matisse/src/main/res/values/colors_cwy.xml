@@ -27,6 +27,7 @@
     <color name="cwy_item_placeholder">#9B9B9B</color>
     <color name="cwy_item_checkCircle_backgroundColor">#1E8AE8</color>
     <color name="cwy_item_checkCircle_borderColor">#FFFFFF</color>
+    <color name="cwy_item_checkedCircle_borderColor">#52AE50</color>
     <color name="cwy_capture">#9B9B9B</color>
     <color name="cwy_capture_text">#FFFFFF</color>
 

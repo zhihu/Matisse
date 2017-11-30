@@ -40,7 +40,7 @@ public class CheckView extends View {
     public static final int UNCHECKED = Integer.MIN_VALUE;
     private static final float STROKE_WIDTH = 2.0f; // dp
     private static final float SHADOW_WIDTH = 6.0f; // dp
-    private static final int SIZE = 48; // dp
+    private static final int SIZE = 32; // dp
     private static final float STROKE_RADIUS = 11.5f; // dp
     private static final float BG_RADIUS = 11.0f; // dp
     private static final int CONTENT_SIZE = 16; // dp
@@ -56,6 +56,8 @@ public class CheckView extends View {
     private Rect mBoundingRect;
     private RectF mCheckRect;
     private boolean mEnabled = true;
+    private int borderColor;
+    private int checkedBorderColor;
 
     public CheckView(Context context) {
         super(context);
@@ -88,22 +90,32 @@ public class CheckView extends View {
         mStrokePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         mStrokePaint.setStrokeWidth(STROKE_WIDTH * mDensity);
         TypedArray ta = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.item_checkCircle_borderColor});
+        TypedArray taBorderColor = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.item_checkedCircle_borderColor});
         int defaultColor = ResourcesCompat.getColor(
                 getResources(), R.color.zhihu_item_checkCircle_borderColor,
                 getContext().getTheme());
-        int color = ta.getColor(0, defaultColor);
+        borderColor = ta.getColor(0, defaultColor);
+
+        checkedBorderColor = taBorderColor.getColor(0, defaultColor);
+        taBorderColor.recycle();
         ta.recycle();
-        mStrokePaint.setColor(color);
+        mStrokePaint.setColor(borderColor);
 
         mCheckDrawable = ResourcesCompat.getDrawable(context.getResources(),
-                R.drawable.ic_filled_checkbox, context.getTheme());
+                R.drawable.ic_filled_check, context.getTheme());
     }
+
 
     public void setChecked(boolean checked) {
         if (mCountable) {
             throw new IllegalStateException("CheckView is countable, call setCheckedNum() instead.");
         }
         mChecked = checked;
+        if (mChecked) {
+            mStrokePaint.setColor(checkedBorderColor);
+        } else {
+            mStrokePaint.setColor(borderColor);
+        }
         invalidate();
     }
 
@@ -133,7 +145,6 @@ public class CheckView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // draw white stroke
         canvas.drawRoundRect(getCheckRect(), 3, 3, mStrokePaint);
 
         // enable hint

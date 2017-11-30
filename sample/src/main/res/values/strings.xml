@@ -20,4 +20,5 @@
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
     <string name="image_max_file_size_requirement_error">This image does not meet the maximum size requirements.</string>
     <string name="image_min_pixel_size_requirement_error">This image does not meet the minimum size requirements.</string>
+    <string name="chewy">Chewy</string>
 </resources>

@@ -98,6 +98,7 @@
         <item name="item.placeholder">@color/cwy_item_placeholder</item>
         <item name="item.checkCircle.backgroundColor">@color/cwy_item_checkCircle_backgroundColor</item>
         <item name="item.checkCircle.borderColor">@color/cwy_item_checkCircle_borderColor</item>
+        <item name="item.checkedCircle.borderColor">@color/cwy_item_checkedCircle_borderColor</item>
         <item name="page.bg">@color/cwy_page_bg</item>
         <item name="bottomToolbar.bg">@color/cwy_bottom_toolbar_bg</item>
         <item name="preview.bottomToolbar.back.textColor">@color/cwy_preview_bottom_toolbar_back_text</item>
