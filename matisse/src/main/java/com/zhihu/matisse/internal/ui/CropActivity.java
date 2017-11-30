@@ -101,10 +101,12 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
         } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -117,7 +119,9 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
             is = getContentResolver().openInputStream(bitmapUri);
             BitmapFactory.decodeStream(is, null, options); // Just get image size
         } finally {
-            is.close();
+            if(is != null) {
+                is.close();
+            }
         }
 
         int maxSize = getMaxImageSize();

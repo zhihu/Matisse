@@ -122,7 +122,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .singleImageCrop(true)
                                             .showSingleMediaType(true)
-                                            .imageEngine(new PicassoEngine())
+                                            .imageEngine(new GlideEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                             }

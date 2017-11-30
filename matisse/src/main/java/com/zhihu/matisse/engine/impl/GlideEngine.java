@@ -15,14 +15,14 @@
  */
 package com.zhihu.matisse.engine.impl;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.zhihu.matisse.engine.ImageEngine;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.zhihu.matisse.engine.ImageEngine;
 
 /**
  * {@link ImageEngine} implementation using Glide.
