@@ -18,7 +18,7 @@
     <attr name="toolbar" format="reference"/>
     <attr name="album.dropdown.title.color" format="reference|color"/>
     <attr name="album.dropdown.count.color" format="reference|color"/>
-    <attr name="album.element.color" format="reference|color"/>
+    <attr name="album.element.color" format="color"/>
     <attr name="album.thumbnail.placeholder" format="reference|color"/>
     <attr name="album.emptyView" format="reference"/>
     <attr name="album.emptyView.textColor" format="reference|color"/>
@@ -30,6 +30,7 @@
     <attr name="preview.bottomToolbar.back.textColor" format="reference|color"/>
     <attr name="preview.bottomToolbar.apply.textColor" format="reference|color"/>
     <attr name="item.placeholder" format="reference|color"/>
+    <attr name="item.capture.placeholder" format="reference|color"/>
     <attr name="item.checkCircle.backgroundColor" format="reference|color"/>
     <attr name="item.checkCircle.borderColor" format="reference|color"/>
     <attr name="capture.textColor" format="reference|color"/>

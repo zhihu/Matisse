@@ -33,9 +33,9 @@
         <TextView
             android:id="@+id/selected_album"
             android:layout_width="wrap_content"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
-            android:foreground="?selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:textColor="?attr/album.element.color"
             android:textSize="20sp"/>

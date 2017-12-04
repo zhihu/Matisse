@@ -16,6 +16,8 @@
  */
 package com.zhihu.matisse.internal.entity;
 
+import com.zhihu.matisse.MimeType;
+
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,10 +25,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-
-import com.zhihu.matisse.MimeType;
+import android.text.TextUtils;
 
 public class Item implements Parcelable {
+
     public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
         @Nullable
@@ -39,17 +41,30 @@ public class Item implements Parcelable {
             return new Item[size];
         }
     };
+
     public static final long ITEM_ID_CAPTURE = -1;
+
     public static final String ITEM_DISPLAY_NAME_CAPTURE = "Capture";
+
+    public static final String UNKNOW_MIME_TYPE = "unknow";
+
     public final long id;
+
     public final String mimeType;
+
     public final Uri uri;
+
     public final long size;
+
     public final long duration; // only for video, in ms
 
     private Item(long id, String mimeType, long size, long duration) {
         this.id = id;
-        this.mimeType = mimeType;
+        if (TextUtils.isEmpty(mimeType)) {
+            this.mimeType = UNKNOW_MIME_TYPE;
+        } else {
+            this.mimeType = mimeType;
+        }
         Uri contentUri;
         if (isImage()) {
             contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -134,9 +149,9 @@ public class Item implements Parcelable {
         Item other = (Item) obj;
         return id == other.id
                 && (mimeType != null && mimeType.equals(other.mimeType)
-                    || (mimeType == null && other.mimeType == null))
+                || (mimeType == null && other.mimeType == null))
                 && (uri != null && uri.equals(other.uri)
-                    || (uri == null && other.uri == null))
+                || (uri == null && other.uri == null))
                 && size == other.size
                 && duration == other.duration;
     }

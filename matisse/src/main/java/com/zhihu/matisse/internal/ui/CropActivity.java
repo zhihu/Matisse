@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,8 +97,10 @@ public class CropActivity extends AppCompatActivity implements View.OnClickListe
             }
             mCropImageView.setImageBitmap(sizeBitmap);
             mBottomBar.setVisibility(View.VISIBLE);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error_file_type, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
         } finally {
