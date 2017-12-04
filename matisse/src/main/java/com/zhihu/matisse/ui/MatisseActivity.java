@@ -98,6 +98,7 @@ public class MatisseActivity extends AppCompatActivity implements
             if (mSpec.captureStrategy == null)
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
             mMediaStoreCompat.setCaptureStrategy(mSpec.captureStrategy);
+            mMediaStoreCompat.onRestoreInstanceState(savedInstanceState);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -137,6 +138,7 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
         mAlbumCollection.onSaveInstanceState(outState);
+        mMediaStoreCompat.onSaveInstanceState(outState);
     }
 
     @Override
@@ -272,14 +274,16 @@ public class MatisseActivity extends AppCompatActivity implements
 
             @Override
             public void run() {
-                cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
-                mAlbumsSpinner.setSelection(MatisseActivity.this,
-                        mAlbumCollection.getCurrentSelection());
-                Album album = Album.valueOf(cursor);
-                if (album.isAll() && SelectionSpec.getInstance().capture) {
-                    album.addCaptureCount();
+                if (!cursor.isClosed()) {
+                    cursor.moveToPosition(mAlbumCollection.getCurrentSelection());
+                    mAlbumsSpinner.setSelection(MatisseActivity.this,
+                          mAlbumCollection.getCurrentSelection());
+                    Album album = Album.valueOf(cursor);
+                    if (album.isAll() && SelectionSpec.getInstance().capture) {
+                        album.addCaptureCount();
+                    }
+                    onAlbumSelected(album);
                 }
-                onAlbumSelected(album);
             }
         });
     }
