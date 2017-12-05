@@ -20,7 +20,7 @@ publishing {
   publications {
     maven(MavenPublication) {
       groupId 'com.chewy.android.matisse'
-      version = "1.0.0"
+      version = "1.0.1"
       artifactId 'matisse'
       artifact("${rootDir}/matisse/build/outputs/aar/matisse-${artifactory_artifact_type}.aar")
     }
