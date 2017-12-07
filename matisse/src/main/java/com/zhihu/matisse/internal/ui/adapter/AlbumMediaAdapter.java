@@ -287,7 +287,7 @@ public class AlbumMediaAdapter extends
             } else {
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
-                    if (mSelectedUris.contains(item.uri)) {
+                    if (!mSelectedUris.contains(item.uri)) {
                         mSelectedUris.add(item.uri);
                     }
                     notifyCheckStateChanged();

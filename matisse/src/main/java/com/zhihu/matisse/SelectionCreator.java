@@ -252,8 +252,6 @@ public final class SelectionCreator {
      * Provide an image engine.
      * <p>
      * There are two built-in image engines:
-     * 1. {@link com.zhihu.matisse.engine.impl.GlideEngine}
-     * 2. {@link com.zhihu.matisse.engine.impl.PicassoEngine}
      * And you can implement your own image engine.
      *
      * @param imageEngine {@link ImageEngine}
@@ -300,7 +298,7 @@ public final class SelectionCreator {
         return this;
     }
 
-    public SelectionCreator selectedUris(List<Uri> uris) {
+    public SelectionCreator selectedUris(ArrayList<Uri> uris) {
         mSelectionSpec.selectedUris = uris;
         return this;
     }

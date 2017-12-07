@@ -70,9 +70,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         }
 
         if (savedInstanceState == null) {
-            mSelectedCollection.onCreate(getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE));
+            mSelectedCollection.onCreate(getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE), mSpec.selectedUris);
         } else {
-            mSelectedCollection.onCreate(savedInstanceState);
+            mSelectedCollection.onCreate(savedInstanceState, mSpec.selectedUris);
         }
 
         mButtonBack = (TextView) findViewById(R.id.button_back);
@@ -179,6 +179,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     private void updateApplyButton() {
         int selectedCount = mSelectedCollection.count();
+        if (selectedCount == 0 || selectedCount < mSpec.selectedUris.size()) {
+            selectedCount = mSpec.selectedUris.size();
+        }
         if (selectedCount == 0) {
             mButtonApply.setText(R.string.button_apply_default);
             mButtonApply.setEnabled(false);

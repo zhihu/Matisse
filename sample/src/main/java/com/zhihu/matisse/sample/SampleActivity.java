@@ -21,7 +21,6 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,13 +33,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -51,7 +47,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     private static final int REQUEST_CODE_CHOOSE = 23;
 
     private UriAdapter mAdapter;
-    private List<Uri> uris = new ArrayList<>();
+    private ArrayList<Uri> uris = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +56,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter = new UriAdapter());
     }
@@ -81,12 +77,12 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                             switch (v.getId()) {
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
-                                            .choose(MimeType.ofAll(), false)
-                                            .countable(true)
+                                            .choose(MimeType.ofImage(), false)
+                                            .countable(false)
                                             .capture(true)
                                             .spanCount(4)
                                             .captureStrategy(new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
-                                            .maxSelectable(9)
+                                            .maxSelectable(80)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                                             //.gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                                             .groupByDate(true)
@@ -102,9 +98,11 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .theme(R.style.Matisse_Dracula)
                                             .countable(false)
                                             .groupByDate(true)
-                                            .maxSelectable(9)
-                                            .imageEngine(new PicassoEngine())
+                                            .maxSelectable(1)
+                                            .imageEngine(new GlideEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
+                                    break;
+                                default:
                                     break;
                             }
                             mAdapter.setData(null, null);
@@ -130,8 +128,10 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            uris = Matisse.obtainResult(data);
+            uris = (ArrayList<Uri>) Matisse.obtainResult(data);
             mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+            TextView tv = findViewById(R.id.images_count);
+            tv.setText("数量：" + uris.size());
         }
     }
 
@@ -173,8 +173,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
             UriViewHolder(View contentView) {
                 super(contentView);
-                mUri = (TextView) contentView.findViewById(R.id.uri);
-                mPath = (TextView) contentView.findViewById(R.id.path);
+                mUri = contentView.findViewById(R.id.uri);
+                mPath = contentView.findViewById(R.id.path);
             }
         }
     }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +14,18 @@
   limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        android:elevation="4dp"
+        android:elevation="0.5dp"
         android:theme="?toolbar"
         tools:targetApi="lollipop">
 
@@ -38,7 +37,7 @@
             android:foreground="?selectableItemBackground"
             android:gravity="center"
             android:textColor="?attr/album.element.color"
-            android:textSize="20sp"/>
+            android:textSize="16sp" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -57,8 +56,9 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:text="@string/button_preview"
+            android:visibility="gone"
             android:textColor="?attr/bottomToolbar.preview.textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/button_apply"
@@ -68,7 +68,7 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:textColor="?attr/bottomToolbar.apply.textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </FrameLayout>
 
     <FrameLayout
@@ -77,7 +77,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_toolbar"
         android:layout_below="@id/toolbar"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/empty_view"
@@ -97,7 +97,7 @@
             android:gravity="center"
             android:text="@string/empty_text"
             android:textColor="?attr/album.emptyView.textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </FrameLayout>
 </RelativeLayout>
