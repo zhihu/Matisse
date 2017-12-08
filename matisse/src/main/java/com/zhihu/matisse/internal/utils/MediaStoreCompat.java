@@ -119,6 +119,9 @@ public class MediaStoreCompat {
         } else {
             storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         }
+        if (mCaptureStrategy.directory != null) {
+            storageDir = new File(storageDir, mCaptureStrategy.directory);
+        }
 
         // Avoid joining path components manually
         File tempFile = new File(storageDir, imageFileName);
