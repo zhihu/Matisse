@@ -9,7 +9,7 @@ Base on [Matisse](https://github.com/zhihu/Matisse),add crop image function and 
 Gradle:
 
 ```groovy
-compile 'com.github.chaichuanfa:matisse:1.0.2'
+compile 'com.github.chaichuanfa:matisse:1.0.4'
 ``` 
 
 ## Add Themes
