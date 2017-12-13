@@ -25,6 +25,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 
 import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 
 public class Item implements Parcelable {
     public static final Creator<Item> CREATOR = new Creator<Item>() {
@@ -39,8 +40,10 @@ public class Item implements Parcelable {
             return new Item[size];
         }
     };
-    public static final long ITEM_ID_CAPTURE = -1;
-    public static final String ITEM_DISPLAY_NAME_CAPTURE = "Capture";
+    public static final long ITEM_ID_CAPTURE_PHOTO = -1;
+    public static final long ITEM_ID_CAPTURE_VIDEO = -2;
+    public static final String ITEM_DISPLAY_NAME_CAPTURE_PHOTO = "New photo";
+    public static final String ITEM_DISPLAY_NAME_CAPTURE_VIDEO = "New video";
     public final long id;
     public final String mimeType;
     public final Uri uri;
@@ -98,7 +101,16 @@ public class Item implements Parcelable {
     }
 
     public boolean isCapture() {
-        return id == ITEM_ID_CAPTURE;
+        return (id == ITEM_ID_CAPTURE_PHOTO)
+                || (id == ITEM_ID_CAPTURE_VIDEO);
+    }
+
+    public AlbumMediaLoader.Capture getCapture() {
+        if (id == ITEM_ID_CAPTURE_VIDEO)
+            return AlbumMediaLoader.Capture.Video;
+        if (id == ITEM_ID_CAPTURE_PHOTO)
+            return AlbumMediaLoader.Capture.Image;
+        return AlbumMediaLoader.Capture.Nothing;
     }
 
     public boolean isImage() {

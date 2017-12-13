@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,5 +16,11 @@
 <paths>
     <external-path
         name="my_images"
-        path="Android/data/com.zhihu.matisse.sample/files/Pictures"/>
+        path="Android/data/com.zhihu.matisse.sample/files/Pictures" />
+    <external-path
+        name="my_video"
+        path="Android/data/com.zhihu.matisse.sample/files/Movies" />
+    <external-path
+        name="DCIM"
+        path="Android/data/com.zhihu.matisse.sample/files/DCIM" />
 </paths>

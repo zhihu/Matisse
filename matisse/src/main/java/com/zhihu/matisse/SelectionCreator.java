@@ -29,6 +29,7 @@ import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
@@ -87,7 +88,7 @@ public final class SelectionCreator {
     /**
      * Constructs a new specification builder on the context.
      *
-     * @param matisse   a requester context wrapper.
+     * @param matisse  a requester context wrapper.
      * @param mimeTypes MIME type set to select.
      */
     SelectionCreator(Matisse matisse, @NonNull Set<MimeType> mimeTypes, boolean mediaTypeExclusive) {
@@ -191,11 +192,11 @@ public final class SelectionCreator {
      * <p>
      * If this value is set true, photo capturing entry will appear only on All Media's page.
      *
-     * @param enable Whether to enable capturing or not. Default value is false;
+     * @param capture Whether to enable photo or video capturing or not. Default value is Capture.Nothing;
      * @return {@link SelectionCreator} for fluent API.
      */
-    public SelectionCreator capture(boolean enable) {
-        mSelectionSpec.capture = enable;
+    public SelectionCreator capture(AlbumMediaLoader.Capture capture) {
+        mSelectionSpec.capture = capture;
         return this;
     }
 

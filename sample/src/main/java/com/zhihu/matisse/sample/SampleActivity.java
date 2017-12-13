@@ -36,6 +36,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mAdapter = new UriAdapter());
+        mAdapter = new UriAdapter();
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                     Matisse.from(SampleActivity.this)
                                             .choose(MimeType.ofAll(), false)
                                             .countable(true)
-                                            .capture(true)
+                                            .capture(AlbumMediaLoader.Capture.All)
                                             .captureStrategy(
                                                     new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                                             .maxSelectable(9)

@@ -33,6 +33,10 @@ import com.zhihu.matisse.internal.utils.MediaStoreCompat;
  * Load images and videos into a single cursor.
  */
 public class AlbumMediaLoader extends CursorLoader {
+    public enum Capture {
+        Video, Image, All, Nothing
+    }
+
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     private static final String[] PROJECTION = {
             MediaStore.Files.FileColumns._ID,
@@ -94,30 +98,39 @@ public class AlbumMediaLoader extends CursorLoader {
     // ===============================================================
 
     private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
-    private final boolean mEnableCapture;
+    private final Capture mCapture;
 
-    private AlbumMediaLoader(Context context, String selection, String[] selectionArgs, boolean capture) {
+    private AlbumMediaLoader(Context context, String selection, String[] selectionArgs,
+                             Capture capture) {
         super(context, QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY);
-        mEnableCapture = capture;
+        mCapture = capture;
     }
 
-    public static CursorLoader newInstance(Context context, Album album, boolean capture) {
+    public static CursorLoader newInstance(Context context, Album album, Capture capture) {
         String selection;
         String[] selectionArgs;
-        boolean enableCapture;
+        Capture mCapture = capture;
 
         if (album.isAll()) {
             if (SelectionSpec.getInstance().onlyShowImages()) {
                 selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
                 selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+                if (capture == Capture.Image
+                        || capture == Capture.All) {
+                    mCapture = Capture.Image;
+                }
             } else if (SelectionSpec.getInstance().onlyShowVideos()) {
                 selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
                 selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+                if (capture == Capture.Video
+                        || capture == Capture.All) {
+                    mCapture = Capture.Video;
+                }
             } else {
                 selection = SELECTION_ALL;
                 selectionArgs = SELECTION_ALL_ARGS;
+                mCapture = capture;
             }
-            enableCapture = capture;
         } else {
             if (SelectionSpec.getInstance().onlyShowImages()) {
                 selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
@@ -131,19 +144,36 @@ public class AlbumMediaLoader extends CursorLoader {
                 selection = SELECTION_ALBUM;
                 selectionArgs = getSelectionAlbumArgs(album.getId());
             }
-            enableCapture = false;
+            mCapture = Capture.Nothing;
         }
-        return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture);
+        return new AlbumMediaLoader(context, selection, selectionArgs, mCapture);
     }
 
     @Override
     public Cursor loadInBackground() {
         Cursor result = super.loadInBackground();
-        if (!mEnableCapture || !MediaStoreCompat.hasCameraFeature(getContext())) {
+        if (!MediaStoreCompat.hasCameraFeature(getContext())) {
             return result;
         }
         MatrixCursor dummy = new MatrixCursor(PROJECTION);
-        dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE, Item.ITEM_DISPLAY_NAME_CAPTURE, "", 0, 0});
+        switch (mCapture) {
+            case All:
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_PHOTO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_PHOTO, "", 0, 0});
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_VIDEO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_VIDEO, "", 0, 0});
+                break;
+            case Image:
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_PHOTO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_PHOTO, "", 0, 0});
+                break;
+            case Video:
+                dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE_VIDEO,
+                        Item.ITEM_DISPLAY_NAME_CAPTURE_VIDEO, "", 0, 0});
+                break;
+            default:
+                return result;
+        }
         return new MergeCursor(new Cursor[]{dummy, result});
     }
 

@@ -24,6 +24,7 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 
 import java.util.List;
 import java.util.Set;
@@ -41,7 +42,7 @@ public final class SelectionSpec {
     public int maxImageSelectable;
     public int maxVideoSelectable;
     public List<Filter> filters;
-    public boolean capture;
+    public AlbumMediaLoader.Capture capture;
     public CaptureStrategy captureStrategy;
     public int spanCount;
     public int gridExpectedSize;
@@ -72,7 +73,7 @@ public final class SelectionSpec {
         maxImageSelectable = 0;
         maxVideoSelectable = 0;
         filters = null;
-        capture = false;
+        capture = AlbumMediaLoader.Capture.Nothing;
         captureStrategy = null;
         spanCount = 3;
         gridExpectedSize = 0;

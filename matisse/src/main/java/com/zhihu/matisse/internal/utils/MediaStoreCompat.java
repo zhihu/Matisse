@@ -29,6 +29,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.os.EnvironmentCompat;
 
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,9 +43,9 @@ public class MediaStoreCompat {
 
     private final WeakReference<Activity> mContext;
     private final WeakReference<Fragment> mFragment;
-    private       CaptureStrategy         mCaptureStrategy;
-    private       Uri                     mCurrentPhotoUri;
-    private       String                  mCurrentPhotoPath;
+    private CaptureStrategy mCaptureStrategy;
+    private Uri mCurrentFileUri;
+    private String mCurrentFilePath;
 
     public MediaStoreCompat(Activity activity) {
         mContext = new WeakReference<>(activity);
@@ -72,27 +73,46 @@ public class MediaStoreCompat {
     }
 
     public void dispatchCaptureIntent(Context context, int requestCode) {
-        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent captureIntent;
+        switch (requestCode) {
+            case MatisseActivity.REQUEST_CODE_CAPTURE_PHOTO:
+                captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                break;
+            case MatisseActivity.REQUEST_CODE_CAPTURE_VIDEO:
+                captureIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                break;
+            default:
+                return;
+        }
         if (captureIntent.resolveActivity(context.getPackageManager()) != null) {
-            File photoFile = null;
+            File file = null;
             try {
-                photoFile = createImageFile();
+                switch (requestCode) {
+                    case MatisseActivity.REQUEST_CODE_CAPTURE_PHOTO:
+                        file = createImageFile();
+                        break;
+                    case MatisseActivity.REQUEST_CODE_CAPTURE_VIDEO:
+                        file = createVideoFile();
+                        break;
+                    default:
+                        return;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            if (photoFile != null) {
-                mCurrentPhotoPath = photoFile.getAbsolutePath();
-                mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
-                        mCaptureStrategy.authority, photoFile);
-                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
+            if (file != null) {
+                mCurrentFilePath = file.getAbsolutePath();
+                mCurrentFileUri = FileProvider.getUriForFile(mContext.get(),
+                        mCaptureStrategy.authority, file);
+                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentFileUri);
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     List<ResolveInfo> resInfoList = context.getPackageManager()
                             .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
                     for (ResolveInfo resolveInfo : resInfoList) {
                         String packageName = resolveInfo.activityInfo.packageName;
-                        context.grantUriPermission(packageName, mCurrentPhotoUri,
+                        context.grantUriPermission(packageName, mCurrentFileUri,
                                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     }
                 }
@@ -105,6 +125,30 @@ public class MediaStoreCompat {
         }
     }
 
+    private File createVideoFile() throws IOException {
+        // Create an video file name
+        String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String videoFileName = String.format("MP4_%s.mp4", timeStamp);
+        File storageDir;
+        if (mCaptureStrategy.isPublic) {
+            storageDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM);
+        } else {
+            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_DCIM);
+        }
+
+        // Avoid joining path components manually
+        File tempFile = new File(storageDir, videoFileName);
+
+        // Handle the situation that user's external storage is not ready
+        if (!Environment.MEDIA_MOUNTED.equals(EnvironmentCompat.getStorageState(tempFile))) {
+            return null;
+        }
+
+        return tempFile;
+    }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp =
@@ -113,9 +157,9 @@ public class MediaStoreCompat {
         File storageDir;
         if (mCaptureStrategy.isPublic) {
             storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
+                    Environment.DIRECTORY_DCIM);
         } else {
-            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            storageDir = mContext.get().getExternalFilesDir(Environment.DIRECTORY_DCIM);
         }
 
         // Avoid joining path components manually
@@ -129,11 +173,11 @@ public class MediaStoreCompat {
         return tempFile;
     }
 
-    public Uri getCurrentPhotoUri() {
-        return mCurrentPhotoUri;
+    public Uri getCurrentFileUri() {
+        return mCurrentFileUri;
     }
 
-    public String getCurrentPhotoPath() {
-        return mCurrentPhotoPath;
+    public String getCurrentFilePath() {
+        return mCurrentFilePath;
     }
 }
