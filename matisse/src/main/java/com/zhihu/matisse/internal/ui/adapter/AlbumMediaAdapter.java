@@ -233,7 +233,7 @@ public class AlbumMediaAdapter extends
         }
         Cursor cursor = getCursor();
         for (int i = first; i <= last; i++) {
-            RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(first);
+            RecyclerView.ViewHolder holder = mRecyclerView.findViewHolderForAdapterPosition(i);
             if (holder instanceof MediaViewHolder) {
                 if (cursor.moveToPosition(i)) {
                     setCheckStatus(Item.valueOf(cursor), ((MediaViewHolder) holder).mMediaGrid);
