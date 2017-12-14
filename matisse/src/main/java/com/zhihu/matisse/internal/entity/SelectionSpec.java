@@ -17,6 +17,7 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.support.annotation.StyleRes;
 
 import com.zhihu.matisse.MimeType;
@@ -47,6 +48,7 @@ public final class SelectionSpec {
     public int gridExpectedSize;
     public float thumbnailScale;
     public ImageEngine imageEngine;
+    public List<Uri> disabledChoiceImageUriList;
 
     private SelectionSpec() {
     }
@@ -63,6 +65,7 @@ public final class SelectionSpec {
 
     private void reset() {
         mimeTypeSet = null;
+        disabledChoiceImageUriList = null;
         mediaTypeExclusive = true;
         showSingleMediaType = false;
         themeId = R.style.Matisse_Zhihu;

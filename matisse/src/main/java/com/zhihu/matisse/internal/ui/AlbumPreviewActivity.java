@@ -47,9 +47,32 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
 
         Item item = getIntent().getParcelableExtra(EXTRA_ITEM);
         if (mSpec.countable) {
-            mCheckView.setCheckedNum(mSelectedCollection.checkedNumOf(item));
+            int checkedNum = mSelectedCollection.checkedNumOf(item);
+            mCheckView.setCheckedNum(checkedNum);
+            if (checkedNum > 0) {
+                mCheckView.setEnabled(!mSelectedCollection.isDisabledChoice(item));
+            } else {
+                mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
+            }
         } else {
-            mCheckView.setChecked(mSelectedCollection.isSelected(item));
+            if (mSelectedCollection.isDisabledChoice(item)) {
+                mCheckView.setEnabled(false);
+                mCheckView.setChecked(true);
+            } else {
+                boolean checked = mSelectedCollection.isSelected(item);
+                boolean isDisabled = mSelectedCollection.isDisabledChoice(item);
+                if (isDisabled) {
+                    mCheckView.setChecked(true);
+                    mCheckView.setEnabled(false);
+                } else {
+                    mCheckView.setChecked(checked);
+                    if (checked) {
+                        mCheckView.setEnabled(true);
+                    } else {
+                        mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
+                    }
+                }
+            }
         }
         updateSize(item);
     }
