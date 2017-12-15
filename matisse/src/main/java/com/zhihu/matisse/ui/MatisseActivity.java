@@ -125,7 +125,7 @@ public class MatisseActivity extends AppCompatActivity implements
         mContainer = findViewById(R.id.container);
         mEmptyView = findViewById(R.id.empty_view);
         mBottomToolbar = findViewById(R.id.bottom_toolbar);
-        if(mSpec.singleMediaClosePreview()) {
+        if(mSpec.maxSelectable == 1) {
             mBottomToolbar.setVisibility(View.GONE);
         } else {
             mBottomToolbar.setVisibility(View.VISIBLE);

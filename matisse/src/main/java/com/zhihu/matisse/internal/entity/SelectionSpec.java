@@ -125,6 +125,10 @@ public final class SelectionSpec {
         return maxSelectable == 1 && !singleMediaPreview;
     }
 
+    public boolean singleMediaOpenPreview() {
+        return maxSelectable == 1 && singleMediaPreview;
+    }
+
     public boolean singleImageCropEnable() {
         return maxSelectable == 1 && singleImageCrop && MimeType.ofStaticImage()
                 .containsAll(mimeTypeSet);

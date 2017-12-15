@@ -15,16 +15,6 @@
  */
 package com.zhihu.matisse.internal.ui;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
-
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.entity.Item;
@@ -34,6 +24,16 @@ import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import com.zhihu.matisse.internal.utils.Platform;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 public abstract class BasePreviewActivity extends AppCompatActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener {
@@ -87,6 +87,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         mPager.setAdapter(mAdapter);
         mCheckView = (CheckView) findViewById(R.id.check_view);
         mCheckView.setCountable(mSpec.countable);
+        if(mSpec.maxSelectable == 1) {
+            mCheckView.setVisibility(View.GONE);
+        }
 
         mCheckView.setOnClickListener(new View.OnClickListener() {
 
@@ -133,8 +136,17 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         if (v.getId() == R.id.button_back) {
             onBackPressed();
         } else if (v.getId() == R.id.button_apply) {
-            sendBackResult(true);
-            finish();
+            if(mSpec.maxSelectable == 1) {
+                Item item = mAdapter.getMediaItem(mPager.getCurrentItem());
+                if (assertAddSelection(item)) {
+                    mSelectedCollection.add(item);
+                    sendBackResult(true);
+                    finish();
+                }
+            } else {
+                sendBackResult(true);
+                finish();
+            }
         }
     }
 
@@ -181,7 +193,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
             mButtonApply.setText(R.string.button_apply_default);
-            mButtonApply.setEnabled(false);
+            if(mSpec.maxSelectable != 1) {
+                mButtonApply.setEnabled(false);
+            }
         } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
             mButtonApply.setText(R.string.button_apply_default);
             mButtonApply.setEnabled(true);

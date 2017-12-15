@@ -118,9 +118,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .captureStrategy(
                                                     new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
                                             .thumbnailScale(0.85f)
-                                            .singleMediaPreview(false)
+                                            .singleMediaPreview(true)
                                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                                            .singleImageCrop(true)
+                                            .singleImageCrop(false)
                                             .showSingleMediaType(true)
                                             .imageEngine(new GlideEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);

@@ -117,7 +117,7 @@ public class AlbumMediaAdapter extends
                     getImageResize(mediaViewHolder.mMediaGrid.getContext()),
                     mPlaceholder,
                     mSelectionSpec.countable,
-                    !mSelectionSpec.singleMediaClosePreview(),
+                    mSelectionSpec.maxSelectable != 1,
                     holder
             ));
             mediaViewHolder.mMediaGrid.bindMedia(item);
@@ -162,6 +162,10 @@ public class AlbumMediaAdapter extends
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
         if (mOnMediaClickListener != null) {
             if(mSelectionSpec.singleMediaClosePreview()) {
+                if (assertAddSelection(holder.itemView.getContext(), item)) {
+                    mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+                }
+            } else if(mSelectionSpec.singleMediaOpenPreview()) {
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
                 }
