@@ -15,6 +15,7 @@
  */
 apply plugin: 'com.android.library'
 apply plugin: 'checkstyle'
+apply from: "$rootProject.rootDir.absolutePath/gradle/publish.gradle"
 
 android {
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
@@ -24,7 +25,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+        versionName rootProject.ext.releaseVersionName
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

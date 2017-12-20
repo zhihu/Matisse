@@ -23,7 +23,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.0.1"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
     }
 }
 
@@ -33,6 +34,9 @@ allprojects {
         mavenCentral()
         maven {
             url "https://dl.bintray.com/felix0503/maven"
+        }
+        maven {
+            url "http://47.88.228.53:8081/artifactory/libs-release-local"
         }
     }
 }
@@ -49,4 +53,7 @@ ext {
     targetSdkVersion = 24
     versionCode = 9
     versionName = "1.0.5"
+
+    groupName = 'com.tongzhuo'
+    releaseVersionName = "0.0.1"
 }
