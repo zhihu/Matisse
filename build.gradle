@@ -52,8 +52,7 @@ ext {
     minSdkVersion = 11
     targetSdkVersion = 24
     versionCode = 9
-    versionName = "1.0.5"
 
     groupName = 'com.tongzhuo'
-    releaseVersionName = "0.0.1"
+    releaseVersionName = "1.0.5"
 }

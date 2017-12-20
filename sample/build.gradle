@@ -38,7 +38,8 @@ android {
 
 dependencies {
 //    compile project(':matisse')
-    compile 'com.github.chaichuanfa:matisse:1.0.5'
+//    compile 'com.github.chaichuanfa:matisse:1.0.5'
+    compile 'com.tongzhuo:matisse:0.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile 'com.android.support:appcompat-v7:25.3.0'
