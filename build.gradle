@@ -16,6 +16,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.versions = [
+        'androidSdk' : 27,
+        'supportLibrary': '27.0.2',
+    ]
     repositories {
         jcenter()
         google()
