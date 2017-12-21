@@ -17,6 +17,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion versions.androidSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId 'com.zhihu.matisse.sample'

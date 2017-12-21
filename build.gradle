@@ -18,6 +18,7 @@
 buildscript {
     ext.versions = [
         'androidSdk' : 27,
+        'buildTools': '27.0.2',
         'supportLibrary': '27.0.2',
     ]
     repositories {
