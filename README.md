@@ -70,6 +70,21 @@ Matisse.from(MainActivity.this)
         .forResult(REQUEST_CODE_CHOOSE);
 ```
 
+If you use `forResult` you should add `onActivityResult()` callback of the starting `Activity` or `Fragment`:
+
+```java
+List<Uri> mSelected;
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+        mSelected = Matisse.obtainResult(data);
+        Log.d("Matisse", "mSelected: " + mSelected);
+    }
+}
+```
+
 **Use `select`**
 ```java
 Matisse.from(MainActivity.this)
@@ -99,23 +114,6 @@ There are two built-in themes you can use to start `MatisseActivity`:
 - `R.style.Matisse_Dracula` (dark mode)  
 
 And Also you can define your own theme as you wish.
-
-#### Receive Result
-
-If you use `forResult` you should add `onActivityResult()` callback of the starting `Activity` or `Fragment`:
-
-```java
-List<Uri> mSelected;
-
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-        mSelected = Matisse.obtainResult(data);
-        Log.d("Matisse", "mSelected: " + mSelected);
-    }
-}
-```
 
 #### More
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).
