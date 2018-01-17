@@ -313,7 +313,7 @@ public final class SelectionCreator {
     public void select(SelectionListener listener) {
         Activity hostActivity = mMatisse.getHostActivity();
         if (hostActivity == null) {
-            throw new NullPointerException("Activity is not available!");
+            return;
         }
 
         ManagerFragment fragment = getManagerFragment(hostActivity);
