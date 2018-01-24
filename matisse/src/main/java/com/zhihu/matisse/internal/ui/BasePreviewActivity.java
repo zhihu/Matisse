@@ -15,8 +15,10 @@
  */
 package com.zhihu.matisse.internal.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -59,6 +61,11 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(SelectionSpec.getInstance().themeId);
         super.onCreate(savedInstanceState);
+        if (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_media_preview);
         if (Platform.hasKitKat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

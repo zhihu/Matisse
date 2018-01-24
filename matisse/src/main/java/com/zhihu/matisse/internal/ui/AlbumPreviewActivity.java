@@ -15,6 +15,8 @@
  */
 package com.zhihu.matisse.internal.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,7 +42,10 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            finish();
+            return;
+        }
         mCollection.onCreate(this, this);
         Album album = getIntent().getParcelableExtra(EXTRA_ALBUM);
         mCollection.load(album);
@@ -57,7 +62,8 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCollection.onDestroy();
+        if (checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            mCollection.onDestroy();
     }
 
     @Override
