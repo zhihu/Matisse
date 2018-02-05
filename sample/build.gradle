@@ -45,6 +45,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
-    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 }
