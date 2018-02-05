@@ -27,7 +27,6 @@ import com.zhihu.matisse.engine.ImageEngine;
 /**
  * {@link ImageEngine} implementation using Glide.
  */
-
 public class GlideEngine implements ImageEngine {
 
     @Override
