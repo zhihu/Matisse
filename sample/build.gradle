@@ -16,13 +16,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId 'com.zhihu.matisse.sample'
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -35,7 +35,7 @@ android {
     }
 }
 
-ext.supportLibVersion = '26.1.0'
+ext.supportLibVersion = '27.0.2'
 
 dependencies {
     implementation project(':matisse')
@@ -44,7 +44,8 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 }
