@@ -49,3 +49,13 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     compileOnly 'com.squareup.picasso:picasso:2.5.2'
 }
+
+task makeJar(type: Copy) {
+    delete 'build/libs/mysdk.jar'
+    from('build/intermediates/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename('classes.jar', 'matisse-0.6.jar')
+}
+// gradlew makeJar
+makeJar.dependsOn(build)
