@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="app_name">Matisse</string>
-  <string name="permission_request_denied">권한요청이 거부되었습니다.</string>
-  <string name="error_gif">x 나 y의 크기는 %1$dpx 이상, 파일 크기는 %2$sM 이하여야 합니다.</string>
-</resources>
