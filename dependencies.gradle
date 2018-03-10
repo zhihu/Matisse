@@ -1,0 +1,8 @@
+ext.versions = [
+
+        supportLibrary : '27.0.2',
+        glide : '4.5.0',
+        picasso : '2.5.2',
+        imageZoom: '1.0.4',
+
+]
