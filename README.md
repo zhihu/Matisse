@@ -1,4 +1,88 @@
-This is folked and maintained version 
+This repository is forked and maintained version. 
+
+# What's different
+
+- Supports Glide version 4.x (the biggest reason I forked the library)
+- Support libraries are up-to date
+- Supports Maven Repository Publish
+
+# Maven Repository Publish
+
+You can create your own AAR and publish them as Maven Repository. You can publish them remotely or locally, where ever you want and setup as your dependencies. Here's how you do it.
+
+### 1. Create your custom build
+
+First of all, create your own AAR. First, open `matisse/build.gradle` and change `library_version`
+
+```groovy:build.gradle
+...
+def library_version = '0.5.0-custom'
+```
+
+Make sure it does not conflict with the original library version, as it will take what ever comes
+ first.
+Then build your AAR by the command `./gradlew clean build`
+
+
+### 2. Publish to your Maven Repository
+ 
+**Publish Locally**   
+
+To publish locally you can just run command 
+ 
+```groovy
+./gradlew publishMavenPublicationToMavenRepository
+```
+
+and it will create the repository under `repo/`
+
+To integrate the library to your project, first you have to set maven url to the top-level `build
+.gradle`
+ 
+ ```groovy
+allprojects {
+    repositories {
+        jcenter()
+        google()
+        // Add below
+        maven {
+            url "$rootDir/repo"
+        }
+    }
+}
+```
+
+Then, in your `app/build.gradle` add
+
+```groovy
+dependencies {
+    implementation "com.zhihu.android:matisse:0.5.0-custom"
+    ...
+}
+```
+
+**Publish Remotely**
+
+If you want to publish remotely, you have to set url, user name, password inside `gradle.properties`
+
+```groovy
+deployUrl=https://foobar.com:8081
+deployRepoUsername=test
+deployRepoPassword=aaaaaa
+```
+
+and then run
+
+```groovy
+./gradlew -Premote=true publishMavenPublicationToMavenRepository
+```
+
+Additionally, you can setup parameters from commandline. 
+
+```groovy
+./gradlew -Premote=true -PdeployUrl=https... -PdeployRepoUsername=test -PdeployRepoPassword=aaaaaa publishMavenPublicationToMavenRepository
+```
+
 
 ![Image](/image/banner.png)
 
