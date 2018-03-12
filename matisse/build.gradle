@@ -82,22 +82,66 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-// Publish Artifact
+
+def library_version = '0.5.0-custom'
+
+// Publish Artifacts
 publishing {
     publications {
         maven(MavenPublication) {
             groupId 'com.zhihu.android'
             artifactId 'matisse'
-            version "$versions.library_version"
+            version "$library_version"
             artifact("$buildDir/outputs/aar/$artifactId-release.aar")
             artifact(androidSourcesJar)
             artifact(javadocJar)
+
+            // Add exclude and transitive options
+            //https://gist.github.com/Robyer/a6578e60127418b380ca133a1291f017
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                // List all compile dependencies and write to POM
+                configurations.implementation.getAllDependencies().each { Dependency dep ->
+                    if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
+                        return // ignore invalid dependencies
+
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dep.group)
+                    dependencyNode.appendNode('artifactId', dep.name)
+                    dependencyNode.appendNode('version', dep.version)
+
+                    if (!dep.transitive) {
+                        def exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                        exclusionNode.appendNode('groupId', '*')
+                        exclusionNode.appendNode('artifactId', '*')
+                    } else if (!dep.properties.excludeRules.empty) {
+                        def exclusionsNode = dependencyNode.appendNode('exclusions')
+                        dep.properties.excludeRules.each { ExcludeRule rule ->
+                            def exclusionNode = exclusionsNode.appendNode('exclusion')
+                            exclusionNode.appendNode('groupId', rule.group ?: '*')
+                            exclusionNode.appendNode('artifactId', rule.module ?: '*')
+                        }
+                    }
+                }
+            }
         }
     }
 
     repositories {
         maven {
-            url "$rootDir/repo"
+            if (project.hasProperty("remote")
+                    && project.getProperty("remote") == "true") {
+                // Currently, maven-publish plugin only supports sftp
+                // https://discuss.gradle.org/t/support-ssh-protocol-for-maven-publish-just-like-maven/17892
+                url = deployUrl
+                credentials {
+                    username deployRepoUsername
+                    password deployRepoPassword
+                }
+            } else {
+                url "$rootDir/repo"
+            }
         }
     }
 }

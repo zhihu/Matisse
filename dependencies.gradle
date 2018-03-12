@@ -5,5 +5,4 @@ ext.versions = [
         picasso : '2.5.2',
         imageZoom: '1.0.4',
 
-        library_version: '0.5.0-custom'
 ]

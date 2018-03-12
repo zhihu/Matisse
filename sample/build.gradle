@@ -38,7 +38,7 @@ android {
 
 dependencies {
     //implementation project(':matisse')
-    implementation "com.zhihu.android:matisse:${versions.library_version}"
+    implementation "com.zhihu.android:matisse:0.5.0-custom"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
     implementation "com.android.support:recyclerview-v7:${versions.supportLibrary}"
