@@ -15,6 +15,7 @@
  */
 apply plugin: 'com.android.library'
 apply plugin: 'checkstyle'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 27
@@ -23,6 +24,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
+        consumerProguardFiles 'proguard-rules.pro'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -30,6 +32,12 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+}
+
+android.libraryVariants.all { variant ->
+    variant.outputs.all {
+        //outputFileName = "matisse-$library_version"+".aar"
     }
 }
 
@@ -54,4 +62,42 @@ task checkstyle(type:Checkstyle) {
     showViolations true
     classpath = files()
     source 'src/main/java'
+}
+
+// source jar (optional)
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+// javadoc jar (optional)
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    failOnError false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// Publish Artifact
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId 'com.zhihu.android'
+            artifactId 'matisse'
+            version "$versions.library_version"
+            artifact("$buildDir/outputs/aar/$artifactId-release.aar")
+            artifact(androidSourcesJar)
+            artifact(javadocJar)
+        }
+    }
+
+    repositories {
+        maven {
+            url "$rootDir/repo"
+        }
+    }
 }

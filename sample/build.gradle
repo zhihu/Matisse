@@ -15,6 +15,7 @@
  */
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 27
     buildToolsVersion "26.0.3"
@@ -36,9 +37,9 @@ android {
 }
 
 dependencies {
-    implementation project(':matisse')
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    //implementation project(':matisse')
+    implementation "com.zhihu.android:matisse:${versions.library_version}"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
     implementation "com.android.support:recyclerview-v7:${versions.supportLibrary}"
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
