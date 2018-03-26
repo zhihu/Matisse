@@ -83,7 +83,9 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     public void onDestroy() {
-        mLoaderManager.destroyLoader(LOADER_ID);
+        if (mLoaderManager != null) {
+            mLoaderManager.destroyLoader(LOADER_ID);
+        }
         mCallbacks = null;
     }
 
