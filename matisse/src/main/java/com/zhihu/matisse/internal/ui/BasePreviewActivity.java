@@ -59,6 +59,13 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(SelectionSpec.getInstance().themeId);
         super.onCreate(savedInstanceState);
+        if (!SelectionSpec.getInstance().hasInited) {
+            // When hasInited == false, indicate that Activity is restarting
+            // after app process was killed.
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_media_preview);
         if (Platform.hasKitKat()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

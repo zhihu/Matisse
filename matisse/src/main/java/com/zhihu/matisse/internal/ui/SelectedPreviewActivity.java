@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.zhihu.matisse.internal.entity.Item;
+import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 
 import java.util.List;
@@ -28,6 +29,13 @@ public class SelectedPreviewActivity extends BasePreviewActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!SelectionSpec.getInstance().hasInited) {
+            // When hasInited == false, indicate that Activity is restarting
+            // after app process was killed.
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
 
         Bundle bundle = getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE);
         List<Item> selected = bundle.getParcelableArrayList(SelectedItemCollection.STATE_SELECTION);
