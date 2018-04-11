@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MediaStoreCompat {
+    public static final String STATE_PHOTO_URI = "state_photo_uri";
+    public static final String STATE_PHOTO_PATH = "state_photo_path";
 
     private final WeakReference<Activity> mContext;
     private final WeakReference<Fragment> mFragment;
@@ -135,5 +138,19 @@ public class MediaStoreCompat {
 
     public String getCurrentPhotoPath() {
         return mCurrentPhotoPath;
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+
+        mCurrentPhotoUri = savedInstanceState.getParcelable(STATE_PHOTO_URI);
+        mCurrentPhotoPath = savedInstanceState.getString(STATE_PHOTO_PATH);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_PHOTO_URI, mCurrentPhotoUri);
+        outState.putString(STATE_PHOTO_PATH, mCurrentPhotoPath);
     }
 }
