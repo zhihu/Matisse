@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.listener.OnSelectedListener;
 import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
@@ -278,6 +280,21 @@ public final class SelectionCreator {
      */
     public SelectionCreator imageEngine(ImageEngine imageEngine) {
         mSelectionSpec.imageEngine = imageEngine;
+        return this;
+    }
+
+    /**
+     * Set listener for callback immediately when user select or unselect something.
+     * <p>
+     * It's a redundant API with {@link Matisse#obtainResult(Intent)},
+     * we only suggest you to use this API when you need to do something immediately.
+     *
+     * @param listener {@link OnSelectedListener}
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    @NonNull
+    public SelectionCreator setOnSelectedListener(@Nullable OnSelectedListener listener) {
+        mSelectionSpec.onSelectedListener = listener;
         return this;
     }
 

@@ -308,6 +308,11 @@ public class MatisseActivity extends AppCompatActivity implements
     public void onUpdate() {
         // notify bottom toolbar that check state changed.
         updateBottomToolbar();
+
+        if (mSpec.onSelectedListener != null) {
+            mSpec.onSelectedListener.onSelected(
+                    mSelectedCollection.asListOfUri(), mSelectedCollection.asListOfString());
+        }
     }
 
     @Override

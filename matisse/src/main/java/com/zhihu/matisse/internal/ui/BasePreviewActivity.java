@@ -111,6 +111,11 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                     }
                 }
                 updateApplyButton();
+
+                if (mSpec.onSelectedListener != null) {
+                    mSpec.onSelectedListener.onSelected(
+                            mSelectedCollection.asListOfUri(), mSelectedCollection.asListOfString());
+                }
             }
         });
         updateApplyButton();
