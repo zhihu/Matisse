@@ -202,6 +202,23 @@ public final class SelectionCreator {
     }
 
     /**
+     * Show a original photo check options.Let users decide whether use original photo after select
+     *
+     * @param enable  Whether to enable original photo or not
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator originalable(boolean enable){
+        mSelectionSpec.originalable=enable;
+        return this;
+    }
+
+
+    public SelectionCreator originalMaxSize(int size){
+        mSelectionSpec.originalMaxSize =size;
+        return this;
+    }
+
+    /**
      * Capture strategy provided for the location to save photos including internal and external
      * storage and also a authority for {@link android.support.v4.content.FileProvider}.
      *
