@@ -49,6 +49,8 @@ public final class SelectionSpec {
     public float thumbnailScale;
     public ImageEngine imageEngine;
     public OnSelectedListener onSelectedListener;
+    public boolean originalable;
+    public int originalMaxSize;
 
     private SelectionSpec() {
     }
@@ -80,6 +82,8 @@ public final class SelectionSpec {
         gridExpectedSize = 0;
         thumbnailScale = 0.5f;
         imageEngine = new GlideEngine();
+        originalable=false;
+        originalMaxSize =Integer.MAX_VALUE;
     }
 
     public boolean singleSelectionModeEnabled() {

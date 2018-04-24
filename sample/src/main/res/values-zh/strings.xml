@@ -17,4 +17,5 @@
 <resources>
     <string name="permission_request_denied">需要相应的权限</string>
     <string name="error_gif">长宽不小于 %1$dpx，且大小不超过 %2$sM。</string>
+    <string name="error_original">大小不超过 %1$sM。</string>
 </resources>

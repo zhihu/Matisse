@@ -34,6 +34,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhihu.matisse.R;
@@ -49,8 +50,11 @@ import com.zhihu.matisse.internal.ui.SelectedPreviewActivity;
 import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
 import com.zhihu.matisse.internal.ui.adapter.AlbumsAdapter;
 import com.zhihu.matisse.internal.ui.widget.AlbumsSpinner;
+import com.zhihu.matisse.internal.ui.widget.CheckView;
+import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
+import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import java.util.ArrayList;
 
@@ -66,6 +70,7 @@ public class MatisseActivity extends AppCompatActivity implements
 
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
     public static final String EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path";
+    public static final String EXTRA_RESULT_ORIGINAL_ENABLE = "extra_result_original_enable";
     private static final int REQUEST_CODE_PREVIEW = 23;
     private static final int REQUEST_CODE_CAPTURE = 24;
     private final AlbumCollection mAlbumCollection = new AlbumCollection();
@@ -79,6 +84,10 @@ public class MatisseActivity extends AppCompatActivity implements
     private TextView mButtonApply;
     private View mContainer;
     private View mEmptyView;
+
+    private LinearLayout mOriginalLayout;
+    private CheckView mOriginal;
+    private boolean mOriginalEnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,6 +126,9 @@ public class MatisseActivity extends AppCompatActivity implements
         mButtonApply.setOnClickListener(this);
         mContainer = findViewById(R.id.container);
         mEmptyView = findViewById(R.id.empty_view);
+        mOriginalLayout = findViewById(R.id.originalLayout);
+        mOriginal = findViewById(R.id.original);
+        mOriginal.setOnClickListener(this);
 
         mSelectedCollection.onCreate(savedInstanceState);
         updateBottomToolbar();
@@ -183,6 +195,7 @@ public class MatisseActivity extends AppCompatActivity implements
                 }
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
                 result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
+                result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
                 setResult(RESULT_OK, result);
                 finish();
             } else {
@@ -228,6 +241,56 @@ public class MatisseActivity extends AppCompatActivity implements
             mButtonApply.setEnabled(true);
             mButtonApply.setText(getString(R.string.button_apply, selectedCount));
         }
+
+
+        if (mSpec.originalable) {
+            mOriginalLayout.setVisibility(View.VISIBLE);
+            updateOriginalState();
+        } else {
+            mOriginalLayout.setVisibility(View.INVISIBLE);
+        }
+
+
+    }
+
+
+    private void updateOriginalState() {
+        int selectedCount = mSelectedCollection.count();
+        if (selectedCount == 0) {
+            mOriginal.setChecked(false);
+            mOriginalEnable = false;
+        } else if (countOverMaxSize() > 0) {
+
+            if (mOriginalEnable) {
+                IncapableDialog incapableDialog = IncapableDialog.newInstance("",
+                        "该照片大于" + mSpec.originalMaxSize + "M，无法上传将取消勾选原图");
+                incapableDialog.show(getSupportFragmentManager(),
+                        IncapableDialog.class.getName());
+
+                mOriginal.setChecked(false);
+                mOriginalEnable = false;
+
+            }
+
+
+        } else {
+//            mOriginal.setChecked(true);
+//            mOriginalEnable = true;
+        }
+    }
+
+
+    private int countOverMaxSize() {
+        int count = 0;
+        int selectedCount = mSelectedCollection.count();
+        for (int i = 0; i < selectedCount; i++) {
+            Item item = mSelectedCollection.asList().get(i);
+            float size = PhotoMetadataUtils.getSizeInMB(item.size);
+            if (size > mSpec.originalMaxSize) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
@@ -242,8 +305,21 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
             ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
+            result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             setResult(RESULT_OK, result);
             finish();
+        } else if (v.getId() == R.id.original) {
+            int count = countOverMaxSize();
+            if (count > 0) {
+                IncapableDialog incapableDialog = IncapableDialog.newInstance("",
+                        "有"+count +"张照片大于" + mSpec.originalMaxSize + "M\n无法上传，将取消勾选原图");
+                incapableDialog.show(getSupportFragmentManager(),
+                        IncapableDialog.class.getName());
+                return;
+            }
+
+            mOriginalEnable = !mOriginalEnable;
+            mOriginal.setChecked(mOriginalEnable);
         }
     }
 
