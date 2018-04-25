@@ -67,28 +67,32 @@
 
         <LinearLayout
             android:id="@+id/originalLayout"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
 
-            <com.zhihu.matisse.internal.ui.widget.CheckView
+            <ImageView
+                android:visibility="visible"
                 android:id="@+id/original"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"/>
+                android:src="@drawable/ic_preview_radio_off"
+                android:layout_gravity="center_vertical"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:enabled="true"
+                android:paddingStart="4dp"
+                android:paddingLeft="4dp"
                 android:foreground="?selectableItemBackground"
                 android:text="@string/button_original"
                 android:textColor="?attr/bottomToolbar.preview.textColor"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
