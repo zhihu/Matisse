@@ -34,6 +34,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,7 +51,6 @@ import com.zhihu.matisse.internal.ui.SelectedPreviewActivity;
 import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
 import com.zhihu.matisse.internal.ui.adapter.AlbumsAdapter;
 import com.zhihu.matisse.internal.ui.widget.AlbumsSpinner;
-import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
@@ -86,7 +86,7 @@ public class MatisseActivity extends AppCompatActivity implements
     private View mEmptyView;
 
     private LinearLayout mOriginalLayout;
-    private CheckView mOriginal;
+    private ImageView mOriginal;
     private boolean mOriginalEnable;
 
     @Override
@@ -257,7 +257,10 @@ public class MatisseActivity extends AppCompatActivity implements
     private void updateOriginalState() {
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
-            mOriginal.setChecked(false);
+//            mOriginal.setChecked(false);
+            if(mSpec.themeId==R.style.Matisse_Zhihu){
+
+            }
             mOriginalEnable = false;
         } else if (countOverMaxSize() > 0) {
 
@@ -267,15 +270,9 @@ public class MatisseActivity extends AppCompatActivity implements
                 incapableDialog.show(getSupportFragmentManager(),
                         IncapableDialog.class.getName());
 
-                mOriginal.setChecked(false);
+//                mOriginal.setChecked(false);
                 mOriginalEnable = false;
-
             }
-
-
-        } else {
-//            mOriginal.setChecked(true);
-//            mOriginalEnable = true;
         }
     }
 
@@ -319,7 +316,17 @@ public class MatisseActivity extends AppCompatActivity implements
             }
 
             mOriginalEnable = !mOriginalEnable;
-            mOriginal.setChecked(mOriginalEnable);
+//            mOriginal.setChecked(mOriginalEnable);
+
+            if(mOriginalEnable){
+                if(mSpec.themeId==R.style.Matisse_Zhihu){
+                    mOriginal.setImageResource(R.drawable.ic_imagepicker_radio_on);
+                }else {
+                    mOriginal.setImageResource(R.drawable.ic_imagepicker_radio_on_night);
+                }
+            }else {
+                mOriginal.setImageResource(R.drawable.ic_preview_radio_off);
+            }
         }
     }
 
