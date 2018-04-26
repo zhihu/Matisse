@@ -30,6 +30,7 @@ import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 import com.zhihu.matisse.ui.MatisseActivity;
 
@@ -312,6 +313,17 @@ public final class SelectionCreator {
     @NonNull
     public SelectionCreator setOnSelectedListener(@Nullable OnSelectedListener listener) {
         mSelectionSpec.onSelectedListener = listener;
+        return this;
+    }
+
+    /**
+     *Set listener for callback immediately when user check or uncheck original.
+     *
+     * @param listener {@link OnSelectedListener}
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator setOnCheckedListener(@Nullable OnCheckedListener listener){
+        mSelectionSpec.onCheckedListener=listener;
         return this;
     }
 
