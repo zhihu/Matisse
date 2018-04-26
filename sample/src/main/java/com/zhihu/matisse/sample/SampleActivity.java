@@ -34,9 +34,11 @@ import android.widget.Toast;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
 import java.util.List;
@@ -89,7 +91,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                                     getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                                             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .thumbnailScale(0.85f)
-                                            .imageEngine(new PicassoEngine())
+                                            .imageEngine(new GlideEngine())
                                             .setOnSelectedListener(new OnSelectedListener() {
                                                 @Override
                                                 public void onSelected(
@@ -99,6 +101,12 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             })
                                             .originalable(true)
                                             .originalMaxSize(10)
+                                            .setOnCheckedListener(new OnCheckedListener() {
+                                                @Override
+                                                public void onCheck() {
+
+                                                }
+                                            })
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                                 case R.id.dracula:

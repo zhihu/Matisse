@@ -327,6 +327,10 @@ public class MatisseActivity extends AppCompatActivity implements
             }else {
                 mOriginal.setImageResource(R.drawable.ic_preview_radio_off);
             }
+
+            if(mSpec.onCheckedListener!=null){
+                mSpec.onCheckedListener.onCheck();
+            }
         }
     }
 
