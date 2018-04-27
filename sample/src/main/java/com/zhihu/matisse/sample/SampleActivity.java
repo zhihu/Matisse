@@ -99,12 +99,13 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                                     // DO SOMETHING IMMEDIATELY HERE
                                                 }
                                             })
-                                            .originalable(true)
-                                            .originalMaxSize(10)
+                                            .originalEnable(true)
+                                            .maxOriginalSize(10)
                                             .setOnCheckedListener(new OnCheckedListener() {
                                                 @Override
-                                                public void onCheck() {
-
+                                                public void onCheck(boolean isChecked) {
+                                                    // DO SOMETHING IMMEDIATELY HERE
+                                                    Log.e("isChecked", "onCheck: isChecked="+isChecked );
                                                 }
                                             })
                                             .forResult(REQUEST_CODE_CHOOSE);
@@ -117,8 +118,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
 
                                             .maxSelectable(9)
-                                            .originalable(true)
-                                            .originalMaxSize(10)
+                                            .originalEnable(true)
+                                            .maxOriginalSize(10)
                                             .imageEngine(new PicassoEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;

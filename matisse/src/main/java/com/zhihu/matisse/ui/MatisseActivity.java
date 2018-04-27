@@ -34,7 +34,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -51,6 +50,7 @@ import com.zhihu.matisse.internal.ui.SelectedPreviewActivity;
 import com.zhihu.matisse.internal.ui.adapter.AlbumMediaAdapter;
 import com.zhihu.matisse.internal.ui.adapter.AlbumsAdapter;
 import com.zhihu.matisse.internal.ui.widget.AlbumsSpinner;
+import com.zhihu.matisse.internal.ui.widget.CheckRadioView;
 import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
@@ -86,7 +86,7 @@ public class MatisseActivity extends AppCompatActivity implements
     private View mEmptyView;
 
     private LinearLayout mOriginalLayout;
-    private ImageView mOriginal;
+    private CheckRadioView mOriginal;
     private boolean mOriginalEnable;
 
     @Override
@@ -128,7 +128,7 @@ public class MatisseActivity extends AppCompatActivity implements
         mEmptyView = findViewById(R.id.empty_view);
         mOriginalLayout = findViewById(R.id.originalLayout);
         mOriginal = findViewById(R.id.original);
-        mOriginal.setOnClickListener(this);
+        mOriginalLayout.setOnClickListener(this);
 
         mSelectedCollection.onCreate(savedInstanceState);
         updateBottomToolbar();
@@ -181,6 +181,7 @@ public class MatisseActivity extends AppCompatActivity implements
         if (requestCode == REQUEST_CODE_PREVIEW) {
             Bundle resultBundle = data.getBundleExtra(BasePreviewActivity.EXTRA_RESULT_BUNDLE);
             ArrayList<Item> selected = resultBundle.getParcelableArrayList(SelectedItemCollection.STATE_SELECTION);
+            mOriginalEnable = data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE,false);
             int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE,
                     SelectedItemCollection.COLLECTION_UNDEFINED);
             if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
@@ -227,11 +228,12 @@ public class MatisseActivity extends AppCompatActivity implements
     }
 
     private void updateBottomToolbar() {
+
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
             mButtonPreview.setEnabled(false);
             mButtonApply.setEnabled(false);
-            mButtonApply.setText(getString(R.string.button_apply_default));
+            mButtonApply.setText(getString(R.string.button_sure_default));
         } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
             mButtonPreview.setEnabled(true);
             mButtonApply.setText(R.string.button_apply_default);
@@ -239,7 +241,7 @@ public class MatisseActivity extends AppCompatActivity implements
         } else {
             mButtonPreview.setEnabled(true);
             mButtonApply.setEnabled(true);
-            mButtonApply.setText(getString(R.string.button_apply, selectedCount));
+            mButtonApply.setText(getString(R.string.button_sure, selectedCount));
         }
 
 
@@ -255,13 +257,11 @@ public class MatisseActivity extends AppCompatActivity implements
 
 
     private void updateOriginalState() {
+        mOriginal.setChecked(mOriginalEnable);
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
 //            mOriginal.setChecked(false);
-            if(mSpec.themeId==R.style.Matisse_Zhihu){
-
-            }
-            mOriginalEnable = false;
+//            mOriginalEnable = false;
         } else if (countOverMaxSize() > 0) {
 
             if (mOriginalEnable) {
@@ -270,7 +270,7 @@ public class MatisseActivity extends AppCompatActivity implements
                 incapableDialog.show(getSupportFragmentManager(),
                         IncapableDialog.class.getName());
 
-//                mOriginal.setChecked(false);
+                mOriginal.setChecked(false);
                 mOriginalEnable = false;
             }
         }
@@ -295,6 +295,7 @@ public class MatisseActivity extends AppCompatActivity implements
         if (v.getId() == R.id.button_preview) {
             Intent intent = new Intent(this, SelectedPreviewActivity.class);
             intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
+            intent.putExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE,mOriginalEnable);
             startActivityForResult(intent, REQUEST_CODE_PREVIEW);
         } else if (v.getId() == R.id.button_apply) {
             Intent result = new Intent();
@@ -305,7 +306,7 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             setResult(RESULT_OK, result);
             finish();
-        } else if (v.getId() == R.id.original) {
+        } else if (v.getId() == R.id.originalLayout) {
             int count = countOverMaxSize();
             if (count > 0) {
                 IncapableDialog incapableDialog = IncapableDialog.newInstance("",
@@ -316,20 +317,10 @@ public class MatisseActivity extends AppCompatActivity implements
             }
 
             mOriginalEnable = !mOriginalEnable;
-//            mOriginal.setChecked(mOriginalEnable);
-
-            if(mOriginalEnable){
-                if(mSpec.themeId==R.style.Matisse_Zhihu){
-                    mOriginal.setImageResource(R.drawable.ic_imagepicker_radio_on);
-                }else {
-                    mOriginal.setImageResource(R.drawable.ic_imagepicker_radio_on_night);
-                }
-            }else {
-                mOriginal.setImageResource(R.drawable.ic_preview_radio_off);
-            }
+            mOriginal.setChecked(mOriginalEnable);
 
             if(mSpec.onCheckedListener!=null){
-                mSpec.onCheckedListener.onCheck();
+                mSpec.onCheckedListener.onCheck(mOriginalEnable);
             }
         }
     }
@@ -408,6 +399,7 @@ public class MatisseActivity extends AppCompatActivity implements
         intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
         intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
         intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
+        intent.putExtra(BasePreviewActivity.EXTRA_RESULT_ORIGINAL_ENABLE,mOriginalEnable);
         startActivityForResult(intent, REQUEST_CODE_PREVIEW);
     }
 

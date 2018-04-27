@@ -61,21 +61,19 @@
             android:textColor="?attr/bottomToolbar.preview.textColor"
             android:textSize="16sp" />
 
-
-
-
-
         <LinearLayout
+            android:padding="16dp"
             android:id="@+id/originalLayout"
             android:visibility="visible"
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:foreground="?selectableItemBackground"
+            android:layout_height="wrap_content"
+            tools:showIn="@layout/activity_matisse">
 
 
-            <ImageView
-                android:visibility="visible"
+            <com.zhihu.matisse.internal.ui.widget.CheckRadioView
                 android:id="@+id/original"
                 android:src="@drawable/ic_preview_radio_off"
                 android:layout_gravity="center_vertical"
@@ -89,16 +87,11 @@
                 android:enabled="true"
                 android:paddingStart="4dp"
                 android:paddingLeft="4dp"
-                android:foreground="?selectableItemBackground"
                 android:text="@string/button_original"
                 android:textColor="?attr/bottomToolbar.preview.textColor"
                 android:textSize="14sp" />
 
         </LinearLayout>
-
-
-
-
 
 
         <TextView

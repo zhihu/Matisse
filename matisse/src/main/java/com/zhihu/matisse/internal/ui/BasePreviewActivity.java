@@ -17,12 +17,14 @@ package com.zhihu.matisse.internal.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zhihu.matisse.R;
@@ -31,7 +33,9 @@ import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
+import com.zhihu.matisse.internal.ui.widget.CheckRadioView;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
+import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import com.zhihu.matisse.internal.utils.Platform;
 
@@ -41,6 +45,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     public static final String EXTRA_DEFAULT_BUNDLE = "extra_default_bundle";
     public static final String EXTRA_RESULT_BUNDLE = "extra_result_bundle";
     public static final String EXTRA_RESULT_APPLY = "extra_result_apply";
+    public static final String EXTRA_RESULT_ORIGINAL_ENABLE = "extra_result_original_enable";
 
     protected final SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
     protected SelectionSpec mSpec;
@@ -54,6 +59,10 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     protected TextView mSize;
 
     protected int mPreviousPos = -1;
+
+    private LinearLayout mOriginalLayout;
+    private CheckRadioView mOriginal;
+    protected boolean mOriginalEnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             mSelectedCollection.onCreate(savedInstanceState);
         }
 
+        mOriginalEnable = getIntent().getBooleanExtra(EXTRA_RESULT_ORIGINAL_ENABLE, false);
         mButtonBack = (TextView) findViewById(R.id.button_back);
         mButtonApply = (TextView) findViewById(R.id.button_apply);
         mSize = (TextView) findViewById(R.id.size);
@@ -118,6 +128,36 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                 }
             }
         });
+
+
+        mOriginalLayout = findViewById(R.id.originalLayout);
+        mOriginal = findViewById(R.id.original);
+        mOriginalLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int count = countOverMaxSize();
+                if (count > 0) {
+                    IncapableDialog incapableDialog = IncapableDialog.newInstance("",
+                            "有"+count +"张照片大于" + mSpec.originalMaxSize + "M\n无法上传，将取消勾选原图");
+                    incapableDialog.show(getSupportFragmentManager(),
+                            IncapableDialog.class.getName());
+                    return;
+                }
+
+                mOriginalEnable = !mOriginalEnable;
+                mOriginal.setChecked(mOriginalEnable);
+                if(!mOriginalEnable){
+                    mOriginal.setColor(Color.WHITE);
+                }
+
+
+                if(mSpec.onCheckedListener!=null){
+                    mSpec.onCheckedListener.onCheck(mOriginalEnable);
+                }
+            }
+        });
+
         updateApplyButton();
     }
 
@@ -194,6 +234,53 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             mButtonApply.setEnabled(true);
             mButtonApply.setText(getString(R.string.button_apply, selectedCount));
         }
+
+        if (mSpec.originalable) {
+            mOriginalLayout.setVisibility(View.VISIBLE);
+            updateOriginalState();
+        } else {
+            mOriginalLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    private void updateOriginalState() {
+        mOriginal.setChecked(mOriginalEnable);
+        if(!mOriginalEnable){
+            mOriginal.setColor(Color.WHITE);
+        }
+
+        int selectedCount = mSelectedCollection.count();
+        if (selectedCount == 0) {
+//            mOriginal.setChecked(false);
+            mOriginalEnable = false;
+        } else if (countOverMaxSize() > 0) {
+
+            if (mOriginalEnable) {
+                IncapableDialog incapableDialog = IncapableDialog.newInstance("",
+                        "该照片大于" + mSpec.originalMaxSize + "M，无法上传将取消勾选原图");
+                incapableDialog.show(getSupportFragmentManager(),
+                        IncapableDialog.class.getName());
+
+                mOriginal.setChecked(false);
+                mOriginal.setColor(Color.WHITE);
+                mOriginalEnable = false;
+            }
+        }
+    }
+
+
+    private int countOverMaxSize() {
+        int count = 0;
+        int selectedCount = mSelectedCollection.count();
+        for (int i = 0; i < selectedCount; i++) {
+            Item item = mSelectedCollection.asList().get(i);
+            float size = PhotoMetadataUtils.getSizeInMB(item.size);
+            if (size > mSpec.originalMaxSize) {
+                count++;
+            }
+        }
+        return count;
     }
 
     protected void updateSize(Item item) {
@@ -209,6 +296,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         Intent intent = new Intent();
         intent.putExtra(EXTRA_RESULT_BUNDLE, mSelectedCollection.getDataWithBundle());
         intent.putExtra(EXTRA_RESULT_APPLY, apply);
+        intent.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE,mOriginalEnable);
         setResult(Activity.RESULT_OK, intent);
     }
 
