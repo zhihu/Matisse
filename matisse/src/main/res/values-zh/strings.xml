@@ -33,4 +33,6 @@
     <string name="error_type_conflict">不能同时选择图片和视频</string>
     <string name="error_no_video_activity">没有支持视频预览的应用</string>
     <string name="button_original">原图</string>
+    <string name="button_sure_default">确定</string>
+    <string name="button_sure">确定(%1$d)</string>
 </resources>

@@ -52,6 +52,9 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
             mCheckView.setChecked(mSelectedCollection.isSelected(item));
         }
         updateSize(item);
+
+        mOriginalEnable = getIntent().getBooleanExtra(EXTRA_RESULT_ORIGINAL_ENABLE, false);
+
     }
 
     @Override

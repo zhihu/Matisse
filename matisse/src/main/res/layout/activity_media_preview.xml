@@ -45,14 +45,60 @@
             android:textColor="?attr/preview.bottomToolbar.back.textColor"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <LinearLayout
             android:layout_gravity="center"
-            android:textColor="@color/preview_bottom_size"
-            android:textSize="16sp"
-            android:visibility="gone"/>
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:padding="16dp"
+                android:id="@+id/originalLayout"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:foreground="?selectableItemBackground"
+                android:layout_height="wrap_content"
+                tools:showIn="@layout/activity_matisse">
+
+
+                <com.zhihu.matisse.internal.ui.widget.CheckRadioView
+                    android:id="@+id/original"
+                    android:src="@drawable/ic_preview_radio_off"
+                    android:layout_gravity="center_vertical"
+                    android:tint="#ffffff"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:enabled="true"
+                    android:paddingStart="4dp"
+                    android:paddingLeft="4dp"
+                    android:text="@string/button_original"
+                    android:textColor="?attr/preview.bottomToolbar.back.textColor"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/preview_bottom_size"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/button_apply"
