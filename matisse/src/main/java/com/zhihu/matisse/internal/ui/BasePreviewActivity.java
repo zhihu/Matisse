@@ -139,7 +139,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                 int count = countOverMaxSize();
                 if (count > 0) {
                     IncapableDialog incapableDialog = IncapableDialog.newInstance("",
-                            "有"+count +"张照片大于" + mSpec.originalMaxSize + "M\n无法上传，将取消勾选原图");
+                            getString(R.string.error_over_original_count, count, mSpec.originalMaxSize));
                     incapableDialog.show(getSupportFragmentManager(),
                             IncapableDialog.class.getName());
                     return;
@@ -147,12 +147,12 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
                 mOriginalEnable = !mOriginalEnable;
                 mOriginal.setChecked(mOriginalEnable);
-                if(!mOriginalEnable){
+                if (!mOriginalEnable) {
                     mOriginal.setColor(Color.WHITE);
                 }
 
 
-                if(mSpec.onCheckedListener!=null){
+                if (mSpec.onCheckedListener != null) {
                     mSpec.onCheckedListener.onCheck(mOriginalEnable);
                 }
             }
@@ -246,7 +246,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     private void updateOriginalState() {
         mOriginal.setChecked(mOriginalEnable);
-        if(!mOriginalEnable){
+        if (!mOriginalEnable) {
             mOriginal.setColor(Color.WHITE);
         }
 
@@ -258,7 +258,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
             if (mOriginalEnable) {
                 IncapableDialog incapableDialog = IncapableDialog.newInstance("",
-                        "该照片大于" + mSpec.originalMaxSize + "M，无法上传将取消勾选原图");
+                        getString(R.string.error_over_original_size, mSpec.originalMaxSize));
                 incapableDialog.show(getSupportFragmentManager(),
                         IncapableDialog.class.getName());
 
@@ -296,7 +296,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         Intent intent = new Intent();
         intent.putExtra(EXTRA_RESULT_BUNDLE, mSelectedCollection.getDataWithBundle());
         intent.putExtra(EXTRA_RESULT_APPLY, apply);
-        intent.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE,mOriginalEnable);
+        intent.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
         setResult(Activity.RESULT_OK, intent);
     }
 

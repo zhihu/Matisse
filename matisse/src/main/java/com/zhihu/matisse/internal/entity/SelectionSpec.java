@@ -84,8 +84,8 @@ public final class SelectionSpec {
         gridExpectedSize = 0;
         thumbnailScale = 0.5f;
         imageEngine = new GlideEngine();
-        originalable=false;
-        originalMaxSize =Integer.MAX_VALUE;
+        originalable = false;
+        originalMaxSize = Integer.MAX_VALUE;
     }
 
     public boolean singleSelectionModeEnabled() {
