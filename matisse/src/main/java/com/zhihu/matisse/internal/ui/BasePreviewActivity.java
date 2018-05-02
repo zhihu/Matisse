@@ -46,6 +46,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     public static final String EXTRA_RESULT_BUNDLE = "extra_result_bundle";
     public static final String EXTRA_RESULT_APPLY = "extra_result_apply";
     public static final String EXTRA_RESULT_ORIGINAL_ENABLE = "extra_result_original_enable";
+    public static final String CHECK_STATE = "checkState";
 
     protected final SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
     protected SelectionSpec mSpec;
@@ -80,10 +81,11 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
         if (savedInstanceState == null) {
             mSelectedCollection.onCreate(getIntent().getBundleExtra(EXTRA_DEFAULT_BUNDLE));
+            mOriginalEnable = getIntent().getBooleanExtra(EXTRA_RESULT_ORIGINAL_ENABLE, false);
         } else {
             mSelectedCollection.onCreate(savedInstanceState);
+            mOriginalEnable = savedInstanceState.getBoolean(CHECK_STATE);
         }
-        mOriginalEnable = getIntent().getBooleanExtra(EXTRA_RESULT_ORIGINAL_ENABLE, false);
         mButtonBack = (TextView) findViewById(R.id.button_back);
         mButtonApply = (TextView) findViewById(R.id.button_apply);
         mSize = (TextView) findViewById(R.id.size);
@@ -163,6 +165,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         mSelectedCollection.onSaveInstanceState(outState);
+        outState.putBoolean("checkState", mOriginalEnable);
         super.onSaveInstanceState(outState);
     }
 
@@ -252,7 +255,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
 //            mOriginal.setChecked(false);
-            mOriginalEnable = false;
+//            mOriginalEnable = false;
         } else if (countOverMaxSize() > 0) {
 
             if (mOriginalEnable) {
