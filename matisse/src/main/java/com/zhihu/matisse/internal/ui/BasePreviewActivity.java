@@ -83,7 +83,6 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         } else {
             mSelectedCollection.onCreate(savedInstanceState);
         }
-
         mOriginalEnable = getIntent().getBooleanExtra(EXTRA_RESULT_ORIGINAL_ENABLE, false);
         mButtonBack = (TextView) findViewById(R.id.button_back);
         mButtonApply = (TextView) findViewById(R.id.button_apply);
@@ -225,14 +224,14 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     private void updateApplyButton() {
         int selectedCount = mSelectedCollection.count();
         if (selectedCount == 0) {
-            mButtonApply.setText(R.string.button_apply_default);
+            mButtonApply.setText(R.string.button_sure_default);
             mButtonApply.setEnabled(false);
         } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
-            mButtonApply.setText(R.string.button_apply_default);
+            mButtonApply.setText(R.string.button_sure_default);
             mButtonApply.setEnabled(true);
         } else {
             mButtonApply.setEnabled(true);
-            mButtonApply.setText(getString(R.string.button_apply, selectedCount));
+            mButtonApply.setText(getString(R.string.button_sure, selectedCount));
         }
 
         if (mSpec.originalable) {
