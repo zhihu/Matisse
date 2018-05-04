@@ -287,9 +287,12 @@ public class MatisseActivity extends AppCompatActivity implements
         int selectedCount = mSelectedCollection.count();
         for (int i = 0; i < selectedCount; i++) {
             Item item = mSelectedCollection.asList().get(i);
-            float size = PhotoMetadataUtils.getSizeInMB(item.size);
-            if (size > mSpec.originalMaxSize) {
-                count++;
+
+            if(item.isImage()){
+                float size = PhotoMetadataUtils.getSizeInMB(item.size);
+                if (size > mSpec.originalMaxSize) {
+                    count++;
+                }
             }
         }
         return count;
