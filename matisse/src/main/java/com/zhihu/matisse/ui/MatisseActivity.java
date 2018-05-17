@@ -58,6 +58,8 @@ import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import java.util.ArrayList;
 
+import static com.zhihu.matisse.internal.model.SelectedItemCollection.STATE_SELECTION;
+
 /**
  * Main Activity to display albums and media content (images/videos) in each album
  * and also support media selecting operations.
@@ -132,8 +134,12 @@ public class MatisseActivity extends AppCompatActivity implements
         mOriginalLayout.setOnClickListener(this);
 
         mSelectedCollection.onCreate(savedInstanceState);
+        ArrayList<Item> items = getIntent().getParcelableArrayListExtra(STATE_SELECTION);
+        if (items != null) {
+            mSelectedCollection.setDefaultSelection(items);
+        }
         if (savedInstanceState != null) {
-            mOriginalEnable=savedInstanceState.getBoolean(CHECK_STATE);
+            mOriginalEnable = savedInstanceState.getBoolean(CHECK_STATE);
         }
         updateBottomToolbar();
 
