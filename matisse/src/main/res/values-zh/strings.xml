@@ -37,4 +37,5 @@
     <string name="button_original">原图</string>
     <string name="button_sure_default">确定</string>
     <string name="button_sure">确定(%1$d)</string>
+    <string name="permission_request_denied">需要相应的权限</string>
 </resources>

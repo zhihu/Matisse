@@ -16,22 +16,28 @@
  */
 package com.zhihu.matisse;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StyleRes;
-import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.listener.OnCheckedListener;
+import com.zhihu.matisse.listener.OnFinishedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
+import com.zhihu.matisse.manager.FragmentLifecycleManager;
+import com.zhihu.matisse.manager.LifecycleCallback;
 import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.annotation.Retention;
@@ -61,6 +67,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
  */
 @SuppressWarnings("unused")
 public final class SelectionCreator {
+    private static final int PERMISSION_EXTERNAL_STORAGE = 666;
     private final Matisse mMatisse;
     private final SelectionSpec mSelectionSpec;
 
@@ -163,7 +170,7 @@ public final class SelectionCreator {
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return
+     * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
         if (maxImageSelectable < 1 || maxVideoSelectable < 1)
@@ -333,24 +340,85 @@ public final class SelectionCreator {
     }
 
     /**
-     * Start to select media and wait for result.
+     * Set listener for callback immediately when user finish.
      *
-     * @param requestCode Identity of the request Activity or Fragment.
+     * @param listener {@link OnFinishedListener}
+     * @return {@link SelectionCreator} for fluent API.
      */
-    public void forResult(int requestCode) {
-        Activity activity = mMatisse.getActivity();
+    public SelectionCreator setOnFinishedListener(@Nullable OnFinishedListener listener) {
+        mSelectionSpec.onFinishedListener = listener;
+        return this;
+    }
+
+    /**
+     * Set listener for callback immediately when user finish.
+     *
+     * @param isAuto Automatic request permission. Default value is true.
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator autoRequestPermission(boolean isAuto) {
+        mSelectionSpec.permission = isAuto;
+        return this;
+    }
+
+    private LifecycleCallback mLifecycleCallback = new LifecycleCallback() {
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (mSelectionSpec.onFinishedListener != null
+                    && requestCode == MatisseActivity.REQUEST_CODE_CHOOSE
+                    && resultCode == Activity.RESULT_OK) {
+                mSelectionSpec.onFinishedListener.onFinished(
+                        Matisse.obtainResult(data),
+                        Matisse.obtainPathResult(data),
+                        Matisse.obtainOriginalState(data));
+            }
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            if (requestCode == PERMISSION_EXTERNAL_STORAGE
+                    && permissions.length != 0
+                    && grantResults.length != 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                start();
+            } else {
+                Toast.makeText(mMatisse.getActivity(), R.string.permission_request_denied, Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+
+    /**
+     * Start to select media or request permissions
+     */
+    public void start() {
+        final Activity activity = mMatisse.getActivity();
         if (activity == null) {
             return;
         }
 
-        Intent intent = new Intent(activity, MatisseActivity.class);
+        final FragmentLifecycleManager lifecycleManager = FragmentLifecycleManager.get(activity);
+        lifecycleManager.setLifecycle(mLifecycleCallback);
+        mMatisse.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(activity, MatisseActivity.class);
+                if (!mSelectionSpec.permission) {
+                    lifecycleManager.startActivityForResult(intent, MatisseActivity.REQUEST_CODE_CHOOSE);
+                    return;
+                }
 
-        Fragment fragment = mMatisse.getFragment();
-        if (fragment != null) {
-            fragment.startActivityForResult(intent, requestCode);
-        } else {
-            activity.startActivityForResult(intent, requestCode);
-        }
+                int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (permission == PackageManager.PERMISSION_GRANTED) {
+                    lifecycleManager.startActivityForResult(intent, MatisseActivity.REQUEST_CODE_CHOOSE);
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        lifecycleManager.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_EXTERNAL_STORAGE);
+                    }
+                }
+            }
+        });
+
     }
 
 }
