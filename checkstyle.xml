@@ -136,7 +136,6 @@
         <module name="InnerAssignment"/>
         <!--<module name="MagicNumber"/>-->
         <module name="MissingSwitchDefault"/>
-        <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 
