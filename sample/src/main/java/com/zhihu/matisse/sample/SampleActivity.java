@@ -50,6 +50,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     private static final int REQUEST_CODE_CHOOSE = 23;
 
     private UriAdapter mAdapter;
+    private List<String> defaultSelectedPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                                     Log.e("isChecked", "onCheck: isChecked="+isChecked );
                                                 }
                                             })
-                                            .forResult(REQUEST_CODE_CHOOSE);
+                                            .forResult(REQUEST_CODE_CHOOSE, defaultSelectedPath);
                                     break;
                                 case R.id.dracula:
                                     Matisse.from(SampleActivity.this)
@@ -146,8 +147,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
-            Log.e("OnActivityResult ",String.valueOf(Matisse.obtainOriginalState(data)));
+            defaultSelectedPath = Matisse.obtainPathResult(data);
+            mAdapter.setData(Matisse.obtainResult(data), defaultSelectedPath);
+            Log.e("OnActivityResult ", String.valueOf(Matisse.obtainOriginalState(data)));
         }
     }
 
