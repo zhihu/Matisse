@@ -32,4 +32,9 @@
     <string name="error_file_type">不支持的文件类型</string>
     <string name="error_type_conflict">不能同时选择图片和视频</string>
     <string name="error_no_video_activity">没有支持视频预览的应用</string>
+    <string name="error_over_original_size">"该照片大于 %1$d M，无法上传将取消勾选原图"</string>
+    <string name="error_over_original_count">"有 %1$d 张照片大于 %2$d M\n无法上传，将取消勾选原图"</string>
+    <string name="button_original">原图</string>
+    <string name="button_sure_default">确定</string>
+    <string name="button_sure">确定(%1$d)</string>
 </resources>

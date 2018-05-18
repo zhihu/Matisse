@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +14,12 @@
   limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -38,7 +38,7 @@
             android:foreground="?selectableItemBackground"
             android:gravity="center"
             android:textColor="?attr/album.element.color"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -54,12 +54,45 @@
             android:id="@+id/button_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
-            android:layout_gravity="start"
             android:text="@string/button_preview"
             android:textColor="?attr/bottomToolbar.preview.textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:padding="16dp"
+            android:id="@+id/originalLayout"
+            android:visibility="visible"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:foreground="?selectableItemBackground"
+            android:layout_height="wrap_content"
+            tools:showIn="@layout/activity_matisse">
+
+
+            <com.zhihu.matisse.internal.ui.widget.CheckRadioView
+                android:id="@+id/original"
+                android:src="@drawable/ic_preview_radio_off"
+                android:layout_gravity="center_vertical"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:enabled="true"
+                android:paddingStart="4dp"
+                android:paddingLeft="4dp"
+                android:text="@string/button_original"
+                android:textColor="?attr/bottomToolbar.preview.textColor"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/button_apply"
@@ -69,7 +102,7 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:textColor="?attr/bottomToolbar.apply.textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </FrameLayout>
 
     <FrameLayout
@@ -78,7 +111,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_toolbar"
         android:layout_below="@id/toolbar"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/empty_view"
@@ -98,7 +131,7 @@
             android:gravity="center"
             android:text="@string/empty_text"
             android:textColor="?attr/album.emptyView.textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </FrameLayout>
 </RelativeLayout>

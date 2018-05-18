@@ -32,4 +32,7 @@
     <string name="error_file_type">Unsupported file type</string>
     <string name="error_type_conflict">Can\'t select images and videos at the same time</string>
     <string name="error_no_video_activity">No App found supporting video preview</string>
+    <string name="button_original">Original</string>
+    <string name="button_sure_default">Sure</string>
+    <string name="button_sure">Sure(%1$d)</string>
 </resources>
