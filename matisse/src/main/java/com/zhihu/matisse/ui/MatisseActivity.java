@@ -96,7 +96,13 @@ public class MatisseActivity extends AppCompatActivity implements
         mSpec = SelectionSpec.getInstance();
         setTheme(mSpec.themeId);
         super.onCreate(savedInstanceState);
-
+        if (!mSpec.hasInited) {
+            // When hasInited == false, indicate that MatisseActivity is restarting
+            // after app process was killed.
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_matisse);
 
         if (mSpec.needOrientationRestriction()) {
