@@ -93,6 +93,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                             @Override
                             public void onFinished(List<Uri> uris, List<String> paths, boolean originalState) {
                                 mAdapter.setData(uris, paths);
+                                Log.d("onFinished", "onFinished() called with: uris = [" + uris + "], paths = [" + paths + "], originalState = [" + originalState + "]");
                             }
                         })
                         .start();
