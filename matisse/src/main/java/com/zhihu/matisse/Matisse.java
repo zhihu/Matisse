@@ -18,8 +18,11 @@ package com.zhihu.matisse;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 import com.zhihu.matisse.ui.MatisseActivity;
 
@@ -32,20 +35,15 @@ import java.util.Set;
  */
 public final class Matisse {
 
-    private final WeakReference<Activity> mContext;
-    private final WeakReference<Fragment> mFragment;
+    private final WeakReference<? extends Activity> mContext;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    private Matisse(FragmentActivity activity) {
+        mContext = new WeakReference<>(activity);
+    }
 
     private Matisse(Activity activity) {
-        this(activity, null);
-    }
-
-    private Matisse(Fragment fragment) {
-        this(fragment.getActivity(), fragment);
-    }
-
-    private Matisse(Activity activity, Fragment fragment) {
         mContext = new WeakReference<>(activity);
-        mFragment = new WeakReference<>(fragment);
     }
 
     /**
@@ -62,6 +60,19 @@ public final class Matisse {
     }
 
     /**
+     * Start Matisse from an Activity.
+     * <p>
+     * This FragmentActivity's {@link Activity#onActivityResult(int, int, Intent)} will be called when user
+     * finishes selecting.
+     *
+     * @param activity Activity instance.
+     * @return Matisse instance.
+     */
+    public static Matisse from(FragmentActivity activity) {
+        return new Matisse(activity);
+    }
+
+    /**
      * Start Matisse from a Fragment.
      * <p>
      * This Fragment's {@link Fragment#onActivityResult(int, int, Intent)} will be called when user
@@ -71,7 +82,20 @@ public final class Matisse {
      * @return Matisse instance.
      */
     public static Matisse from(Fragment fragment) {
-        return new Matisse(fragment);
+        return new Matisse(fragment.getActivity());
+    }
+
+    /**
+     * Start Matisse from a Fragment.
+     * <p>
+     * This Fragment's {@link Fragment#onActivityResult(int, int, Intent)} will be called when user
+     * finishes selecting.
+     *
+     * @param fragment Fragment instance.
+     * @return Matisse instance.
+     */
+    public static Matisse from(android.app.Fragment fragment) {
+        return new Matisse(fragment.getActivity());
     }
 
     /**
@@ -143,9 +167,7 @@ public final class Matisse {
         return mContext.get();
     }
 
-    @Nullable
-    Fragment getFragment() {
-        return mFragment != null ? mFragment.get() : null;
+    public Handler getHandler() {
+        return mHandler;
     }
-
 }
