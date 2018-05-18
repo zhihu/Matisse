@@ -347,7 +347,7 @@ public final class SelectionCreator {
     /**
      * Start to select media and wait for result.
      *
-     * @param requestCode Identity of the request Activity or Fragment.
+     * @param requestCode   Identity of the request Activity or Fragment.
      * @param selectedPaths The selected Media path collection
      */
     public void forResult(int requestCode, List<String> selectedPaths) {
@@ -358,7 +358,7 @@ public final class SelectionCreator {
 
         Intent intent = new Intent(activity, MatisseActivity.class);
         if (selectedPaths != null && selectedPaths.size() > 0) {
-           intent.putParcelableArrayListExtra(SelectedItemCollection.STATE_SELECTION, AlbumMediaLoader.querySelection(activity,selectedPaths));
+            intent.putParcelableArrayListExtra(SelectedItemCollection.STATE_SELECTION, AlbumMediaLoader.querySelection(activity, selectedPaths));
         }
         Fragment fragment = mMatisse.getFragment();
         if (fragment != null) {
