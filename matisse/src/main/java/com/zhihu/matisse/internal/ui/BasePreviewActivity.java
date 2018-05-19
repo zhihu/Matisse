@@ -281,14 +281,9 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     private int countOverMaxSize() {
         int count = 0;
-        int selectedCount = mSelectedCollection.count();
-        for (int i = 0; i < selectedCount; i++) {
-            Item item = mSelectedCollection.asList().get(i);
-            if(item.isImage()){
-                float size = PhotoMetadataUtils.getSizeInMB(item.size);
-                if (size > mSpec.originalMaxSize) {
-                    count++;
-                }
+        for (Item item : mSelectedCollection.asList()) {
+            if (item.isImage() && PhotoMetadataUtils.getSizeInMB(item.size) > mSpec.originalMaxSize) {
+                count++;
             }
         }
         return count;

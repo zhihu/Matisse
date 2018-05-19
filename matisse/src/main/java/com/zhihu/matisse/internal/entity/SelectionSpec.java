@@ -25,6 +25,7 @@ import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.listener.OnCheckedListener;
+import com.zhihu.matisse.listener.OnFinishedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public final class SelectionSpec {
     public int themeId;
     public int orientation;
     public boolean countable;
+    public boolean permission = true;
     public int maxSelectable;
     public int maxImageSelectable;
     public int maxVideoSelectable;
@@ -54,6 +56,7 @@ public final class SelectionSpec {
     public boolean originalable;
     public int originalMaxSize;
     public OnCheckedListener onCheckedListener;
+    public OnFinishedListener mOnFinishedListener;
 
     private SelectionSpec() {
     }
