@@ -33,6 +33,7 @@ import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.utils.Platform;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnFinishedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
@@ -382,7 +383,10 @@ public final class SelectionCreator {
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 start();
             } else {
-                Toast.makeText(mMatisse.getActivity(), R.string.permission_request_denied, Toast.LENGTH_LONG).show();
+                Activity activity = mMatisse.getActivity();
+                if (activity != null) {
+                    Toast.makeText(activity, R.string.permission_request_denied, Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -408,13 +412,11 @@ public final class SelectionCreator {
                     return;
                 }
 
-                int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission_group.STORAGE);
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     lifecycleManager.startActivityForResult(intent, MatisseActivity.REQUEST_CODE_CHOOSE);
-                } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        lifecycleManager.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_EXTERNAL_STORAGE);
-                    }
+                } else if (Platform.hasM()) {
+                    lifecycleManager.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_EXTERNAL_STORAGE);
                 }
             }
         });
