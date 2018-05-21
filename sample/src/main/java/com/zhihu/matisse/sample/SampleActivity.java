@@ -96,6 +96,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                                 public void onSelected(
                                                         @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
                                                     // DO SOMETHING IMMEDIATELY HERE
+                                                    Log.e("onSelected", "onSelected: pathList="+pathList );
+
                                                 }
                                             })
                                             .originalEnable(true)
@@ -115,7 +117,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .theme(R.style.Matisse_Dracula)
                                             .countable(false)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-
                                             .maxSelectable(9)
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
