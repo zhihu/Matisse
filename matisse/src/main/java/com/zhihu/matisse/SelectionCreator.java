@@ -412,7 +412,7 @@ public final class SelectionCreator {
                     return;
                 }
 
-                int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission_group.STORAGE);
+                int permission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     lifecycleManager.startActivityForResult(intent, MatisseActivity.REQUEST_CODE_CHOOSE);
                 } else if (Platform.hasM()) {
