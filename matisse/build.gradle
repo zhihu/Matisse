@@ -55,7 +55,7 @@ publish {
     userOrg = 'zhihu'
     groupId = 'com.zhihu.android'
     artifactId = 'matisse'
-    publishVersion = '0.5.0-beta7'
+    publishVersion = '0.5.0-beta8'
     desc = 'A well-designed local image selector for Android'
     website = 'https://www.zhihu.com/'
 }
