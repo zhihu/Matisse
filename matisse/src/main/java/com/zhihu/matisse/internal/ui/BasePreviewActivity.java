@@ -284,7 +284,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         int selectedCount = mSelectedCollection.count();
         for (int i = 0; i < selectedCount; i++) {
             Item item = mSelectedCollection.asList().get(i);
-            if(item.isImage()){
+            if (item.isImage()) {
                 float size = PhotoMetadataUtils.getSizeInMB(item.size);
                 if (size > mSpec.originalMaxSize) {
                     count++;

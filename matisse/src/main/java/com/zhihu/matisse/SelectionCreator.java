@@ -30,6 +30,8 @@ import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
+import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 import com.zhihu.matisse.ui.MatisseActivity;
@@ -37,6 +39,7 @@ import com.zhihu.matisse.ui.MatisseActivity;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND;
@@ -338,13 +341,25 @@ public final class SelectionCreator {
      * @param requestCode Identity of the request Activity or Fragment.
      */
     public void forResult(int requestCode) {
+        forResult(requestCode, null);
+    }
+
+    /**
+     * Start to select media and wait for result.
+     *
+     * @param requestCode   Identity of the request Activity or Fragment.
+     * @param selectedPaths The selected Media path collection
+     */
+    public void forResult(int requestCode, List<String> selectedPaths) {
         Activity activity = mMatisse.getActivity();
         if (activity == null) {
             return;
         }
 
         Intent intent = new Intent(activity, MatisseActivity.class);
-
+        if (selectedPaths != null && selectedPaths.size() > 0) {
+            intent.putParcelableArrayListExtra(SelectedItemCollection.STATE_SELECTION, AlbumMediaLoader.querySelection(activity, selectedPaths));
+        }
         Fragment fragment = mMatisse.getFragment();
         if (fragment != null) {
             fragment.startActivityForResult(intent, requestCode);
@@ -352,5 +367,4 @@ public final class SelectionCreator {
             activity.startActivityForResult(intent, requestCode);
         }
     }
-
 }

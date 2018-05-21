@@ -139,7 +139,11 @@ public class MatisseActivity extends AppCompatActivity implements
 
         mSelectedCollection.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mOriginalEnable=savedInstanceState.getBoolean(CHECK_STATE);
+            mOriginalEnable = savedInstanceState.getBoolean(CHECK_STATE);
+        }
+        ArrayList<Item> selectedItems = getIntent().getParcelableArrayListExtra(SelectedItemCollection.STATE_SELECTION);
+        if (selectedItems != null && selectedItems.size() > 0) {
+            mSelectedCollection.setDefaultSelection(selectedItems);
         }
         updateBottomToolbar();
 
@@ -159,7 +163,7 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
         mAlbumCollection.onSaveInstanceState(outState);
-        outState.putBoolean("checkState",mOriginalEnable);
+        outState.putBoolean("checkState", mOriginalEnable);
     }
 
     @Override
@@ -294,7 +298,7 @@ public class MatisseActivity extends AppCompatActivity implements
         for (int i = 0; i < selectedCount; i++) {
             Item item = mSelectedCollection.asList().get(i);
 
-            if(item.isImage()){
+            if (item.isImage()) {
                 float size = PhotoMetadataUtils.getSizeInMB(item.size);
                 if (size > mSpec.originalMaxSize) {
                     count++;
