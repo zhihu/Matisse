@@ -39,6 +39,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public final class PhotoMetadataUtils {
     private static final String TAG = PhotoMetadataUtils.class.getSimpleName();
@@ -166,6 +168,8 @@ public final class PhotoMetadataUtils {
     }
 
     public static float getSizeInMB(long sizeInBytes) {
-        return Float.valueOf(new DecimalFormat("0.0").format((float) sizeInBytes / 1024 / 1024));
+        DecimalFormat df = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+        df.applyPattern("0.0");
+        return Float.valueOf(df.format((float) sizeInBytes / 1024 / 1024));
     }
 }
