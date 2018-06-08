@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.SelectionListener;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
@@ -121,7 +122,16 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
                                             .imageEngine(new PicassoEngine())
-                                            .forResult(REQUEST_CODE_CHOOSE);
+                                            .select(new SelectionListener() {
+                                                @Override
+                                                public void onSelectSucceeded(List<Uri> uris, List<String> paths) {
+                                                    mAdapter.setData(uris, paths);
+                                                }
+
+                                                @Override
+                                                public void onSelectCanceled() {
+                                                }
+                                            });
                                     break;
                             }
                             mAdapter.setData(null, null);

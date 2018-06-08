@@ -53,7 +53,9 @@ So if you are targeting Android 6.0+, you need to handle runtime permission requ
 
 #### Simple usage snippet
 ------
-Start `MatisseActivity` from current `Activity` or `Fragment`:
+Start `MatisseActivity` from current `Activity` or `Fragment`. Support two kinds of callback:
+
+**Use `forResult`**
 
 ```java
 Matisse.from(MainActivity.this)
@@ -67,16 +69,8 @@ Matisse.from(MainActivity.this)
         .imageEngine(new GlideEngine())
         .forResult(REQUEST_CODE_CHOOSE);
 ```
- 
-#### Themes
-There are two built-in themes you can use to start `MatisseActivity`:
-- `R.style.Matisse_Zhihu` (light mode)
-- `R.style.Matisse_Dracula` (dark mode)  
 
-And Also you can define your own theme as you wish.
-
-#### Receive Result
-In `onActivityResult()` callback of the starting `Activity` or `Fragment`:
+If you use `forResult` you should add `onActivityResult()` callback of the starting `Activity` or `Fragment`:
 
 ```java
 List<Uri> mSelected;
@@ -90,6 +84,36 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 ```
+
+**Use `select`**
+```java
+Matisse.from(MainActivity.this)
+        .choose(MimeType.allOf())
+        .countable(true)
+        .maxSelectable(9)
+        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        .thumbnailScale(0.85f)
+        .imageEngine(new GlideEngine())
+        .select(new SelectionListener() {
+            @Override
+            public void onSelectSucceeded(List<Uri> uris, List<String> paths) {
+                // Both uris and paths are available
+            }
+
+            @Override
+            public void onSelectCanceled() {
+            }
+        });
+```
+ 
+#### Themes
+There are two built-in themes you can use to start `MatisseActivity`:
+- `R.style.Matisse_Zhihu` (light mode)
+- `R.style.Matisse_Dracula` (dark mode)  
+
+And Also you can define your own theme as you wish.
 
 #### More
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).

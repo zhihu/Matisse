@@ -138,6 +138,24 @@ public final class Matisse {
         return new SelectionCreator(this, mimeTypes, mediaTypeExclusive);
     }
 
+    /**
+     * Get the host activity for the ManagerFragment.
+     * @return host activity if has one.
+     */
+    Activity getHostActivity() {
+        Activity activity = getActivity();
+        if (activity != null) {
+            return activity;
+        }
+
+        Fragment fragment = getFragment();
+        if (fragment != null) {
+            return fragment.getActivity();
+        }
+
+        return null;
+    }
+
     @Nullable
     Activity getActivity() {
         return mContext.get();

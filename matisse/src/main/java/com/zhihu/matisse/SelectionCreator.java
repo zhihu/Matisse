@@ -17,6 +17,7 @@
 package com.zhihu.matisse;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.IntDef;
@@ -28,6 +29,7 @@ import android.support.v4.app.Fragment;
 
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.ManagerFragment;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.listener.OnCheckedListener;
@@ -61,6 +63,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
  */
 @SuppressWarnings("unused")
 public final class SelectionCreator {
+    static final String FRAGMENT_TAG = "MatisseManagerFragment";
     private final Matisse mMatisse;
     private final SelectionSpec mSelectionSpec;
 
@@ -351,6 +354,43 @@ public final class SelectionCreator {
         } else {
             activity.startActivityForResult(intent, requestCode);
         }
+    }
+
+    /**
+     * Start select with default request code and pass result back with the listener
+     *
+     * @param listener Result callback
+     */
+    public void select(SelectionListener listener) {
+        Activity hostActivity = mMatisse.getHostActivity();
+        if (hostActivity == null) {
+            return;
+        }
+
+        ManagerFragment fragment = getManagerFragment(hostActivity);
+        fragment.setSelectionListener(listener);
+
+        Intent intent = new Intent(hostActivity, MatisseActivity.class);
+        fragment.startActivityForResult(intent, ManagerFragment.DEFAULT_REQUEST_CODE);
+    }
+
+    /**
+     * Get the manager fragment. If there isn't one create it.
+     * @param activity host activity
+     * @return an invisible fragment to manage the request
+     */
+    private ManagerFragment getManagerFragment(Activity activity) {
+        ManagerFragment fragment = (ManagerFragment) activity.getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (fragment == null) {
+            fragment = new ManagerFragment();
+            FragmentManager manager = activity.getFragmentManager();
+            manager.beginTransaction()
+                    .add(fragment, FRAGMENT_TAG)
+                    .commitAllowingStateLoss();
+            manager.executePendingTransactions();
+        }
+
+        return fragment;
     }
 
 }
