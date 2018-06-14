@@ -18,12 +18,12 @@ apply plugin: 'checkstyle'
 apply plugin: 'maven'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 26
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -35,27 +35,31 @@ android {
     }
 }
 
-ext.supportLibVersion = '27.0.2'
 
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: "http://alphagao.com:8081/repository/com.yiqizhangda.matisse/") {
-            authentication(userName: "gaoyanqiang", password: "gyq19930317")
-        }
-        pom.version = "0.0.2"
-        pom.artifactId = "matisse"
-        pom.groupId = "com.yiqizhangda"
-    }
-}
+ext.supportLibVersion = '26.1.0'
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation "com.android.support:support-v4:${supportLibVersion}"
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:support-annotations:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation 'it.sephiroth.android.library.imagezoom:library:1.0.4'
+
     compileOnly 'com.github.bumptech.glide:glide:4.1.1'
+    compileOnly 'com.squareup.picasso:picasso:2.5.2'
+}
+
+// jcenter configuration for novoda's bintray-release
+// $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
+publish {
+    userOrg = 'zhihu'
+    groupId = 'com.zhihu.android'
+    artifactId = 'matisse'
+    publishVersion = '0.5.0-beta9'
+    desc = 'A well-designed local image selector for Android'
+    website = 'https://www.zhihu.com/'
 }
 
 task checkstyle(type: Checkstyle) {

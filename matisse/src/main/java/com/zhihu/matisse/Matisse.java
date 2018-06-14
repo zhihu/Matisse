@@ -97,6 +97,17 @@ public final class Matisse {
     }
 
     /**
+     * Obtain state whether user decide to use selected media in original
+     *
+     * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
+     *             {@link Fragment#onActivityResult(int, int, Intent)}.
+     * @return Whether use original photo
+     */
+    public static boolean obtainOriginalState(Intent data) {
+        return data.getBooleanExtra(MatisseActivity.EXTRA_RESULT_ORIGINAL_ENABLE, false);
+    }
+
+    /**
      * MIME types the selection constrains on.
      * <p>
      * Types not included in the set will still be shown in the grid but can't be chosen.

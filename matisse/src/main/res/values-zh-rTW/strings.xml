@@ -32,4 +32,7 @@
     <string name="error_file_type">不支援的文件類型</string>
     <string name="error_type_conflict">不能同時選擇圖片和影片</string>
     <string name="error_no_video_activity">沒有支持影片預覽的應用程式</string>
+    <string name="button_original">原圖</string>
+    <string name="button_sure_default">确定</string>
+    <string name="button_sure">确定(%1$d)</string>
 </resources>

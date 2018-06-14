@@ -183,11 +183,22 @@ public class AlbumMediaAdapter extends
                     new int[]{R.attr.capture_textColor});
             int color = ta.getColor(0, 0);
             ta.recycle();
-            for (Drawable drawable : drawables) {
+
+            for (int i = 0; i < drawables.length; i++) {
+                Drawable drawable = drawables[i];
                 if (drawable != null) {
-                    drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    final Drawable.ConstantState state = drawable.getConstantState();
+                    if (state == null) {
+                        continue;
+                    }
+
+                    Drawable newDrawable = state.newDrawable().mutate();
+                    newDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    newDrawable.setBounds(drawable.getBounds());
+                    drawables[i] = newDrawable;
                 }
             }
+            captureViewHolder.mHint.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
         } else if (holder instanceof MediaViewHolder) {
             MediaViewHolder mediaViewHolder = (MediaViewHolder) holder;
 
@@ -365,6 +376,7 @@ public class AlbumMediaAdapter extends
         IncapableCause.handleCause(context, cause);
         return cause == null;
     }
+
 
     public void registerCheckStateListener(CheckStateListener listener) {
         mCheckStateListener = listener;

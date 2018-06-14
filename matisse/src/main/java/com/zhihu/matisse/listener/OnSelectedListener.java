@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-buildscript {
-    repositories {
-        jcenter()
-        google()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.novoda:bintray-release:0.8.0'
-    }
-}
+package com.zhihu.matisse.listener;
 
-allprojects {
-    repositories {
-        jcenter()
-        google()
-    }
-}
+import android.net.Uri;
+import android.support.annotation.NonNull;
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+import java.util.List;
+
+public interface OnSelectedListener {
+    /**
+     * @param uriList the selected item {@link Uri} list.
+     * @param pathList the selected item file path list.
+     */
+    void onSelected(@NonNull List<Uri> uriList, @NonNull List<String> pathList);
 }

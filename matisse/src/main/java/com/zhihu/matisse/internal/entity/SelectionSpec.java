@@ -27,6 +27,8 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.listener.OnCheckedListener;
+import com.zhihu.matisse.listener.OnSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,8 @@ public final class SelectionSpec {
     public int orientation;
     public boolean countable;
     public int maxSelectable;
+    public int maxImageSelectable;
+    public int maxVideoSelectable;
     public List<Filter> filters;
     public boolean capture;
     public CaptureStrategy captureStrategy;
@@ -51,6 +55,11 @@ public final class SelectionSpec {
     public ImageEngine imageEngine;
     public boolean groupByDate;
     public ArrayList<Uri> selectedUris = new ArrayList<>();
+    public boolean hasInited;
+    public OnSelectedListener onSelectedListener;
+    public boolean originalable;
+    public int originalMaxSize;
+    public OnCheckedListener onCheckedListener;
 
     private SelectionSpec() {
     }
@@ -73,6 +82,8 @@ public final class SelectionSpec {
         orientation = 0;
         countable = false;
         maxSelectable = 1;
+        maxImageSelectable = 0;
+        maxVideoSelectable = 0;
         filters = null;
         capture = false;
         captureStrategy = null;
@@ -107,10 +118,13 @@ public final class SelectionSpec {
         };
         groupByDate = false;
         selectedUris.clear();
+        hasInited = true;
+        originalable = false;
+        originalMaxSize = Integer.MAX_VALUE;
     }
 
     public boolean singleSelectionModeEnabled() {
-        return !countable && maxSelectable == 1;
+        return !countable && (maxSelectable == 1 || (maxImageSelectable == 1 && maxVideoSelectable == 1));
     }
 
     public boolean needOrientationRestriction() {

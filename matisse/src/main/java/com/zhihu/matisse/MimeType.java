@@ -18,12 +18,14 @@ package com.zhihu.matisse;
 
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.text.TextUtils;
+import android.support.v4.util.ArraySet;
 import android.webkit.MimeTypeMap;
 
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
+import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -36,84 +38,57 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public enum MimeType {
+
     // ============== images ==============
-    JPEG("image/jpeg", new HashSet<String>() {
-        {
-            add("jpg");
-            add("jpeg");
-        }
-    }),
-    PNG("image/png", new HashSet<String>() {
-        {
-            add("png");
-        }
-    }),
-    GIF("image/gif", new HashSet<String>() {
-        {
-            add("gif");
-        }
-    }),
-    BMP("image/x-ms-bmp", new HashSet<String>() {
-        {
-            add("bmp");
-        }
-    }),
-    WEBP("image/webp", new HashSet<String>() {
-        {
-            add("webp");
-        }
-    }),
+    JPEG("image/jpeg", arraySetOf(
+            "jpg",
+            "jpeg"
+    )),
+    PNG("image/png", arraySetOf(
+            "png"
+    )),
+    GIF("image/gif", arraySetOf(
+            "gif"
+    )),
+    BMP("image/x-ms-bmp", arraySetOf(
+            "bmp"
+    )),
+    WEBP("image/webp", arraySetOf(
+            "webp"
+    )),
 
     // ============== videos ==============
-    MPEG("video/mpeg", new HashSet<String>() {
-        {
-            add("mpeg");
-            add("mpg");
-        }
-    }),
-    MP4("video/mp4", new HashSet<String>() {
-        {
-            add("mp4");
-            add("m4v");
-        }
-    }),
-    QUICKTIME("video/quicktime", new HashSet<String>() {
-        {
-            add("mov");
-        }
-    }),
-    THREEGPP("video/3gpp", new HashSet<String>() {
-        {
-            add("3gp");
-            add("3gpp");
-        }
-    }),
-    THREEGPP2("video/3gpp2", new HashSet<String>() {
-        {
-            add("3g2");
-            add("3gpp2");
-        }
-    }),
-    MKV("video/x-matroska", new HashSet<String>() {
-        {
-            add("mkv");
-        }
-    }),
-    WEBM("video/webm", new HashSet<String>() {
-        {
-            add("webm");
-        }
-    }),
-    TS("video/mp2ts", new HashSet<String>() {
-        {
-            add("ts");
-        }
-    }),
-    AVI("video/avi", new HashSet<String>() {
-        {
-            add("avi");
-        }
-    });
+    MPEG("video/mpeg", arraySetOf(
+            "mpeg",
+            "mpg"
+    )),
+    MP4("video/mp4", arraySetOf(
+            "mp4",
+            "m4v"
+    )),
+    QUICKTIME("video/quicktime", arraySetOf(
+            "mov"
+    )),
+    THREEGPP("video/3gpp", arraySetOf(
+            "3gp",
+            "3gpp"
+    )),
+    THREEGPP2("video/3gpp2", arraySetOf(
+            "3g2",
+            "3gpp2"
+    )),
+    MKV("video/x-matroska", arraySetOf(
+            "mkv"
+    )),
+    WEBM("video/webm", arraySetOf(
+            "webm"
+    )),
+    TS("video/mp2ts", arraySetOf(
+            "ts"
+    )),
+    AVI("video/avi", arraySetOf(
+            "avi"
+    ));
 
     private final String mMimeTypeName;
     private final Set<String> mExtensions;
@@ -139,6 +114,10 @@ public enum MimeType {
         return EnumSet.of(MPEG, MP4, QUICKTIME, THREEGPP, THREEGPP2, MKV, WEBM, TS, AVI);
     }
 
+    private static Set<String> arraySetOf(String... suffixes) {
+        return new ArraySet<>(Arrays.asList(suffixes));
+    }
+
     @Override
     public String toString() {
         return mMimeTypeName;
@@ -150,12 +129,22 @@ public enum MimeType {
             return false;
         }
         String type = map.getExtensionFromMimeType(resolver.getType(uri));
+        String path = null;
+        // lazy load the path and prevent resolve for multiple times
+        boolean pathParsed = false;
         for (String extension : mExtensions) {
             if (extension.equals(type)) {
                 return true;
             }
-            String path = PhotoMetadataUtils.getPath(resolver, uri);
-            if (path != null && path.toLowerCase(Locale.US).endsWith(extension)) {
+            if (!pathParsed) {
+                // we only resolve the path for one time
+                path = PhotoMetadataUtils.getPath(resolver, uri);
+                if (!TextUtils.isEmpty(path)) {
+                    path = path.toLowerCase(Locale.US);
+                }
+                pathParsed = true;
+            }
+            if (path != null && path.endsWith(extension)) {
                 return true;
             }
         }
