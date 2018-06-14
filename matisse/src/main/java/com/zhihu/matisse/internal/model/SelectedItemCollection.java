@@ -56,13 +56,14 @@ public class SelectedItemCollection {
     public static final int COLLECTION_MIXED = COLLECTION_IMAGE | COLLECTION_VIDEO;
     private final Context mContext;
     private Set<Item> mItems;
+    private ArrayList<Uri> mOriginUris;
     private int mCollectionType = COLLECTION_UNDEFINED;
 
     public SelectedItemCollection(Context context) {
         mContext = context;
     }
 
-    public void onCreate(Bundle bundle) {
+    public void onCreate(Bundle bundle, ArrayList<Uri> originUris) {
         if (bundle == null) {
             mItems = new LinkedHashSet<>();
         } else {
@@ -70,6 +71,7 @@ public class SelectedItemCollection {
             mItems = new LinkedHashSet<>(saved);
             mCollectionType = bundle.getInt(STATE_COLLECTION_TYPE, COLLECTION_UNDEFINED);
         }
+        mOriginUris = originUris;
     }
 
     public void setDefaultSelection(List<Item> uris) {
@@ -193,7 +195,8 @@ public class SelectedItemCollection {
     }
 
     public boolean maxSelectableReached() {
-        return mItems.size() == currentMaxSelectable();
+        int currentMaxSize = Math.max(mOriginUris.size(), mItems.size());
+        return currentMaxSize == SelectionSpec.getInstance().maxSelectable;
     }
 
     // depends
@@ -218,8 +221,12 @@ public class SelectedItemCollection {
         boolean hasImage = false;
         boolean hasVideo = false;
         for (Item i : mItems) {
-            if (i.isImage() && !hasImage) hasImage = true;
-            if (i.isVideo() && !hasVideo) hasVideo = true;
+            if (i.isImage() && !hasImage) {
+                hasImage = true;
+            }
+            if (i.isVideo() && !hasVideo) {
+                hasVideo = true;
+            }
         }
         if (hasImage && hasVideo) {
             mCollectionType = COLLECTION_MIXED;

@@ -40,11 +40,12 @@ ext.supportLibVersion = '26.1.0'
 dependencies {
     implementation project(':matisse')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation "com.android.support:support-v4:27.0.2"
+    implementation "com.android.support:design:27.0.2"
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'com.github.bumptech.glide:glide:4.1.1'
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
-    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 }

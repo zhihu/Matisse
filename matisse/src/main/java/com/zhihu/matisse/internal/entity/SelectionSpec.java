@@ -16,17 +16,21 @@
  */
 package com.zhihu.matisse.internal.entity;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.StyleRes;
+import android.widget.ImageView;
 
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -49,6 +53,8 @@ public final class SelectionSpec {
     public int gridExpectedSize;
     public float thumbnailScale;
     public ImageEngine imageEngine;
+    public boolean groupByDate;
+    public ArrayList<Uri> selectedUris = new ArrayList<>();
     public boolean hasInited;
     public OnSelectedListener onSelectedListener;
     public boolean originalable;
@@ -84,7 +90,34 @@ public final class SelectionSpec {
         spanCount = 3;
         gridExpectedSize = 0;
         thumbnailScale = 0.5f;
-        imageEngine = new GlideEngine();
+        imageEngine = new ImageEngine() {
+            @Override
+            public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+
+            }
+
+            @Override
+            public boolean supportAnimatedGif() {
+                return false;
+            }
+        };
+        groupByDate = false;
+        selectedUris.clear();
         hasInited = true;
         originalable = false;
         originalMaxSize = Integer.MAX_VALUE;

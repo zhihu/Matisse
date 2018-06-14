@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +14,9 @@
   limitations under the License.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="?attr/page.bg">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/page.bg">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
@@ -25,7 +24,6 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/media_grid_spacing"
-        android:paddingTop="@dimen/media_grid_spacing"/>
+        android:padding="12dp" />
 
 </FrameLayout>

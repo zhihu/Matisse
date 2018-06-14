@@ -16,6 +16,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'checkstyle'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 26
@@ -30,9 +31,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
     }
 }
+
 
 ext.supportLibVersion = '26.1.0'
 
@@ -45,7 +48,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
     implementation 'it.sephiroth.android.library.imagezoom:library:1.0.4'
 
-    compileOnly 'com.github.bumptech.glide:glide:3.7.0'
+    compileOnly 'com.github.bumptech.glide:glide:4.1.1'
     compileOnly 'com.squareup.picasso:picasso:2.5.2'
 }
 
@@ -60,7 +63,7 @@ publish {
     website = 'https://www.zhihu.com/'
 }
 
-task checkstyle(type:Checkstyle) {
+task checkstyle(type: Checkstyle) {
     description 'Runs Checkstyle inspection against matisse sourcesets.'
     group = 'Code Quality'
     configFile rootProject.file('checkstyle.xml')

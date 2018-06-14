@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        android:elevation="4dp"
+        android:elevation="0.5dp"
         android:theme="?toolbar"
         tools:targetApi="lollipop">
 
@@ -58,6 +58,7 @@
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
             android:text="@string/button_preview"
+            android:visibility="gone"
             android:textColor="?attr/bottomToolbar.preview.textColor"
             android:textSize="16sp" />
 
@@ -92,7 +93,6 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/button_apply"

@@ -118,7 +118,7 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
                     mPreBindInfo.mPlaceholder, mThumbnail, mMedia.getContentUri());
         }
     }
-
+    
     private void setVideoDuration() {
         if (mMedia.isVideo()) {
             mVideoDuration.setVisibility(VISIBLE);

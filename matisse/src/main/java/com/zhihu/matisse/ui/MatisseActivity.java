@@ -111,8 +111,9 @@ public class MatisseActivity extends AppCompatActivity implements
 
         if (mSpec.capture) {
             mMediaStoreCompat = new MediaStoreCompat(this);
-            if (mSpec.captureStrategy == null)
+            if (mSpec.captureStrategy == null) {
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
+            }
             mMediaStoreCompat.setCaptureStrategy(mSpec.captureStrategy);
         }
 
@@ -137,7 +138,7 @@ public class MatisseActivity extends AppCompatActivity implements
         mOriginal = findViewById(R.id.original);
         mOriginalLayout.setOnClickListener(this);
 
-        mSelectedCollection.onCreate(savedInstanceState);
+        mSelectedCollection.onCreate(savedInstanceState, mSpec.selectedUris);
         if (savedInstanceState != null) {
             mOriginalEnable = savedInstanceState.getBoolean(CHECK_STATE);
         }
@@ -188,8 +189,9 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
+        if (resultCode != RESULT_OK) {
             return;
+        }
 
         if (requestCode == REQUEST_CODE_PREVIEW) {
             Bundle resultBundle = data.getBundleExtra(BasePreviewActivity.EXTRA_RESULT_BUNDLE);
@@ -207,6 +209,9 @@ public class MatisseActivity extends AppCompatActivity implements
                         selectedPaths.add(PathUtils.getPath(this, item.getContentUri()));
                     }
                 }
+
+                addOriginSelected(selectedUris, selectedPaths);
+
                 result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
                 result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
                 result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
@@ -233,16 +238,34 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selected);
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPath);
             setResult(RESULT_OK, result);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 MatisseActivity.this.revokeUriPermission(contentUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
             finish();
+        }
+    }
+
+    private void addOriginSelected(ArrayList<Uri> selectedUris, ArrayList<String> selectedPaths) {
+        if (mSpec.selectedUris.size() > 0) {
+            for (Uri uri : mSpec.selectedUris) {
+                if (!selectedUris.contains(uri)) {
+                    selectedUris.add(uri);
+                }
+                String path = PathUtils.getPath(this, uri);
+                if (!selectedPaths.contains(path)) {
+                    selectedPaths.add(path);
+                }
+            }
         }
     }
 
     private void updateBottomToolbar() {
 
         int selectedCount = mSelectedCollection.count();
+        if (selectedCount == 0 || selectedCount < mSpec.selectedUris.size()) {
+            selectedCount = mSpec.selectedUris.size();
+        }
         if (selectedCount == 0) {
             mButtonPreview.setEnabled(false);
             mButtonApply.setEnabled(false);
@@ -316,8 +339,11 @@ public class MatisseActivity extends AppCompatActivity implements
         } else if (v.getId() == R.id.button_apply) {
             Intent result = new Intent();
             ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
-            result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
             ArrayList<String> selectedPaths = (ArrayList<String>) mSelectedCollection.asListOfString();
+
+            addOriginSelected(selectedUris, selectedPaths);
+
+            result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
             result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
             result.putExtra(EXTRA_RESULT_ORIGINAL_ENABLE, mOriginalEnable);
             setResult(RESULT_OK, result);
