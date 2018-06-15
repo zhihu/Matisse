@@ -22,8 +22,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application>
-        <activity android:name="com.zhihu.matisse.ui.MatisseActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name="com.zhihu.matisse.ui.MatisseActivity"/>
         <activity android:name="com.zhihu.matisse.internal.ui.AlbumPreviewActivity"/>
         <activity android:name="com.zhihu.matisse.internal.ui.SelectedPreviewActivity"/>
     </application>
