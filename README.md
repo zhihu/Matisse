@@ -49,11 +49,11 @@ The library requires two permissions:
 - `android.permission.READ_EXTERNAL_STORAGE`
 - `android.permission.WRITE_EXTERNAL_STORAGE`
 
-So if you are targeting Android 6.0+, you need to handle runtime permission request before next step.
+you don't have to handle runtime permission request before next step because it is handled internally.
 
 #### Simple usage snippet
 ------
-Start `MatisseActivity` from current `Activity` or `Fragment`:
+Start `MatisseActivity` from current `Activity` or `Fragment` and Receive Result:
 
 ```java
 Matisse.from(MainActivity.this)
@@ -65,7 +65,13 @@ Matisse.from(MainActivity.this)
         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         .thumbnailScale(0.85f)
         .imageEngine(new GlideEngine())
-        .forResult(REQUEST_CODE_CHOOSE);
+        .setOnFinishedListener(new OnFinishedListener() {
+               @Override
+               public void onFinished(List<Uri> uris, List<String> paths, boolean originalState) {
+                   mAdapter.setData(uris, paths);
+               }
+           })
+        .start();
 ```
  
 #### Themes
@@ -74,22 +80,6 @@ There are two built-in themes you can use to start `MatisseActivity`:
 - `R.style.Matisse_Dracula` (dark mode)  
 
 And Also you can define your own theme as you wish.
-
-#### Receive Result
-In `onActivityResult()` callback of the starting `Activity` or `Fragment`:
-
-```java
-List<Uri> mSelected;
-
-@Override
-protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-        mSelected = Matisse.obtainResult(data);
-        Log.d("Matisse", "mSelected: " + mSelected);
-    }
-}
-```
 
 #### More
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).

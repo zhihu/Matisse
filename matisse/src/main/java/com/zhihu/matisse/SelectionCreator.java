@@ -352,7 +352,7 @@ public final class SelectionCreator {
     }
 
     /**
-     * Set listener for callback immediately when user finish.
+     * Set automatic request permission.
      *
      * @param isAuto Automatic request permission. Default value is true.
      * @return {@link SelectionCreator} for fluent API.

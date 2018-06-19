@@ -35,12 +35,8 @@ import java.util.Set;
  */
 public final class Matisse {
 
-    private final WeakReference<? extends Activity> mContext;
+    private final WeakReference<Activity> mContext;
     private Handler mHandler = new Handler(Looper.getMainLooper());
-
-    private Matisse(FragmentActivity activity) {
-        mContext = new WeakReference<>(activity);
-    }
 
     private Matisse(Activity activity) {
         mContext = new WeakReference<>(activity);
@@ -56,19 +52,6 @@ public final class Matisse {
      * @return Matisse instance.
      */
     public static Matisse from(Activity activity) {
-        return new Matisse(activity);
-    }
-
-    /**
-     * Start Matisse from an Activity.
-     * <p>
-     * This FragmentActivity's {@link Activity#onActivityResult(int, int, Intent)} will be called when user
-     * finishes selecting.
-     *
-     * @param activity Activity instance.
-     * @return Matisse instance.
-     */
-    public static Matisse from(FragmentActivity activity) {
         return new Matisse(activity);
     }
 
