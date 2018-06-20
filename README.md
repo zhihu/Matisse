@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.zhihu.android:matisse:0.5.0'
+    compile 'cn.junhua.android:matisse:0.5.0'
 }
 ```
 
