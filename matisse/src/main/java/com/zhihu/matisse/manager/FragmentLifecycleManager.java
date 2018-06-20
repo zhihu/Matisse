@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
  * Author: junhua.lin<br>
  * Email: junhua.lin@jinfuzi.com<br>
  * Description: <br>
- * 用于管理返回结果和权限请求
  */
 public class FragmentLifecycleManager extends Fragment {
     private final static String FRAGMENT_TAG = FragmentLifecycleManager.class.getName();
