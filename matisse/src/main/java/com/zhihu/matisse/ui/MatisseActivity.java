@@ -97,8 +97,6 @@ public class MatisseActivity extends AppCompatActivity implements
         setTheme(mSpec.themeId);
         super.onCreate(savedInstanceState);
         if (!mSpec.hasInited) {
-            // When hasInited == false, indicate that MatisseActivity is restarting
-            // after app process was killed.
             setResult(RESULT_CANCELED);
             finish();
             return;
@@ -271,11 +269,7 @@ public class MatisseActivity extends AppCompatActivity implements
 
     private void updateOriginalState() {
         mOriginal.setChecked(mOriginalEnable);
-        int selectedCount = mSelectedCollection.count();
-        if (selectedCount == 0) {
-//            mOriginal.setChecked(false);
-//            mOriginalEnable = false;
-        } else if (countOverMaxSize() > 0) {
+        if (countOverMaxSize() > 0) {
 
             if (mOriginalEnable) {
                 IncapableDialog incapableDialog = IncapableDialog.newInstance("",

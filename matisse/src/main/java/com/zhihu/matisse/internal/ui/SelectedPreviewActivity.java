@@ -30,8 +30,6 @@ public class SelectedPreviewActivity extends BasePreviewActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!SelectionSpec.getInstance().hasInited) {
-            // When hasInited == false, indicate that Activity is restarting
-            // after app process was killed.
             setResult(RESULT_CANCELED);
             finish();
             return;

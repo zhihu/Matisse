@@ -42,8 +42,6 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!SelectionSpec.getInstance().hasInited) {
-            // When hasInited == false, indicate that Activity is restarting
-            // after app process was killed.
             setResult(RESULT_CANCELED);
             finish();
             return;
@@ -73,6 +71,12 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
         while (cursor.moveToNext()) {
             items.add(Item.valueOf(cursor));
         }
+        cursor.close();
+
+        if (items.isEmpty()) {
+            return;
+        }
+
         PreviewPagerAdapter adapter = (PreviewPagerAdapter) mPager.getAdapter();
         adapter.addAll(items);
         adapter.notifyDataSetChanged();
