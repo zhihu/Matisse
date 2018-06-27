@@ -17,6 +17,7 @@ package com.zhihu.matisse.sample;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -88,15 +89,18 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                                             .gridExpectedSize(
                                                     getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-//                                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                                             .thumbnailScale(0.85f)
-                                            .imageEngine(new GlideEngine())
+                                            // for glide-V3
+//                                            .imageEngine(new GlideEngine())
+                                            // for glide-V4
+                                            .imageEngine(new Glide4Engine())
                                             .setOnSelectedListener(new OnSelectedListener() {
                                                 @Override
                                                 public void onSelected(
                                                         @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
                                                     // DO SOMETHING IMMEDIATELY HERE
-                                                    Log.e("onSelected", "onSelected: pathList="+pathList );
+                                                    Log.e("onSelected", "onSelected: pathList=" + pathList);
 
                                                 }
                                             })
@@ -106,7 +110,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                                 @Override
                                                 public void onCheck(boolean isChecked) {
                                                     // DO SOMETHING IMMEDIATELY HERE
-                                                    Log.e("isChecked", "onCheck: isChecked="+isChecked );
+                                                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
                                                 }
                                             })
                                             .forResult(REQUEST_CODE_CHOOSE);
@@ -122,6 +126,8 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .maxOriginalSize(10)
                                             .imageEngine(new PicassoEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
+                                    break;
+                                default:
                                     break;
                             }
                             mAdapter.setData(null, null);
@@ -148,7 +154,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
-            Log.e("OnActivityResult ",String.valueOf(Matisse.obtainOriginalState(data)));
+            Log.e("OnActivityResult ", String.valueOf(Matisse.obtainOriginalState(data)));
         }
     }
 
