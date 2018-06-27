@@ -99,7 +99,7 @@ To be honest,the library can't supply GlideEngine for Glide both v3 and v4 at th
 GlideEngine with Glide v3 is default.
 
 So if your project's glide version is 4.0+ ,then you must realize GlideEngine by yourself. More details
-could refer with [Glide4Engine]() in the sample.
+could refer with [Glide4Engine](https://github.com/zhihu/Matisse/blob/master/sample/src/main/java/com/zhihu/matisse/sample/Glide4Engine.java) in the sample.
 
 #### More
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).
