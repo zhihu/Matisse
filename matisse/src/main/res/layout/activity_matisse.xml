@@ -50,17 +50,6 @@
         android:elevation="4dp"
         tools:targetApi="lollipop">
 
-        <TextView
-            android:id="@+id/button_preview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:text="@string/button_preview"
-            android:textColor="?attr/bottomToolbar.preview.textColor"
-            android:textSize="16sp" />
-
         <LinearLayout
             android:padding="16dp"
             android:id="@+id/originalLayout"

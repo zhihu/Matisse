@@ -46,7 +46,7 @@ dependencies {
     implementation 'it.sephiroth.android.library.imagezoom:library:1.0.4'
 
     compileOnly 'com.github.bumptech.glide:glide:3.7.0'
-    compileOnly 'com.squareup.picasso:picasso:2.5.2'
+    compileOnly 'com.squareup.picasso:picasso:2.71828'
 }
 
 // jcenter configuration for novoda's bintray-release
