@@ -61,6 +61,9 @@ public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Curso
             return;
         }
 
+        if (data.isClosed()) {
+            return;
+        }
         mCallbacks.onAlbumMediaLoad(data);
     }
 
