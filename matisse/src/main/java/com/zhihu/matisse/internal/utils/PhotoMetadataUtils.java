@@ -172,7 +172,7 @@ public final class PhotoMetadataUtils {
         df.applyPattern("0.0");
         String result = df.format((float) sizeInBytes / 1024 / 1024);
         Log.e(TAG, "getSizeInMB: " + result);
-        result = result.replaceAll(",","."); // in some case , 0.0 will be 0,0
+        result = result.replaceAll(",", "."); // in some case , 0.0 will be 0,0
         return Float.valueOf(result);
     }
 }
