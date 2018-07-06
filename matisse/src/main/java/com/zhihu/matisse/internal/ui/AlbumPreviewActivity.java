@@ -71,7 +71,7 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
         while (cursor.moveToNext()) {
             items.add(Item.valueOf(cursor));
         }
-        cursor.close();
+//        cursor.close();
 
         if (items.isEmpty()) {
             return;
