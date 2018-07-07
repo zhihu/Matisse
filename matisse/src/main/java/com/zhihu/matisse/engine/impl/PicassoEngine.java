@@ -21,7 +21,9 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 import com.zhihu.matisse.engine.ImageEngine;
+import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 /**
  * {@link ImageEngine} implementation using Picasso.
@@ -31,10 +33,14 @@ public class PicassoEngine implements ImageEngine {
 
     @Override
     public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
-        Picasso.get().load(uri).placeholder(placeholder)
+        RequestCreator imageRequest = Picasso.get().load(uri).placeholder(placeholder)
                 .resize(resize, resize)
-                .centerCrop()
-                .into(imageView);
+                .centerCrop();
+        if (PhotoMetadataUtils.shouldRotate(context.getContentResolver(), uri)) {
+            imageRequest.rotate(90).into(imageView);
+        } else {
+            imageRequest.into(imageView);
+        }
     }
 
     @Override
@@ -45,8 +51,15 @@ public class PicassoEngine implements ImageEngine {
 
     @Override
     public void loadImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
-        Picasso.get().load(uri).resize(resizeX, resizeY).priority(Picasso.Priority.HIGH)
-                .centerInside().into(imageView);
+        RequestCreator imageRequest = Picasso.get().load(uri)
+                .resize(resizeX, resizeY)
+                .priority(Picasso.Priority.HIGH)
+                .centerInside();
+        if (PhotoMetadataUtils.shouldRotate(context.getContentResolver(), uri)) {
+            imageRequest.rotate(90).into(imageView);
+        } else {
+            imageRequest.into(imageView);
+        }
     }
 
     @Override

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Tüm Medya</string>
+    <string name="button_apply">Uygula(%1$d)</string>
+    <string name="button_apply_default">Uygula</string>
+    <string name="button_back">Geri</string>
+    <string name="button_ok">TAMAM</string>
+    <string name="button_preview">Ön İzleme</string>
+    <string name="empty_text">Henüz medya yok</string>
+    <string name="error_file_type">Desteklenmeyen dosya tipi</string>
+    <string name="error_no_video_activity">Video önizlemesini destekleyen hiçbir uygulama bulunamadı</string>
+    <string name="error_over_count">Sadece %1$d medya dosyasını seçebilirsiniz</string>
+    <string name="error_over_count_default">Maksimum seçilebilir değere ulaştınız</string>
+    <string name="error_over_quality">Yüksek kalite</string>
+    <string name="error_type_conflict">Görüntüleri ve videoları aynı anda seçemezsiniz</string>
+    <string name="error_under_quality">Düşük kalite</string>
+    <string name="photo_grid_capture">Kamera</string>
+</resources>

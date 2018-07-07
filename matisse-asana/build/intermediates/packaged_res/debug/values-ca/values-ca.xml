@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Tots</string>
+    <string name="button_apply">Selecciona(%1$d)</string>
+    <string name="button_apply_default">Selecciona</string>
+    <string name="button_back">Enrere</string>
+    <string name="button_ok">OK</string>
+    <string name="button_preview">Previsualitza</string>
+    <string name="empty_text">Cap arxiu seleccionat</string>
+    <string name="error_file_type">Tipus d\'arxiu no permés</string>
+    <string name="error_no_video_activity">No s\'ha trobat cap app que suporti la previsualització de vídeo</string>
+    <string name="error_over_count">Només pots seleccionar fins a %1$d arxius multimedia</string>
+    <string name="error_over_count_default">Has sobrepassat el màxim d\'arxius seleccionables</string>
+    <string name="error_over_quality">Excés qualitat</string>
+    <string name="error_type_conflict">No es poden seleccionar imatges i vídeos al mateix temps</string>
+    <string name="error_under_quality">Baixa qualitat</string>
+    <string name="photo_grid_capture">Càmera</string>
+</resources>

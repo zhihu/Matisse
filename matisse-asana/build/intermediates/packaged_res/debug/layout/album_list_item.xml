@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Zhihu Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/album_item_height">
+
+    <com.zhihu.matisse.internal.ui.widget.RoundedRectangleImageView
+        android:id="@+id/album_cover"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/album_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/album_cover"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/album_cover"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/album.dropdown.title.color"
+        android:textSize="16sp"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/album_cover" />
+
+    <TextView
+        android:id="@+id/album_media_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/album_name"
+        android:layout_below="@id/album_name"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/album_cover"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?album.dropdown.count.color"
+        android:textSize="14sp"
+        android:layout_alignLeft="@id/album_name"
+        android:layout_toRightOf="@id/album_cover" />
+</RelativeLayout>

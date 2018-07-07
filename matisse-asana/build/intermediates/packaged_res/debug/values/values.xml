@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="reference|color" name="album.dropdown.count.color"/>
+    <attr format="reference|color" name="album.dropdown.title.color"/>
+    <attr format="reference|color" name="album.element.color"/>
+    <attr format="reference" name="album.emptyView"/>
+    <attr format="reference|color" name="album.emptyView.textColor"/>
+    <attr format="reference|color" name="album.thumbnail.placeholder"/>
+    <attr format="reference|color" name="bottomToolbar.apply.textColor"/>
+    <attr format="reference|color" name="bottomToolbar.bg"/>
+    <attr format="reference|color" name="bottomToolbar.preview.textColor"/>
+    <attr format="reference|color" name="capture.textColor"/>
+    <attr format="reference|color" name="item.checkCircle.backgroundColor"/>
+    <attr format="reference|color" name="item.checkCircle.borderColor"/>
+    <attr format="reference|color" name="item.placeholder"/>
+    <attr format="reference" name="listPopupWindowStyle"/>
+    <attr format="reference|color" name="page.bg"/>
+    <attr format="reference|color" name="preview.bottomToolbar.apply.textColor"/>
+    <attr format="reference|color" name="preview.bottomToolbar.back.textColor"/>
+    <attr format="reference" name="toolbar"/>
+    <color name="dracula_album_dropdown_count_text">#89FFFFFF</color>
+    <color name="dracula_album_dropdown_thumbnail_placeholder">#455A64</color>
+    <color name="dracula_album_dropdown_title_text">#DEFFFFFF</color>
+    <color name="dracula_album_empty_view">#4DFFFFFF</color>
+    <color name="dracula_album_popup_bg">#34474E</color>
+    <color name="dracula_bottom_toolbar_apply_text">#03A9F4</color>
+    <color name="dracula_bottom_toolbar_apply_text_disable">#4D03A9F4</color>
+    <color name="dracula_bottom_toolbar_bg">#34474E</color>
+    <color name="dracula_bottom_toolbar_preview_text">#DEFFFFFF</color>
+    <color name="dracula_bottom_toolbar_preview_text_disable">#4DFFFFFF</color>
+    <color name="dracula_capture">#FFFFFF</color>
+    <color name="dracula_item_checkCircle_backgroundColor">#263237</color>
+    <color name="dracula_item_checkCircle_borderColor">#FFFFFF</color>
+    <color name="dracula_item_placeholder">#37474F</color>
+    <color name="dracula_page_bg">#232E32</color>
+    <color name="dracula_preview_bottom_toolbar_apply_text">#03A9F4</color>
+    <color name="dracula_preview_bottom_toolbar_apply_text_disable">#4D03A9F4</color>
+    <color name="dracula_preview_bottom_toolbar_back_text">#FFFFFF</color>
+    <color name="dracula_primary">#263237</color>
+    <color name="dracula_primary_dark">#1D282C</color>
+    <color name="preview_bottom_size">#61FFFFFF</color>
+    <color name="preview_bottom_toolbar_bg">#CC000000</color>
+    <color name="zhihu_album_dropdown_count_text">#999999</color>
+    <color name="zhihu_album_dropdown_thumbnail_placeholder">#EAEEF4</color>
+    <color name="zhihu_album_dropdown_title_text">#DE000000</color>
+    <color name="zhihu_album_empty_view">#4D000000</color>
+    <color name="zhihu_album_popup_bg">#FFFFFF</color>
+    <color name="zhihu_bottom_toolbar_apply_text">#0077D9</color>
+    <color name="zhihu_bottom_toolbar_apply_text_disable">#4D0077D9</color>
+    <color name="zhihu_bottom_toolbar_bg">#FFFFFF</color>
+    <color name="zhihu_bottom_toolbar_preview_text">#DE000000</color>
+    <color name="zhihu_bottom_toolbar_preview_text_disable">#4D000000</color>
+    <color name="zhihu_capture">#424242</color>
+    <color name="zhihu_check_original_radio_disable">#808080</color>
+    <color name="zhihu_item_checkCircle_backgroundColor">#1E8AE8</color>
+    <color name="zhihu_item_checkCircle_borderColor">#FFFFFF</color>
+    <color name="zhihu_item_placeholder">#EAEEF4</color>
+    <color name="zhihu_page_bg">#FFFFFF</color>
+    <color name="zhihu_preview_bottom_toolbar_apply_text">#0077D9</color>
+    <color name="zhihu_preview_bottom_toolbar_apply_text_disable">#4D0077D9</color>
+    <color name="zhihu_preview_bottom_toolbar_back_text">#FFFFFF</color>
+    <color name="zhihu_primary">#1E8AE8</color>
+    <color name="zhihu_primary_dark">#176EB9</color>
+    <dimen name="album_item_height">72dp</dimen>
+    <dimen name="media_grid_size">48dp</dimen>
+    <dimen name="media_grid_spacing">4dp</dimen>
+    <string name="album_name_all">All Media</string>
+    <string name="button_apply">Apply(%1$d)</string>
+    <string name="button_apply_default">Apply</string>
+    <string name="button_attach">Attach (%1$d)</string>
+    <string name="button_attach_default">Attach</string>
+    <string name="button_back">Back</string>
+    <string name="button_ok">OK</string>
+    <string name="button_original">Original</string>
+    <string name="empty_text">No media yet</string>
+    <string name="error_file_type">Unsupported file type</string>
+    <string name="error_no_video_activity">No App found supporting video preview</string>
+    <string name="error_over_count">You can only select up to %1$d media files</string>
+    <string name="error_over_count_default">You have reached max selectable</string>
+    <string name="error_over_quality">Over quality</string>
+    <string name="error_type_conflict">Can\'t select images and videos at the same time</string>
+    <string name="error_under_quality">Under quality</string>
+    <string name="photo_grid_capture">Camera</string>
+    <style name="Matisse.Dracula" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/dracula_primary</item>
+        <item name="colorPrimaryDark">@color/dracula_primary_dark</item>
+        <item name="toolbar">@style/Toolbar.Dracula</item>
+        <item name="album.dropdown.title.color">@color/dracula_album_dropdown_title_text</item>
+        <item name="album.dropdown.count.color">@color/dracula_album_dropdown_count_text</item>
+        <item name="album.element.color">@android:color/white</item>
+        <item name="album.thumbnail.placeholder">@color/dracula_album_dropdown_thumbnail_placeholder</item>
+        <item name="album.emptyView">@drawable/ic_empty_dracula</item>
+        <item name="album.emptyView.textColor">@color/dracula_album_empty_view</item>
+        <item name="item.placeholder">@color/dracula_item_placeholder</item>
+        <item name="item.checkCircle.backgroundColor">@color/dracula_item_checkCircle_backgroundColor</item>
+        <item name="item.checkCircle.borderColor">@color/dracula_item_checkCircle_borderColor</item>
+        <item name="page.bg">@color/dracula_page_bg</item>
+        <item name="bottomToolbar.bg">@color/dracula_bottom_toolbar_bg</item>
+        <item name="bottomToolbar.preview.textColor">@color/dracula_bottom_toolbar_preview</item>
+        <item name="bottomToolbar.apply.textColor">@color/dracula_bottom_toolbar_apply</item>
+        <item name="preview.bottomToolbar.back.textColor">@color/dracula_preview_bottom_toolbar_back_text</item>
+        <item name="preview.bottomToolbar.apply.textColor">@color/dracula_preview_bottom_toolbar_apply</item>
+        <item name="android:listPopupWindowStyle">@style/Popup.Dracula</item>
+        <item name="listPopupWindowStyle">@style/Popup.Dracula</item>
+        <item name="capture.textColor">@color/dracula_capture</item>
+    </style>
+    <style name="Matisse.Zhihu" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/zhihu_primary</item>
+        <item name="colorPrimaryDark">@color/zhihu_primary_dark</item>
+        <item name="toolbar">@style/Toolbar.Zhihu</item>
+        <item name="album.dropdown.title.color">@color/zhihu_album_dropdown_title_text</item>
+        <item name="album.dropdown.count.color">@color/zhihu_album_dropdown_count_text</item>
+        <item name="album.element.color">@android:color/white</item>
+        <item name="album.thumbnail.placeholder">@color/zhihu_album_dropdown_thumbnail_placeholder</item>
+        <item name="album.emptyView">@drawable/ic_empty_zhihu</item>
+        <item name="album.emptyView.textColor">@color/zhihu_album_empty_view</item>
+        <item name="item.placeholder">@color/zhihu_item_placeholder</item>
+        <item name="item.checkCircle.backgroundColor">@color/zhihu_item_checkCircle_backgroundColor</item>
+        <item name="item.checkCircle.borderColor">@color/zhihu_item_checkCircle_borderColor</item>
+        <item name="page.bg">@color/zhihu_page_bg</item>
+        <item name="bottomToolbar.bg">@color/zhihu_bottom_toolbar_bg</item>
+        <item name="bottomToolbar.preview.textColor">@color/zhihu_bottom_toolbar_preview</item>
+        <item name="bottomToolbar.apply.textColor">@color/zhihu_bottom_toolbar_apply</item>
+        <item name="preview.bottomToolbar.back.textColor">@color/zhihu_preview_bottom_toolbar_back_text</item>
+        <item name="preview.bottomToolbar.apply.textColor">@color/zhihu_preview_bottom_toolbar_apply</item>
+        <item name="listPopupWindowStyle">@style/Popup.Zhihu</item>
+        <item name="capture.textColor">@color/zhihu_capture</item>
+    </style>
+    <style name="Popup.Dracula" parent="Widget.AppCompat.ListPopupWindow">
+        <item name="android:popupBackground">@color/dracula_album_popup_bg</item>
+    </style>
+    <style name="Popup.Zhihu" parent="Widget.AppCompat.Light.ListPopupWindow">
+        <item name="android:popupBackground">@color/zhihu_album_popup_bg</item>
+    </style>
+    <style name="Toolbar.Dracula" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+    <style name="Toolbar.Zhihu" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </style>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Tutti i media</string>
+    <string name="button_apply">Conferma(%1$d)</string>
+    <string name="button_apply_default">Conferma</string>
+    <string name="button_back">Indietro</string>
+    <string name="button_ok">OK</string>
+    <string name="button_preview">Anteprima</string>
+    <string name="empty_text">Nessun media disponibile</string>
+    <string name="error_file_type">Tipo di file non supportato</string>
+    <string name="error_no_video_activity">Non è stata trovata alcuna app che supporti l\'anteprima video</string>
+    <string name="error_over_count">Puoi selezionare fino a %1$d elementi</string>
+    <string name="error_over_count_default">Hai selezionato il numero massimo di elementi</string>
+    <string name="error_over_quality">Sopra qualità</string>
+    <string name="error_type_conflict">Non è possibile selezionare contemporaneamente immagini e video</string>
+    <string name="error_under_quality">Sotto qualità</string>
+    <string name="photo_grid_capture">Camera</string>
+</resources>

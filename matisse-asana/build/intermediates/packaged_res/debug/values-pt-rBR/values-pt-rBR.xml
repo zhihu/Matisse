@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Todas as mídias</string>
+    <string name="button_apply">Aplicar(%1$d)</string>
+    <string name="button_apply_default">Aplicar</string>
+    <string name="button_back">Voltar</string>
+    <string name="button_ok">OK</string>
+    <string name="button_preview">Pré-visualizaçao</string>
+    <string name="empty_text">Nenhuma mídia disponível</string>
+    <string name="error_file_type">Tipo de arquivo não suportado</string>
+    <string name="error_no_video_activity">Nenhum player de vídeo disponível para reprodução</string>
+    <string name="error_over_count">Você só pode selecionar até %1$d arquivos de mídia</string>
+    <string name="error_over_count_default">Você atingiu o máximo de itens possíveis para seleção</string>
+    <string name="error_over_quality">Acima da qualidade</string>
+    <string name="error_type_conflict">Não é possível selecionar arquivos de imagem e vídeo simultaneamente</string>
+    <string name="error_under_quality">Abaixo da qualidade</string>
+    <string name="photo_grid_capture">Câmera</string>
+</resources>

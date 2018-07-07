@@ -52,12 +52,13 @@ dependencies {
 // jcenter configuration for novoda's bintray-release
 // $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
 publish {
-    userOrg = 'zhihu'
-    groupId = 'com.zhihu.android'
+    userOrg = 'asana'
+    groupId = 'com.asana.android'
     artifactId = 'matisse'
-    publishVersion = '0.5.2-beta4'
-    desc = 'A well-designed local image selector for Android'
+    publishVersion = '1.0.0'
+    desc = 'A customized version of the Matisse Android photo gallery library (https://github.com/zhihu/Matisse)'
     website = 'https://www.zhihu.com/'
+    repoName = 'Asana'
 }
 
 task javadoc(type: Javadoc) {

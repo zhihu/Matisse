@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="error_over_count">
+        <item quantity="one">Можно выбрать не более %1$d файла</item>
+        <item quantity="few">Можно выбрать не более %1$d файлов</item>
+        <item quantity="many">Можно выбрать не более %1$d файлов</item>
+        <item quantity="other">Можно выбрать не более %1$d файлов</item>
+    </plurals>
+    <string name="album_name_all">Все</string>
+    <string name="button_apply">Применить(%1$d)</string>
+    <string name="button_apply_default">Применить</string>
+    <string name="button_back">Назад</string>
+    <string name="button_ok">OK</string>
+    <string name="button_preview">Предпросмотр</string>
+    <string name="empty_text">Пусто</string>
+    <string name="error_file_type">Неподдерживаемый тип файла</string>
+    <string name="error_no_video_activity">Приложение для предпросмотра видео не найдено</string>
+    <string name="error_over_count_default">Вы выбрали максимальное количество файлов</string>
+    <string name="error_over_quality">Слишком высокое качество</string>
+    <string name="error_type_conflict">Невозможно выбрать изображения и видео одновременно</string>
+    <string name="error_under_quality">Слишком низкое качество</string>
+    <string name="photo_grid_capture">Камера</string>
+</resources>

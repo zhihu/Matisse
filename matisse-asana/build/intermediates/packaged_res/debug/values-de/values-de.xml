@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Alle Medien</string>
+    <string name="button_apply">Auswählen(%1$d)</string>
+    <string name="button_apply_default">Auswählen</string>
+    <string name="button_back">Zurück</string>
+    <string name="button_ok">OK</string>
+    <string name="button_preview">Vorschau</string>
+    <string name="empty_text">Keine Medien gewählt</string>
+    <string name="error_file_type">Dateityp nicht unterstützt</string>
+    <string name="error_no_video_activity">Keine App zur Videovorschau gefunden</string>
+    <string name="error_over_count">Sie können nur %1$d Medien auswählen</string>
+    <string name="error_over_count_default">Sie haben die maximale Anzahl an Medien ausgewählt.</string>
+    <string name="error_over_quality">Über Qualität</string>
+    <string name="error_type_conflict">Sie können Bilder und Videos nicht gleichzeitig auswählen</string>
+    <string name="error_under_quality">Unter Qualität</string>
+    <string name="photo_grid_capture">Kamera</string>
+</resources>

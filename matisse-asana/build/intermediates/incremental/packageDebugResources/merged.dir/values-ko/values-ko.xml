@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">전체보기</string>
+    <string name="button_apply">적용(%1$d)</string>
+    <string name="button_apply_default">적용</string>
+    <string name="button_back">뒤로</string>
+    <string name="button_ok">확인</string>
+    <string name="button_preview">미리보기</string>
+    <string name="empty_text">미디어 파일이 없습니다.</string>
+    <string name="error_file_type">지원되지 않는 파일 유형입니다.</string>
+    <string name="error_no_video_activity">비디오 미리보기를 지원하는 앱을 찾을 수 없습니다.</string>
+    <string name="error_over_count">최대 %1$d까지 선택 가능합니다.</string>
+    <string name="error_over_count_default">더이상 선택할 수 없습니다.</string>
+    <string name="error_over_quality">화질이 너무 높습니다.</string>
+    <string name="error_type_conflict">이미지와 비디오는 동시에 선택 할 수 없습니다.</string>
+    <string name="error_under_quality">화질이 너무 낮습니다.</string>
+    <string name="photo_grid_capture">카메라</string>
+</resources>

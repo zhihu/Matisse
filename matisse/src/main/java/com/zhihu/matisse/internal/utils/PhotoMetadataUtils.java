@@ -154,7 +154,7 @@ public final class PhotoMetadataUtils {
         return false;
     }
 
-    private static boolean shouldRotate(ContentResolver resolver, Uri uri) {
+    public static boolean shouldRotate(ContentResolver resolver, Uri uri) {
         ExifInterface exif;
         try {
             exif = ExifInterfaceCompat.newInstance(getPath(resolver, uri));

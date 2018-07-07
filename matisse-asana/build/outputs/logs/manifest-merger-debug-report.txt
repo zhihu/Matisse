@@ -1,0 +1,47 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:17:1-29:12
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:17:1-29:12
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:17:1-29:12
+	package
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:19:5-32
+		INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+		INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:18:5-63
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:21:5-80
+	android:name
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:21:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:22:5-79
+	android:name
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:22:22-77
+application
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:24:5-28:19
+activity#com.zhihu.matisse.ui.MatisseActivity
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:25:9-72
+	android:name
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:25:19-70
+activity#com.zhihu.matisse.internal.ui.AlbumPreviewActivity
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:26:9-86
+	android:name
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:26:19-84
+activity#com.zhihu.matisse.internal.ui.SelectedPreviewActivity
+ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:27:9-89
+	android:name
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml:27:19-87
+uses-sdk
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+		INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+		ADDED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
+		INJECTED from /Users/karinnaloo/sandbox/Matisse/matisse/src/main/AndroidManifest.xml
