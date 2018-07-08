@@ -13,8 +13,8 @@ public class CheckRadioView extends AppCompatImageView {
 
     private Drawable mDrawable;
 
-    private int selectedColor;
-    private int unSelectedColor;
+    private int mSelectedColor;
+    private int mUnSelectUdColor;
 
     public CheckRadioView(Context context) {
         super(context);
@@ -29,31 +29,31 @@ public class CheckRadioView extends AppCompatImageView {
     }
 
     private void init() {
-        selectedColor = ResourcesCompat.getColor(
+        mSelectedColor = ResourcesCompat.getColor(
                 getResources(), R.color.zhihu_item_checkCircle_backgroundColor,
                 getContext().getTheme());
-        unSelectedColor = ResourcesCompat.getColor(
+        mUnSelectUdColor = ResourcesCompat.getColor(
                 getResources(), R.color.zhihu_check_original_radio_disable,
                 getContext().getTheme());
         setChecked(false);
     }
 
-    public void setChecked(boolean enable){
-        if(enable){
+    public void setChecked(boolean enable) {
+        if (enable) {
             setImageResource(R.drawable.ic_preview_radio_on);
-            mDrawable=getDrawable();
-            mDrawable.setColorFilter(selectedColor, PorterDuff.Mode.SRC_IN);
-        }else {
+            mDrawable = getDrawable();
+            mDrawable.setColorFilter(mSelectedColor, PorterDuff.Mode.SRC_IN);
+        } else {
             setImageResource(R.drawable.ic_preview_radio_off);
-            mDrawable=getDrawable();
-            mDrawable.setColorFilter(unSelectedColor, PorterDuff.Mode.SRC_IN);
+            mDrawable = getDrawable();
+            mDrawable.setColorFilter(mUnSelectUdColor, PorterDuff.Mode.SRC_IN);
         }
     }
 
 
-    public void setColor(int color){
+    public void setColor(int color) {
         if (mDrawable == null) {
-            mDrawable=getDrawable();
+            mDrawable = getDrawable();
         }
         mDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
