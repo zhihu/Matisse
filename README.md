@@ -2,7 +2,7 @@
 
 # Matisse
 [![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse)  
-Matisse is a well-designed local image and video selector for Android. It has been modified in this version to support Picasso 2.71828. You can  
+This is a fork of the original Matisse library, a local image and video selector for Android. It has been modified in this version to support Picasso 2.71828. You can  
 - Use it in Activity or Fragment
 - Select images including JPEG, PNG, GIF and videos including MPEG, MP4 
 - Apply different themes, including two built-in themes and custom themes
@@ -100,7 +100,7 @@ So if your project's glide version is 4.0+ ,then you must realize GlideEngine by
 could refer with [Glide4Engine](https://github.com/zhihu/Matisse/blob/master/sample/src/main/java/com/zhihu/matisse/sample/Glide4Engine.java) in the sample.
 
 #### More
-Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).
+Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki). The original ReadMe can be found here: https://github.com/zhihu/Matisse/blob/master/README.md
 
 ## Contributing
 [Matisse is an Open Source Project](https://github.com/zhihu/Matisse/blob/master/CONTRIBUTING.md)
