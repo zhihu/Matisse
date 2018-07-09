@@ -1,9 +1,8 @@
 ![Image](/image/banner.png)
 
 # Matisse
-[![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse) [ ![Download](https://api.bintray.com/packages/zhihu/maven/matisse/images/download.svg) ](https://bintray.com/zhihu/maven/matisse/_latestVersion)
-
-Matisse is a well-designed local image and video selector for Android. You can  
+[![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse)  
+Matisse is a well-designed local image and video selector for Android. It has been modified in this version to support Picasso 2.71828. You can  
 - Use it in Activity or Fragment
 - Select images including JPEG, PNG, GIF and videos including MPEG, MP4 
 - Apply different themes, including two built-in themes and custom themes
@@ -24,11 +23,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.zhihu.android:matisse:$latest_version'
+    implementation 'com.asana.android:matisse:0.1'
 }
 ```
-
-Check out [Matisse releases](https://github.com/zhihu/Matisse/releases) to see more unstable versions.
 
 ## ProGuard
 If you use [Glide](https://github.com/bumptech/glide) as your image engine, add rules as Glide's README says.  
