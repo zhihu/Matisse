@@ -51,14 +51,9 @@ public class RoundedRectangleImageView extends AppCompatImageView {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onDraw(Canvas canvas) {
         mRectF.set(0.0f, 0.0f, getWidth(), getHeight());
         mRoundedRectPath.addRoundRect(mRectF, mRadius, mRadius, Path.Direction.CW);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
         canvas.clipPath(mRoundedRectPath);
         super.onDraw(canvas);
     }
