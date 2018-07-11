@@ -182,6 +182,11 @@ public class SelectedItemCollection {
                         R.string.error_over_count,
                         maxSelectable
                 );
+            } catch (NoClassDefFoundError e) {
+                cause = mContext.getString(
+                        R.string.error_over_count,
+                        maxSelectable
+                );
             }
 
             return new IncapableCause(cause);
