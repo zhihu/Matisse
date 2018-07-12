@@ -15,13 +15,13 @@
  */
 package com.zhihu.matisse.engine.impl;
 
+import com.squareup.picasso.Picasso;
+import com.zhihu.matisse.engine.ImageEngine;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
-import com.zhihu.matisse.engine.ImageEngine;
 
 /**
  * {@link ImageEngine} implementation using Picasso.
@@ -57,5 +57,9 @@ public class PicassoEngine implements ImageEngine {
     @Override
     public boolean supportAnimatedGif() {
         return false;
+    }
+
+    @Override
+    public void clearCache(Context context) {
     }
 }

@@ -79,4 +79,9 @@ public interface ImageEngine {
      * @return true support animated gif, false do not support animated gif.
      */
     boolean supportAnimatedGif();
+
+    /**
+     * 退出后清空缓存
+     */
+    void clearCache(Context context);
 }

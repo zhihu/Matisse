@@ -77,4 +77,9 @@ public class GlideEngine implements ImageEngine {
         return true;
     }
 
+    @Override
+    public void clearCache(Context context) {
+        Glide.get(context).clearMemory();
+    }
+
 }

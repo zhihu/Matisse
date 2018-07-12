@@ -21,29 +21,28 @@ android {
 
     defaultConfig {
         applicationId 'com.zhihu.matisse.sample'
-        minSdkVersion 11
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.releaseVersionName
     }
     lintOptions {
         abortOnError false
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
 
 dependencies {
-//    compile project(':matisse')
-//    compile 'com.github.chaichuanfa:matisse:1.0.5'
-    compile 'com.tongzhuo:matisse:0.0.1'
+    compile project(':matisse')
+//    compile 'com.tongzhuo:matisse:0.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar'
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.tbruyelle.rxpermissions2:rxpermissions:0.9.1@aar"
     compile 'io.reactivex.rxjava2:rxjava:2.0.5'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'

@@ -14,91 +14,102 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorPrimary"
-        android:elevation="4dp"
-        android:theme="?toolbar"
-        tools:targetApi="lollipop">
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="?attr/toolbar"
+            tools:targetApi="lollipop"
+            >
 
         <TextView
-            android:id="@+id/selected_album"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:textColor="?attr/album.element.color"
-            android:textSize="20sp"/>
+                android:id="@+id/selected_album"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:textColor="?attr/album.element.color"
+                android:textSize="20sp"
+                />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-        android:id="@+id/bottom_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/bottomToolbar.bg"
-        android:elevation="4dp"
-        tools:targetApi="lollipop">
+            android:id="@+id/bottom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/bottomToolbar.bg"
+            android:elevation="4dp"
+            tools:targetApi="lollipop"
+            >
 
         <TextView
-            android:id="@+id/button_preview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:layout_gravity="start"
-            android:text="@string/button_preview"
-            android:textColor="?attr/bottomToolbar.preview.textColor"
-            android:textSize="16sp"/>
+                android:id="@+id/button_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:layout_gravity="start"
+                android:text="@string/button_preview"
+                android:textColor="?attr/bottomToolbar.preview.textColor"
+                android:textSize="16sp"
+                />
 
         <TextView
-            android:id="@+id/button_apply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:textColor="?attr/bottomToolbar.apply.textColor"
-            android:textSize="16sp"/>
+                android:id="@+id/button_apply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:textColor="?attr/bottomToolbar.apply.textColor"
+                android:textSize="16sp"
+                />
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_toolbar"
-        android:layout_below="@id/toolbar"
-        android:visibility="gone"/>
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_toolbar"
+            android:layout_below="@+id/toolbar"
+            android:visibility="gone"
+            />
 
     <FrameLayout
-        android:id="@+id/empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_toolbar"
-        android:layout_below="@id/toolbar"
-        android:visibility="gone">
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_toolbar"
+            android:layout_below="@+id/toolbar"
+            android:visibility="gone"
+            >
 
         <TextView
-            android:id="@+id/empty_view_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawablePadding="8dp"
-            android:drawableTop="?attr/album.emptyView"
-            android:gravity="center"
-            android:text="@string/empty_text"
-            android:textColor="?attr/album.emptyView.textColor"
-            android:textSize="16sp"/>
+                android:id="@+id/empty_view_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="8dp"
+                android:drawableTop="?attr/album.emptyView"
+                android:gravity="center"
+                android:text="@string/empty_text"
+                android:textColor="?attr/album.emptyView.textColor"
+                android:textSize="16sp"
+                />
 
     </FrameLayout>
 </RelativeLayout>
