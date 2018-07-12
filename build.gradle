@@ -56,5 +56,5 @@ ext {
     versionCode = 9
 
     groupName = 'com.tongzhuo'
-    releaseVersionName = "1.0.5"
+    releaseVersionName = "1.0.6"
 }
