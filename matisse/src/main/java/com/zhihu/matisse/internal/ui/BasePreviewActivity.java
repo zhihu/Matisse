@@ -246,7 +246,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             mOriginalLayout.setVisibility(View.VISIBLE);
             updateOriginalState();
         } else {
-            mOriginalLayout.setVisibility(View.INVISIBLE);
+            mOriginalLayout.setVisibility(View.GONE);
         }
     }
 
@@ -294,6 +294,12 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             mSize.setText(PhotoMetadataUtils.getSizeInMB(item.size) + "M");
         } else {
             mSize.setVisibility(View.GONE);
+        }
+
+        if (item.isVideo()) {
+            mOriginalLayout.setVisibility(View.GONE);
+        } else if (mSpec.originalable) {
+            mOriginalLayout.setVisibility(View.VISIBLE);
         }
     }
 

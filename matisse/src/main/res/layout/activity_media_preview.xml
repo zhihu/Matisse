@@ -56,7 +56,7 @@
             <LinearLayout
                 android:padding="16dp"
                 android:id="@+id/originalLayout"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
