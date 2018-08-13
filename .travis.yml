@@ -17,3 +17,6 @@ notifications:
 script:
   - ./gradlew assemble check
   - ./gradlew checkstyle
+
+before_install:
+  - yes | sdkmanager "platforms;android-27"
