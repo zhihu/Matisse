@@ -68,25 +68,23 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
     @Override
     public void onAlbumMediaLoad(Cursor cursor) {
         List<Item> items = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            items.add(Item.valueOf(cursor));
+        if (!cursor.isClosed()) {
+            while (cursor.moveToNext()) {
+                items.add(Item.valueOf(cursor));
+            }
         }
-//        cursor.close();
-
-        if (items.isEmpty()) {
-            return;
-        }
-
-        PreviewPagerAdapter adapter = (PreviewPagerAdapter) mPager.getAdapter();
-        adapter.addAll(items);
-        adapter.notifyDataSetChanged();
-        if (!mIsAlreadySetPosition) {
-            //onAlbumMediaLoad is called many times..
-            mIsAlreadySetPosition = true;
-            Item selected = getIntent().getParcelableExtra(EXTRA_ITEM);
-            int selectedIndex = items.indexOf(selected);
-            mPager.setCurrentItem(selectedIndex, false);
-            mPreviousPos = selectedIndex;
+        if (!items.isEmpty()) {
+            PreviewPagerAdapter adapter = (PreviewPagerAdapter) mPager.getAdapter();
+            adapter.addAll(items);
+            adapter.notifyDataSetChanged();
+            if (!mIsAlreadySetPosition) {
+                //onAlbumMediaLoad is called many times..
+                mIsAlreadySetPosition = true;
+                Item selected = getIntent().getParcelableExtra(EXTRA_ITEM);
+                int selectedIndex = items.indexOf(selected);
+                mPager.setCurrentItem(selectedIndex, false);
+                mPreviousPos = selectedIndex;
+            }
         }
     }
 
