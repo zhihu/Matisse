@@ -53,7 +53,7 @@ public class RoundedRectangleImageView extends AppCompatImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mRectF.set(0.0f, 0.0f, getWidth(), getHeight());
+        mRectF.set(0.0f, 0.0f, getMeasuredWidth(), getMeasuredHeight());
         mRoundedRectPath.addRoundRect(mRectF, mRadius, mRadius, Path.Direction.CW);
     }
 
