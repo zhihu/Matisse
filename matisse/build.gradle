@@ -60,8 +60,17 @@ publish {
     website = 'https://www.zhihu.com/'
 }
 
+task javadoc(type: Javadoc) {
+    options.encoding = "utf-8"
+}
+
 checkstyle {
     toolVersion = '7.6.1'
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
 }
 
 task checkstyle(type:Checkstyle) {

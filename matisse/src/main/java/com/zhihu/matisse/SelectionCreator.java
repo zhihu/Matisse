@@ -163,7 +163,7 @@ public final class SelectionCreator {
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return
+     * @return  {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
         if (maxImageSelectable < 1 || maxVideoSelectable < 1)
