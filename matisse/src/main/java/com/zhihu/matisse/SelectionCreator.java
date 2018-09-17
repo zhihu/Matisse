@@ -213,6 +213,17 @@ public final class SelectionCreator {
         return this;
     }
 
+
+    /**
+     * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     * @param enable
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator autoHideToolbarOnSingleTap(boolean enable) {
+        mSelectionSpec.autoHideToobar = enable;
+        return this;
+    }
+
     /**
      * Maximum original size,the unit is MB. Only useful when {link@originalEnable} set true
      *

@@ -16,11 +16,13 @@
 package com.zhihu.matisse.internal.ui;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,7 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
+import com.zhihu.matisse.listener.OnFragmentInteractionListener;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
@@ -37,6 +40,7 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 public class PreviewItemFragment extends Fragment {
 
     private static final String ARGS_ITEM = "args_item";
+    private OnFragmentInteractionListener mListener;
 
     public static PreviewItemFragment newInstance(Item item) {
         PreviewItemFragment fragment = new PreviewItemFragment();
@@ -81,6 +85,15 @@ public class PreviewItemFragment extends Fragment {
         ImageViewTouch image = (ImageViewTouch) view.findViewById(R.id.image_view);
         image.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
 
+        image.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
+            @Override
+            public void onSingleTapConfirmed() {
+                if (mListener != null) {
+                    mListener.onClick();
+                }
+            }
+        });
+
         Point size = PhotoMetadataUtils.getBitmapSize(item.getContentUri(), getActivity());
         if (item.isGif()) {
             SelectionSpec.getInstance().imageEngine.loadGifImage(getContext(), size.x, size.y, image,
@@ -95,5 +108,23 @@ public class PreviewItemFragment extends Fragment {
         if (getView() != null) {
             ((ImageViewTouch) getView().findViewById(R.id.image_view)).resetMatrix();
         }
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 }

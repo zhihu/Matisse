@@ -21,11 +21,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.IncapableCause;
@@ -38,9 +41,10 @@ import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import com.zhihu.matisse.internal.utils.Platform;
+import com.zhihu.matisse.listener.OnFragmentInteractionListener;
 
 public abstract class BasePreviewActivity extends AppCompatActivity implements View.OnClickListener,
-        ViewPager.OnPageChangeListener {
+        ViewPager.OnPageChangeListener, OnFragmentInteractionListener {
 
     public static final String EXTRA_DEFAULT_BUNDLE = "extra_default_bundle";
     public static final String EXTRA_RESULT_BUNDLE = "extra_result_bundle";
@@ -64,6 +68,10 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
     private LinearLayout mOriginalLayout;
     private CheckRadioView mOriginal;
     protected boolean mOriginalEnable;
+
+    private FrameLayout mBottomToolbar;
+    private FrameLayout mTopToolbar;
+    private boolean mIsToolbarHide = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +111,8 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         mPager.setAdapter(mAdapter);
         mCheckView = (CheckView) findViewById(R.id.check_view);
         mCheckView.setCountable(mSpec.countable);
+        mBottomToolbar = findViewById(R.id.bottom_toolbar);
+        mTopToolbar = findViewById(R.id.top_toolbar);
 
         mCheckView.setOnClickListener(new View.OnClickListener() {
 
@@ -188,6 +198,36 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
             sendBackResult(true);
             finish();
         }
+    }
+
+    @Override
+    public void onClick() {
+        if (!mSpec.autoHideToobar) {
+            return;
+        }
+
+        if (mIsToolbarHide) {
+            mTopToolbar.animate()
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .translationYBy(mTopToolbar.getMeasuredHeight())
+                    .start();
+            mBottomToolbar.animate()
+                    .translationYBy(-mBottomToolbar.getMeasuredHeight())
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .start();
+        } else {
+            mTopToolbar.animate()
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .translationYBy(-mTopToolbar.getMeasuredHeight())
+                    .start();
+            mBottomToolbar.animate()
+                    .setInterpolator(new FastOutSlowInInterpolator())
+                    .translationYBy(mBottomToolbar.getMeasuredHeight())
+                    .start();
+        }
+
+        mIsToolbarHide = !mIsToolbarHide;
+
     }
 
     @Override
