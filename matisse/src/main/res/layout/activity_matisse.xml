@@ -39,12 +39,22 @@
             android:gravity="center"
             android:textColor="?attr/album.element.color"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/button_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_gravity="right"
+            android:gravity="center"
+            android:foreground="?selectableItemBackground"
+            android:padding="16dp"
+            android:textColor="?attr/album.element.color"
+            android:textSize="16sp" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/bottom_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content" android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="?attr/bottomToolbar.bg"
         android:elevation="4dp"
@@ -94,15 +104,7 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/button_apply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:foreground="?selectableItemBackground"
-            android:padding="16dp"
-            android:textColor="?attr/bottomToolbar.apply.textColor"
-            android:textSize="16sp" />
+
     </FrameLayout>
 
     <FrameLayout
