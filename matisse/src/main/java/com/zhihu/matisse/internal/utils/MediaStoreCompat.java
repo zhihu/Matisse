@@ -121,6 +121,7 @@ public class MediaStoreCompat {
         }
         if (mCaptureStrategy.directory != null) {
             storageDir = new File(storageDir, mCaptureStrategy.directory);
+            if (!storageDir.exists()) storageDir.mkdirs();
         }
 
         // Avoid joining path components manually
