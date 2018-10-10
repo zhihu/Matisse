@@ -37,4 +37,7 @@
     <string name="error_file_type">Неподдерживаемый тип файла</string>
     <string name="error_type_conflict">Невозможно выбрать изображения и видео одновременно</string>
     <string name="error_no_video_activity">Приложение для предпросмотра видео не найдено</string>
+    <string name="button_original">Оригинал</string>
+    <string name="button_sure">Применить(%1$d)</string>
+    <string name="button_sure_default">Применить</string>
 </resources>
