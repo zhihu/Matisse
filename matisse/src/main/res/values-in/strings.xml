@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Semua Media</string>
+    <string name="button_preview">Pratinjau</string>
+    <string name="button_apply_default">Terapkan</string>
+    <string name="button_apply">Terapkan(%1$d)</string>
+    <string name="button_back">Kembali</string>
+    <string name="photo_grid_capture">Kamera</string>
+    <string name="empty_text">Tidak ada media</string>
+    <string name="button_ok">OK</string>
+    <string name="error_over_count_default">Anda mencapai batas maksimal dalam memilih</string>
+    <string name="error_over_count">Anda hanya dapat memilih hingga %1$d file media</string>
+    <string name="error_under_quality">Dibawah kualitas</string>
+    <string name="error_over_quality">Diatas kualitas</string>
+    <string name="error_file_type">Tipe file tidak didukung</string>
+    <string name="error_type_conflict">Tidak dapat memilih gambar dan video pada saat bersamaan</string>
+    <string name="error_no_video_activity">Tidak dapat menemukan aplikasi pendukung untuk pratinjau video</string>
+    <string name="error_over_original_size">Tidak dapat memilih gambar diatas %1$d MB</string>
+    <string name="error_over_original_count">%1$d gambar diatas %2$d MB. File asli tidak akan dipilih</string>
+    <string name="button_original">Asli</string>
+    <string name="button_sure_default">Pilih</string>
+    <string name="button_sure">Pilih(%1$d)</string>
+</resources>
