@@ -7,7 +7,6 @@ import android.net.Uri;
 /**
  * @author 工藤
  * @email gougou@16fan.com
- * com.fan16.cn.util
  * create at 2018年10月23日12:17:59
  * description:媒体扫描
  */
