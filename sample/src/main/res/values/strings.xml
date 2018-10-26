@@ -15,7 +15,8 @@
   limitations under the License.
   -->
 <resources>
-    <string name="app_name">Matisse</string>
-    <string name="permission_request_denied">Permission request denied</string>
-    <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
+    <string name="app_name" translatable="false">Matisse</string>
+    <string name="permission_request_denied" translatable="false">Permission request denied</string>
+    <string name="error_gif" translatable="false">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
+    <string name="error_original" translatable="false">Image should not exceed the %1$sM。</string>
 </resources>

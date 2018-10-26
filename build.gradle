@@ -21,8 +21,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.novoda:bintray-release:0.8.1'
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        //Using this instead of novoda to avoid error with Gradle >4.6
+        classpath 'guru.stefma.bintrayrelease:bintrayrelease:1.1.1'
     }
 }
 
