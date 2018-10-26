@@ -26,7 +26,10 @@
     <string name="button_ok">OK</string>
 
     <string name="error_over_count_default">Has alcanzado el máximo de archivos seleccionables</string>
-    <string name="error_over_count">Sólo puede seleccionar hasta %1$d archivos multimedia</string>
+    <plurals name="error_over_count">
+        <item quantity="one">Sólo puede seleccionar hasta %1$d archivos multimedia</item>
+        <item quantity="other">Sólo puede seleccionar hasta %1$d archivos multimedia</item>
+    </plurals>
     <string name="error_under_quality">Baja calidad</string>
     <string name="error_over_quality">Exceso calidad</string>
     <string name="error_file_type">Tipo de fichero no soportado</string>

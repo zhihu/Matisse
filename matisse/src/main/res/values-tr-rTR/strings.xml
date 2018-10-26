@@ -26,7 +26,10 @@
     <string name="button_ok">TAMAM</string>
 
     <string name="error_over_count_default">Maksimum seçilebilir değere ulaştınız</string>
-    <string name="error_over_count">Sadece %1$d medya dosyasını seçebilirsiniz</string>
+    <plurals name="error_over_count">
+        <item quantity="one">Sadece %1$d medya dosyasını seçebilirsiniz</item>
+        <item quantity="other">Sadece %1$d medya dosyasını seçebilirsiniz</item>
+    </plurals>
     <string name="error_under_quality">Düşük kalite</string>
     <string name="error_over_quality">Yüksek kalite</string>
     <string name="error_file_type">Desteklenmeyen dosya tipi</string>

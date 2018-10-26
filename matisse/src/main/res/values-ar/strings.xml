@@ -11,7 +11,14 @@
     <string name="button_ok">تم</string>
 
     <string name="error_over_count_default">لقد وصلت إلى الحد الأقصى للاختيار</string>
-    <string name="error_over_count">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</string>
+    <plurals name="error_over_count">
+        <item quantity="few">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</item>
+        <item quantity="many">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</item>
+        <item quantity="one">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</item>
+        <item quantity="two">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</item>
+        <item quantity="zero">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</item>
+        <item quantity="other">يمكنك تحديد ما يصل إلى %1$d من ملفات الوسائط فقط</item>
+    </plurals>
     <string name="error_under_quality">تحت الجودة</string>
     <string name="error_over_quality">فوق الجودة</string>
     <string name="error_file_type">نوع ملف غير مدعوم</string>
