@@ -210,7 +210,15 @@ public class CheckView extends View {
         if (mTextPaint == null) {
             mTextPaint = new TextPaint();
             mTextPaint.setAntiAlias(true);
-            mTextPaint.setColor(Color.WHITE);
+
+            TypedArray ta = getContext().getTheme().obtainStyledAttributes(new int[]{R.attr.item_checkCircle_textColor});
+            int defaultColor = ResourcesCompat.getColor(
+                    getResources(), R.color.zhihu_item_checkCircle_textColor,
+                    getContext().getTheme());
+            int color = ta.getColor(0, defaultColor);
+            ta.recycle();
+            mTextPaint.setColor(color);
+
             mTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             mTextPaint.setTextSize(12.0f * mDensity);
         }

@@ -27,6 +27,7 @@
     <color name="dracula_item_placeholder">#37474F</color>
     <color name="dracula_item_checkCircle_backgroundColor">#263237</color>
     <color name="dracula_item_checkCircle_borderColor">#FFFFFF</color>
+    <color name="dracula_item_checkCircle_textColor">#FFFFFF</color>
     <color name="dracula_capture">#FFFFFF</color>
 
     <color name="dracula_page_bg">#232E32</color>
