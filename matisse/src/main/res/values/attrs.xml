@@ -32,5 +32,6 @@
     <attr name="item.placeholder" format="reference|color"/>
     <attr name="item.checkCircle.backgroundColor" format="reference|color"/>
     <attr name="item.checkCircle.borderColor" format="reference|color"/>
+    <attr name="item.checkCircle.textColor" format="reference|color"/>
     <attr name="capture.textColor" format="reference|color"/>
 </resources>
