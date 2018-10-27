@@ -244,15 +244,15 @@ public class MatisseActivity extends AppCompatActivity implements
         if (selectedCount == 0) {
             mButtonPreview.setEnabled(false);
             mButtonApply.setEnabled(false);
-            mButtonApply.setText(getString(R.string.button_sure_default));
+            mButtonApply.setText(android.R.string.ok);
         } else if (selectedCount == 1 && mSpec.singleSelectionModeEnabled()) {
             mButtonPreview.setEnabled(true);
-            mButtonApply.setText(R.string.button_sure_default);
+            mButtonApply.setText(android.R.string.ok);
             mButtonApply.setEnabled(true);
         } else {
             mButtonPreview.setEnabled(true);
             mButtonApply.setEnabled(true);
-            mButtonApply.setText(getString(R.string.button_sure, selectedCount));
+            mButtonApply.setText(getString(R.string.button_ok_template, getString(android.R.string.ok), selectedCount));
         }
 
 
