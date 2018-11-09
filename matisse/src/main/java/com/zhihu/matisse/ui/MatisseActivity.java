@@ -33,6 +33,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -106,7 +108,13 @@ public class MatisseActivity extends AppCompatActivity implements
         if (mSpec.needOrientationRestriction()) {
             setRequestedOrientation(mSpec.orientation);
         }
-
+        if (mSpec.needFullscreenRestriction()) {
+            Window window;
+            if ((window = getWindow()) != null) {
+                window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
+        }
         if (mSpec.capture) {
             mMediaStoreCompat = new MediaStoreCompat(this);
             if (mSpec.captureStrategy == null)

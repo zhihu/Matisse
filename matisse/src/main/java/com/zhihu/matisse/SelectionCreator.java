@@ -261,6 +261,18 @@ public final class SelectionCreator {
     }
 
     /**
+     * Set to fullscreen of this activity.
+     *
+     * @param fullscreen An fullscreen constant.
+     *                    Default value is false.
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator restrictFullscreen(boolean fullscreen) {
+        mSelectionSpec.fullscreen = fullscreen;
+        return this;
+    }
+
+    /**
      * Set a fixed span count for the media grid. Same for different screen orientations.
      * <p>
      * This will be ignored when {@link #gridExpectedSize(int)} is set.

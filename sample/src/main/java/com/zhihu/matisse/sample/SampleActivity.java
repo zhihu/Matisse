@@ -119,8 +119,11 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .theme(R.style.Matisse_Dracula)
                                             .countable(false)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                                            .maxSelectable(9)
-                                            .originalEnable(true)
+                                            .restrictFullscreen(true)
+                                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+                                            .spanCount(6)
+                                            .maxSelectable(1)
+                                            .originalEnable(false)
                                             .maxOriginalSize(10)
                                             .imageEngine(new PicassoEngine())
                                             .forResult(REQUEST_CODE_CHOOSE);
