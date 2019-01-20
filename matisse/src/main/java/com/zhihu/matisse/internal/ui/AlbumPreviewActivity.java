@@ -17,7 +17,7 @@ package com.zhihu.matisse.internal.ui;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
