@@ -37,8 +37,6 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.zhihu.matisse.internal.entity.Item;
-import com.zhihu.matisse.internal.loader.ItemFilter;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
@@ -82,7 +80,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
                                             .choose(MimeType.ofAll(), false)
-                                            .addItemFilter(new UriAdapter.InternalItemFilter())
                                             .countable(true)
                                             .capture(true)
                                             .captureStrategy(
@@ -199,13 +196,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 super(contentView);
                 mUri = contentView.findViewById(R.id.uri);
                 mPath = contentView.findViewById(R.id.path);
-            }
-        }
-
-        static class InternalItemFilter extends ItemFilter{
-            @Override
-            public boolean blockItem(Item sourceItem) {
-                return sourceItem.isImage();
             }
         }
     }

@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
+import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
@@ -101,16 +102,16 @@ public class AlbumMediaLoader extends CursorLoader {
 
     private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
     private final boolean mEnableCapture;
-    private final List<ItemFilter> filterList = new ArrayList<>();
+    private final List<Filter> filterList = new ArrayList<>();
 
-    private AlbumMediaLoader(@NonNull Context context, @NonNull String selection, @NonNull String[] selectionArgs, boolean capture, @NonNull List<ItemFilter> filterList) {
+    private AlbumMediaLoader(@NonNull Context context, @NonNull String selection, @NonNull String[] selectionArgs, boolean capture, @NonNull List<Filter> filterList) {
         super(context, QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY);
         mEnableCapture = capture;
         this.filterList.addAll(filterList);
     }
 
     private AlbumMediaLoader(@NonNull Context context, @NonNull String selection, @NonNull String[] selectionArgs, boolean capture) {
-        this(context,selection,selectionArgs,capture,new ArrayList<ItemFilter>());
+        this(context,selection,selectionArgs,capture,new ArrayList<Filter>());
     }
 
     public static CursorLoader newInstance(@NonNull Context context, @NonNull Album album, boolean capture) {
@@ -145,9 +146,9 @@ public class AlbumMediaLoader extends CursorLoader {
             }
             enableCapture = false;
         }
-        if(SelectionSpec.getInstance().itemFilters != null)
+        if(SelectionSpec.getInstance().filters != null)
         {
-            return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture,SelectionSpec.getInstance().itemFilters);
+            return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture,SelectionSpec.getInstance().filters);
         }
         return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture);
     }
@@ -161,7 +162,7 @@ public class AlbumMediaLoader extends CursorLoader {
             while(result.moveToNext()) {
                 Item targetItem = Item.valueOf(result);
                 boolean shouldBlock = false;
-                for(ItemFilter filter:filterList) {
+                for(Filter filter:filterList) {
                     shouldBlock |= filter.blockItem(targetItem);
                 }
                 if(!shouldBlock) {

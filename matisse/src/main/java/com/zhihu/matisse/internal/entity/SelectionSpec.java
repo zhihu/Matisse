@@ -24,11 +24,9 @@ import com.zhihu.matisse.R;
 import com.zhihu.matisse.engine.ImageEngine;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
-import com.zhihu.matisse.internal.loader.ItemFilter;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +43,6 @@ public final class SelectionSpec {
     public int maxImageSelectable;
     public int maxVideoSelectable;
     public List<Filter> filters;
-    public List<ItemFilter> itemFilters;
     public boolean capture;
     public CaptureStrategy captureStrategy;
     public int spanCount;
@@ -93,7 +90,6 @@ public final class SelectionSpec {
         originalable = false;
         autoHideToobar = false;
         originalMaxSize = Integer.MAX_VALUE;
-        itemFilters = null;
     }
 
     public boolean singleSelectionModeEnabled() {

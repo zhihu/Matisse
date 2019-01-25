@@ -16,6 +16,7 @@
 package com.zhihu.matisse.filter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.SelectionCreator;
@@ -64,6 +65,11 @@ public abstract class Filter {
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean blockItem(@NonNull Item sourceItem)
+    {
         return false;
     }
 }
