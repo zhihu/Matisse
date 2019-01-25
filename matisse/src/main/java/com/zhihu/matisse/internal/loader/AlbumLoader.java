@@ -99,6 +99,7 @@ public class AlbumLoader extends CursorLoader {
         int totalCount = 0;
         String allAlbumCoverPath = "";
         if (albums != null) {
+            String[] columnNames = albums.getColumnNames();
             while (albums.moveToNext()) {
                 totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
             }

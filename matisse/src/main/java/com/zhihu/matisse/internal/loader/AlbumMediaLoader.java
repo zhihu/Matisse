@@ -22,12 +22,17 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.CursorLoader;
+import android.util.Log;
 
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Load images and videos into a single cursor.
@@ -39,6 +44,7 @@ public class AlbumMediaLoader extends CursorLoader {
             MediaStore.MediaColumns.DISPLAY_NAME,
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.SIZE,
+            "duration",
             "duration"};
 
     // === params for album ALL && showSingleMediaType: false ===
@@ -95,13 +101,19 @@ public class AlbumMediaLoader extends CursorLoader {
 
     private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
     private final boolean mEnableCapture;
+    private final List<ItemFilter> filterList = new ArrayList<>();
 
-    private AlbumMediaLoader(Context context, String selection, String[] selectionArgs, boolean capture) {
+    private AlbumMediaLoader(@NonNull Context context, @NonNull String selection, @NonNull String[] selectionArgs, boolean capture, @NonNull List<ItemFilter> filterList) {
         super(context, QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY);
         mEnableCapture = capture;
+        this.filterList.addAll(filterList);
     }
 
-    public static CursorLoader newInstance(Context context, Album album, boolean capture) {
+    private AlbumMediaLoader(@NonNull Context context, @NonNull String selection, @NonNull String[] selectionArgs, boolean capture) {
+        this(context,selection,selectionArgs,capture,new ArrayList<ItemFilter>());
+    }
+
+    public static CursorLoader newInstance(@NonNull Context context, @NonNull Album album, boolean capture) {
         String selection;
         String[] selectionArgs;
         boolean enableCapture;
@@ -133,17 +145,42 @@ public class AlbumMediaLoader extends CursorLoader {
             }
             enableCapture = false;
         }
+        if(SelectionSpec.getInstance().itemFilters != null)
+        {
+            return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture,SelectionSpec.getInstance().itemFilters);
+        }
         return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture);
     }
 
     @Override
     public Cursor loadInBackground() {
         Cursor result = super.loadInBackground();
+        if(result != null && !filterList.isEmpty())
+        {
+            MatrixCursor additionalDataCalculatedCursor = new MatrixCursor(PROJECTION);
+            while(result.moveToNext()) {
+                Item targetItem = Item.valueOf(result);
+                boolean shouldBlock = false;
+                for(ItemFilter filter:filterList) {
+                    shouldBlock |= filter.blockItem(targetItem);
+                }
+                if(!shouldBlock) {
+                    additionalDataCalculatedCursor.addRow(new Object[]{
+                            result.getLong(0),
+                            result.getString(1),
+                            result.getString(2),
+                            result.getLong(3),
+                            result.getLong(4),
+                            result.getLong(5)});
+                }
+            }
+            result = additionalDataCalculatedCursor;
+        }
         if (!mEnableCapture || !MediaStoreCompat.hasCameraFeature(getContext())) {
             return result;
         }
         MatrixCursor dummy = new MatrixCursor(PROJECTION);
-        dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE, Item.ITEM_DISPLAY_NAME_CAPTURE, "", 0, 0});
+        dummy.addRow(new Object[]{Item.ITEM_ID_CAPTURE, Item.ITEM_DISPLAY_NAME_CAPTURE, "", 0,0,0});
         return new MergeCursor(new Cursor[]{dummy, result});
     }
 
