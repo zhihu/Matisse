@@ -22,11 +22,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.os.EnvironmentCompat;
+import android.text.TextUtils;
 
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
@@ -40,11 +42,14 @@ import java.util.Locale;
 
 public class MediaStoreCompat {
 
+    public static final String MEDIA_STORE_COMPAT_CUR_PHOTO_URI = "media_store_compat_cur_photo_uri";
+    public static final String MEDIA_STORE_COMPAT_CUR_PHOTO_PATH = "media_store_compat_cur_photo_path";
+
     private final WeakReference<Activity> mContext;
     private final WeakReference<Fragment> mFragment;
-    private       CaptureStrategy         mCaptureStrategy;
-    private       Uri                     mCurrentPhotoUri;
-    private       String                  mCurrentPhotoPath;
+    private CaptureStrategy mCaptureStrategy;
+    private Uri mCurrentPhotoUri;
+    private String mCurrentPhotoPath;
 
     public MediaStoreCompat(Activity activity) {
         mContext = new WeakReference<>(activity);
@@ -54,6 +59,23 @@ public class MediaStoreCompat {
     public MediaStoreCompat(Activity activity, Fragment fragment) {
         mContext = new WeakReference<>(activity);
         mFragment = new WeakReference<>(fragment);
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        if (mCurrentPhotoUri != null) {
+            outState.putString(MEDIA_STORE_COMPAT_CUR_PHOTO_URI, mCurrentPhotoUri.toString());
+        }
+        outState.putString(MEDIA_STORE_COMPAT_CUR_PHOTO_PATH, mCurrentPhotoPath);
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mCurrentPhotoPath = savedInstanceState.getString(MEDIA_STORE_COMPAT_CUR_PHOTO_PATH, null);
+            String uriStr = savedInstanceState.getString(MEDIA_STORE_COMPAT_CUR_PHOTO_URI, null);
+            if (!TextUtils.isEmpty(uriStr)) {
+                mCurrentPhotoUri = Uri.parse(uriStr);
+            }
+        }
     }
 
     /**

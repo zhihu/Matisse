@@ -112,6 +112,7 @@ public class MatisseActivity extends AppCompatActivity implements
             if (mSpec.captureStrategy == null)
                 throw new RuntimeException("Don't forget to set CaptureStrategy.");
             mMediaStoreCompat.setCaptureStrategy(mSpec.captureStrategy);
+            mMediaStoreCompat.onCreate(savedInstanceState);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -157,6 +158,7 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
         mAlbumCollection.onSaveInstanceState(outState);
+        mMediaStoreCompat.onSaveInstanceState(outState);
         outState.putBoolean("checkState", mOriginalEnable);
     }
 
