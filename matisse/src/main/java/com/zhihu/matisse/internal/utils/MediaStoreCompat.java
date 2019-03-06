@@ -62,6 +62,10 @@ public class MediaStoreCompat {
     }
 
     public void onSaveInstanceState(Bundle outState) {
+        if (outState == null) {
+            return;
+        }
+
         if (mCurrentPhotoUri != null) {
             outState.putString(MEDIA_STORE_COMPAT_CUR_PHOTO_URI, mCurrentPhotoUri.toString());
         }
