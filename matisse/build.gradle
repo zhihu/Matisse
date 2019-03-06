@@ -16,6 +16,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'checkstyle'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.ThorWu'
 
 android {
     compileSdkVersion 27
