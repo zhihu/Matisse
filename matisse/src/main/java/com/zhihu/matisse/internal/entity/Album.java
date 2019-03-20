@@ -87,6 +87,10 @@ public class Album implements Parcelable {
     }
 
     public String getId() {
+        if (mId == null) {
+            return ALBUM_ID_ALL;
+        }
+
         return mId;
     }
 
