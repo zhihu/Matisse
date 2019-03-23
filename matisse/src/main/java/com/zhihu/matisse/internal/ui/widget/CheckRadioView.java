@@ -1,6 +1,7 @@
 package com.zhihu.matisse.internal.ui.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -21,17 +22,22 @@ public class CheckRadioView extends AppCompatImageView {
         init();
     }
 
-
-
     public CheckRadioView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    public CheckRadioView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
     private void init() {
-        mSelectedColor = ResourcesCompat.getColor(
-                getResources(), R.color.zhihu_item_checkCircle_backgroundColor,
-                getContext().getTheme());
+        TypedArray ta = getContext().getTheme()
+                .obtainStyledAttributes(new int[]{R.attr.item_checkCircle_backgroundColor});
+        mSelectedColor = ta.getColor(0,
+                ResourcesCompat.getColor(getResources(), R.color.zhihu_item_checkCircle_backgroundColor, getContext().getTheme()));
+        ta.recycle();
         mUnSelectUdColor = ResourcesCompat.getColor(
                 getResources(), R.color.zhihu_check_original_radio_disable,
                 getContext().getTheme());
