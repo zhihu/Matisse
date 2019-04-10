@@ -18,12 +18,11 @@ apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'checkstyle'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion 16
+        targetSdkVersion 26
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -33,16 +32,15 @@ android {
         abortOnError false
     }
 }
-
-ext.supportLibVersion = '27.1.1'
+ext.supportLibVersion = '1.0.0-beta01'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.android.support:support-v4:${supportLibVersion}"
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    implementation "com.android.support:support-annotations:${supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+//    implementation "androidx.legacy:legacy-support-v4:${supportLibVersion}"
+    implementation "androidx.appcompat:appcompat:1.1.0-alpha02"
+    implementation "androidx.annotation:annotation:${supportLibVersion}"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation 'it.sephiroth.android.library.imagezoom:library:1.0.4'
 
     compileOnly 'com.github.bumptech.glide:glide:3.7.0'
