@@ -79,7 +79,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                             switch (v.getId()) {
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
-                                            .choose(MimeType.ofAll(), false)
+                                            .choose(MimeType.of(MimeType.GIF), true)
                                             .countable(true)
                                             .capture(true)
                                             .captureStrategy(
@@ -101,6 +101,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
                                                 }
                                             })
+                                            .showSingleMediaType(true)
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
                                             .autoHideToolbarOnSingleTap(true)
