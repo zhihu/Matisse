@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="album_name_all">Tất cả</string>
+
+    <string name="button_preview">Xem trước</string>
+    <string name="button_apply_default">Áp dụng</string>
+    <string name="button_apply">Áp dụng(%1$d)</string>
+    <string name="button_back">Quay lại</string>
+    <string name="photo_grid_capture">Chụp ảnh</string>
+    <string name="empty_text">Chưa có tệp nào!</string>
+    <string name="button_ok">OK</string>
+
+    <string name="error_over_count_default">Đã chọn tối đa tệp!</string>
+    <string name="error_over_count">Bạn chỉ có thể chọn tối đa %1$d tệp!</string>
+    <string name="error_under_quality">Chất lượng ảnh/video quá thấp</string>
+    <string name="error_over_quality">Chất lượng ảnh/video quá cao</string>
+    <string name="error_file_type">Loại tệp không được hỗ trợ!</string>
+    <string name="error_type_conflict">Không thể chọn ảnh và video cùng một thời điểm.</string>
+    <string name="error_no_video_activity">Không tìm thấy ứng dụng hỗ trợ xem trước video!</string>
+    <string name="error_over_original_size">Không thể chọn ảnh có dung lượng lớn hơn %1$d MB.</string>
+    <string name="error_over_original_count">Có %1$d có dung lượng quá %2$d MB. Ảnh gốc sẽ được bỏ chọn!</string>
+    <string name="button_original">Tệp gốc</string>
+    <string name="button_sure_default">Chọn</string>
+    <string name="button_sure">Chọn(%1$d)</string>
+</resources>

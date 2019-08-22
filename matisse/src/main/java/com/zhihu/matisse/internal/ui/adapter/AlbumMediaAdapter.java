@@ -117,6 +117,7 @@ public class AlbumMediaAdapter extends
                     getImageResize(mediaViewHolder.mMediaGrid.getContext()),
                     mPlaceholder,
                     mSelectionSpec.countable,
+                    mSelectionSpec.isClickableThumbToPreview,
                     holder
             ));
             mediaViewHolder.mMediaGrid.bindMedia(item);

@@ -66,7 +66,11 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     public void onClick(View v) {
         if (mListener != null) {
             if (v == mThumbnail) {
-                mListener.onThumbnailClicked(mThumbnail, mMedia, mPreBindInfo.mViewHolder);
+                if (mPreBindInfo.isClickableThumbToPreview) {
+                    mListener.onThumbnailClicked(mThumbnail, mMedia, mPreBindInfo.mViewHolder);
+                } else {
+                    mListener.onCheckViewClicked(mCheckView, mMedia, mPreBindInfo.mViewHolder);
+                }
             } else if (v == mCheckView) {
                 mListener.onCheckViewClicked(mCheckView, mMedia, mPreBindInfo.mViewHolder);
             }
@@ -94,7 +98,7 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     }
 
     private void initCheckView() {
-        mCheckView.setCountable(mPreBindInfo.mCheckViewCountable);
+        mCheckView.setCountable(mPreBindInfo.isCheckViewCountable);
     }
 
     public void setCheckEnabled(boolean enabled) {
@@ -146,15 +150,20 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     public static class PreBindInfo {
         int mResize;
         Drawable mPlaceholder;
-        boolean mCheckViewCountable;
+        boolean isCheckViewCountable;
+        boolean isClickableThumbToPreview;
         RecyclerView.ViewHolder mViewHolder;
 
-        public PreBindInfo(int resize, Drawable placeholder, boolean checkViewCountable,
+        public PreBindInfo(int resize,
+                           Drawable placeholder,
+                           boolean isCheckViewCountable,
+                           boolean isClickableThumbToPreview,
                            RecyclerView.ViewHolder viewHolder) {
-            mResize = resize;
-            mPlaceholder = placeholder;
-            mCheckViewCountable = checkViewCountable;
-            mViewHolder = viewHolder;
+            this.mResize = resize;
+            this.mPlaceholder = placeholder;
+            this.isCheckViewCountable = isCheckViewCountable;
+            this.isClickableThumbToPreview = isClickableThumbToPreview;
+            this.mViewHolder = viewHolder;
         }
     }
 
