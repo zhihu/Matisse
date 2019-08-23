@@ -66,7 +66,7 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     public void onClick(View v) {
         if (mListener != null) {
             if (v == mThumbnail) {
-                if (mPreBindInfo.isClickableThumbToPreview) {
+                if (mPreBindInfo.mClickableThumbToPreview) {
                     mListener.onThumbnailClicked(mThumbnail, mMedia, mPreBindInfo.mViewHolder);
                 } else {
                     mListener.onCheckViewClicked(mCheckView, mMedia, mPreBindInfo.mViewHolder);
@@ -98,7 +98,7 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     }
 
     private void initCheckView() {
-        mCheckView.setCountable(mPreBindInfo.isCheckViewCountable);
+        mCheckView.setCountable(mPreBindInfo.mCheckViewCountable);
     }
 
     public void setCheckEnabled(boolean enabled) {
@@ -150,19 +150,19 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     public static class PreBindInfo {
         int mResize;
         Drawable mPlaceholder;
-        boolean isCheckViewCountable;
-        boolean isClickableThumbToPreview;
+        boolean mCheckViewCountable;
+        boolean mClickableThumbToPreview;
         RecyclerView.ViewHolder mViewHolder;
 
         public PreBindInfo(int resize,
                            Drawable placeholder,
-                           boolean isCheckViewCountable,
-                           boolean isClickableThumbToPreview,
+                           boolean mCheckViewCountable,
+                           boolean mClickableThumbToPreview,
                            RecyclerView.ViewHolder viewHolder) {
             this.mResize = resize;
             this.mPlaceholder = placeholder;
-            this.isCheckViewCountable = isCheckViewCountable;
-            this.isClickableThumbToPreview = isClickableThumbToPreview;
+            this.mCheckViewCountable = mCheckViewCountable;
+            this.mClickableThumbToPreview = mClickableThumbToPreview;
             this.mViewHolder = viewHolder;
         }
     }

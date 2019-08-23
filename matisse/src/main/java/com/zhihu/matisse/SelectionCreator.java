@@ -345,11 +345,11 @@ public final class SelectionCreator {
 
     /**
      * Let users decide whether click on a media thumbnail to preview.
-     * @param clickableThumbToPreview
+     * @param mClickableThumbToPreview
      * @return {@link SelectionCreator} for fluent API.
      */
-    public SelectionCreator setClickableThumbToPreview(boolean clickableThumbToPreview) {
-        mSelectionSpec.isClickableThumbToPreview = clickableThumbToPreview;
+    public SelectionCreator setClickableThumbToPreview(boolean mClickableThumbToPreview) {
+        mSelectionSpec.mClickableThumbToPreview = mClickableThumbToPreview;
         return this;
     }
 
