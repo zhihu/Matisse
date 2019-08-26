@@ -17,6 +17,7 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
+
 import androidx.annotation.StyleRes;
 
 import com.zhihu.matisse.MimeType;
@@ -109,7 +110,7 @@ public final class SelectionSpec {
     }
 
     public boolean onlyShowGif() {
-        return showSingleMediaType && MimeType.ofImage().contains(MimeType.GIF);
+        return showSingleMediaType && MimeType.ofGif().equals(mimeTypeSet);
     }
 
     private static final class InstanceHolder {
