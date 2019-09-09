@@ -33,6 +33,4 @@
     <string name="error_type_conflict">Nie można wybierać obrazów i filmów w tym samym czasie</string>
     <string name="error_no_video_activity">Nie znaleziono aplikacji wspierającej podgląd wideo</string>
     <string name="button_original">Oryginał</string>
-    <string name="button_sure_default">Zatwierdź</string>
-    <string name="button_sure">Zatwierdź(%1$d)</string>
 </resources>
