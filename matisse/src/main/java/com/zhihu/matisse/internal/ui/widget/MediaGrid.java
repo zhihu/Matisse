@@ -66,7 +66,11 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
     public void onClick(View v) {
         if (mListener != null) {
             if (v == mThumbnail) {
-                mListener.onThumbnailClicked(mThumbnail, mMedia, mPreBindInfo.mViewHolder);
+                if (mPreBindInfo.mClickableThumbToPreview) {
+                    mListener.onThumbnailClicked(mThumbnail, mMedia, mPreBindInfo.mViewHolder);
+                } else {
+                    mListener.onCheckViewClicked(mCheckView, mMedia, mPreBindInfo.mViewHolder);
+                }
             } else if (v == mCheckView) {
                 mListener.onCheckViewClicked(mCheckView, mMedia, mPreBindInfo.mViewHolder);
             }
@@ -147,14 +151,19 @@ public class MediaGrid extends SquareFrameLayout implements View.OnClickListener
         int mResize;
         Drawable mPlaceholder;
         boolean mCheckViewCountable;
+        boolean mClickableThumbToPreview;
         RecyclerView.ViewHolder mViewHolder;
 
-        public PreBindInfo(int resize, Drawable placeholder, boolean checkViewCountable,
+        public PreBindInfo(int resize,
+                           Drawable placeholder,
+                           boolean mCheckViewCountable,
+                           boolean mClickableThumbToPreview,
                            RecyclerView.ViewHolder viewHolder) {
-            mResize = resize;
-            mPlaceholder = placeholder;
-            mCheckViewCountable = checkViewCountable;
-            mViewHolder = viewHolder;
+            this.mResize = resize;
+            this.mPlaceholder = placeholder;
+            this.mCheckViewCountable = mCheckViewCountable;
+            this.mClickableThumbToPreview = mClickableThumbToPreview;
+            this.mViewHolder = viewHolder;
         }
     }
 

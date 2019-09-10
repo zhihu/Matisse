@@ -344,6 +344,16 @@ public final class SelectionCreator {
     }
 
     /**
+     * Let users decide whether click on a media thumbnail to preview.
+     * @param mClickableThumbToPreview
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator setClickableThumbToPreview(boolean mClickableThumbToPreview) {
+        mSelectionSpec.mClickableThumbToPreview = mClickableThumbToPreview;
+        return this;
+    }
+
+    /**
      * Start to select media and wait for result.
      *
      * @param requestCode Identity of the request Activity or Fragment.
