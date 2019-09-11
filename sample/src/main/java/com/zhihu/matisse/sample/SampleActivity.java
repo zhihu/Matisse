@@ -20,10 +20,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +59,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_main);
         findViewById(R.id.zhihu).setOnClickListener(this);
         findViewById(R.id.dracula).setOnClickListener(this);
+        findViewById(R.id.only_gif).setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,11 +82,11 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                             switch (v.getId()) {
                                 case R.id.zhihu:
                                     Matisse.from(SampleActivity.this)
-                                            .choose(MimeType.ofAll(), false)
+                                            .choose(MimeType.ofImage(), false)
                                             .countable(true)
                                             .capture(true)
                                             .captureStrategy(
-                                                    new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider","test"))
+                                                    new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
                                             .maxSelectable(9)
                                             .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                                             .gridExpectedSize(
@@ -101,6 +104,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
                                                 }
                                             })
+                                            .showSingleMediaType(true)
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
                                             .autoHideToolbarOnSingleTap(true)
@@ -123,6 +127,43 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                                             .originalEnable(true)
                                             .maxOriginalSize(10)
                                             .imageEngine(new PicassoEngine())
+                                            .forResult(REQUEST_CODE_CHOOSE);
+                                    break;
+                                case R.id.only_gif:
+                                    Matisse.from(SampleActivity.this)
+                                            .choose(MimeType.of(MimeType.GIF), false)
+                                            .countable(true)
+                                            .capture(true)
+                                            .captureStrategy(
+                                                    new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider", "test"))
+                                            .maxSelectable(9)
+                                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                                            .gridExpectedSize(
+                                                    getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                            .thumbnailScale(0.85f)
+//                                            .imageEngine(new GlideEngine())  // for glide-V3
+                                            .imageEngine(new Glide4Engine())    // for glide-V4
+                                            .setOnSelectedListener(new OnSelectedListener() {
+                                                @Override
+                                                public void onSelected(
+                                                        @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
+                                                    // DO SOMETHING IMMEDIATELY HERE
+                                                    Log.e("onSelected", "onSelected: pathList=" + pathList);
+
+                                                }
+                                            })
+                                            .showSingleMediaType(true)
+                                            .originalEnable(true)
+                                            .maxOriginalSize(10)
+                                            .autoHideToolbarOnSingleTap(true)
+                                            .setOnCheckedListener(new OnCheckedListener() {
+                                                @Override
+                                                public void onCheck(boolean isChecked) {
+                                                    // DO SOMETHING IMMEDIATELY HERE
+                                                    Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+                                                }
+                                            })
                                             .forResult(REQUEST_CODE_CHOOSE);
                                     break;
                                 default:
