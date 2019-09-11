@@ -16,6 +16,7 @@
  */
 package com.zhihu.matisse.internal.loader;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -23,12 +24,17 @@ import android.database.MergeCursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.util.SparseArray;
 
 import androidx.loader.content.CursorLoader;
 
+import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Load all albums (grouped by bucket_id) into a single cursor.
@@ -36,20 +42,20 @@ import com.zhihu.matisse.internal.entity.SelectionSpec;
 public class AlbumLoader extends CursorLoader {
     private static final String COLUMN_BUCKET_ID = "bucket_id";
     private static final String COLUMN_BUCKET_DISPLAY_NAME = "bucket_display_name";
+    public static final String COLUMN_URI = "uri";
     public static final String COLUMN_COUNT = "count";
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
     private static final String[] COLUMNS = {
             MediaStore.Files.FileColumns._ID,
             COLUMN_BUCKET_ID,
             COLUMN_BUCKET_DISPLAY_NAME,
-            MediaStore.MediaColumns.DATA,
             MediaStore.MediaColumns.MIME_TYPE,
+            COLUMN_URI,
             COLUMN_COUNT};
     private static final String[] PROJECTION = {
             MediaStore.Files.FileColumns._ID,
             COLUMN_BUCKET_ID,
             COLUMN_BUCKET_DISPLAY_NAME,
-            MediaStore.MediaColumns.DATA,
             MediaStore.MediaColumns.MIME_TYPE,
             "COUNT(*) AS " + COLUMN_COUNT};
 
@@ -57,7 +63,6 @@ public class AlbumLoader extends CursorLoader {
             MediaStore.Files.FileColumns._ID,
             COLUMN_BUCKET_ID,
             COLUMN_BUCKET_DISPLAY_NAME,
-            MediaStore.MediaColumns.DATA,
             MediaStore.MediaColumns.MIME_TYPE};
 
     // === params for showSingleMediaType: false ===
@@ -143,59 +148,108 @@ public class AlbumLoader extends CursorLoader {
     @Override
     public Cursor loadInBackground() {
         Cursor albums = super.loadInBackground();
-        MatrixCursor allAlbum = new MatrixCursor(COLUMNS);
+        MatrixCursor allAlbum = new MatrixCursor(COLUMNS);        
 
         if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             int totalCount = 0;
-            String allAlbumCoverPath = "";
+            Uri allAlbumCoverUri = null;
+            MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
             if (albums != null) {
                 while (albums.moveToNext()) {
-                    totalCount += albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
+                    long fileId = albums.getLong(albums.getColumnIndex(MediaStore.Files.FileColumns._ID));
+                    long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
+                    String bucketDisplayName = albums.getString(albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
+                    String mimeType = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
+                    Uri uri = getUri(albums);
+                    int count = albums.getInt(albums.getColumnIndex(COLUMN_COUNT));
+
+                    otherAlbums.addRow(new String[]{Long.toString(fileId), Long.toString(bucketId), bucketDisplayName, mimeType, uri.toString(),
+                            String.valueOf(count)});
+                    totalCount += count;
                 }
                 if (albums.moveToFirst()) {
-                    allAlbumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
+                    allAlbumCoverUri = getUri(albums);
                 }
             }
 
-            allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath, "",
+            allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, null,
+                    allAlbumCoverUri == null ? null : allAlbumCoverUri.toString(),
                     String.valueOf(totalCount)});
 
-            return new MergeCursor(new Cursor[]{allAlbum, albums});
+            return new MergeCursor(new Cursor[]{allAlbum, otherAlbums});
         } else {
             int totalCount = 0;
-            String allAlbumCoverPath = "";
-            SparseArray<Album> albumList = new SparseArray<>();
+            Uri allAlbumCoverUri = null;
+
+            // Pseudo GROUP BY
+            Map<Long, Long> countMap = new HashMap<>();
             if (albums != null) {
                 while (albums.moveToNext()) {
-                    String albumCoverPath = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.DATA));
-                    if ("".equals(allAlbumCoverPath)) {
-                        allAlbumCoverPath = albumCoverPath;
+                    long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
+
+                    Long count = countMap.get(bucketId);
+                    if (count == null) {
+                        count = 1L;
+                    } else {
+                        count++;
                     }
-                    int bucketId = albums.getInt(albums.getColumnIndex(COLUMN_BUCKET_ID));
-                    String bucketDisplayName = albums.getString(albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
-                    Album album = albumList.get(bucketId);
-                    if (album == null) {
-                        album = new Album(String.valueOf(bucketId), albumCoverPath, bucketDisplayName, 0);
-                        albumList.append(bucketId, album);
-                    }
-                    album.addCaptureCount();
-                    totalCount++;
+                    countMap.put(bucketId, count);
                 }
             }
 
-            allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, allAlbumCoverPath, null,
-                    String.valueOf(totalCount)});
+            MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
+            if (albums != null) {
+                if (albums.moveToFirst()) {
+                    allAlbumCoverUri = getUri(albums);
+                    
+                    Set<Long> done = new HashSet<>();
 
-            for (int i = 0, size = albumList.size(); i < size; i++) {
-                Album album = albumList.valueAt(i);
-                allAlbum.addRow(new String[]{album.getId(), album.getId(), album.getDisplayName(null), album.getCoverPath(), null,
-                        String.valueOf(album.getCount())});
+                    do {
+                        long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
+
+                        if (done.contains(bucketId)) {
+                            continue;
+                        }
+
+                        long fileId = albums.getLong(albums.getColumnIndex(MediaStore.Files.FileColumns._ID));
+                        String bucketDisplayName = albums.getString(albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
+                        String mimeType = albums.getString(albums.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
+                        Uri uri = getUri(albums);
+                        long count = countMap.get(bucketId);
+
+                        otherAlbums.addRow(new String[]{Long.toString(fileId), Long.toString(bucketId), bucketDisplayName, mimeType, uri.toString(),
+                                String.valueOf(count)});
+                        done.add(bucketId);
+
+                        totalCount += count;
+                    } while (albums.moveToNext());
+                }
             }
 
-            MergeCursor mergeCursor = new MergeCursor(new Cursor[]{allAlbum});
+            allAlbum.addRow(new String[]{Album.ALBUM_ID_ALL, Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, null,
+                    allAlbumCoverUri == null ? null : allAlbumCoverUri.toString(),
+                    String.valueOf(totalCount)});
 
-            return mergeCursor;
+            return new MergeCursor(new Cursor[]{allAlbum, otherAlbums});
         }
+    }
+
+    private static Uri getUri(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID));
+        String mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
+        Uri contentUri;
+
+        if (MimeType.isImage(mimeType)) {
+            contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        } else if (MimeType.isVideo(mimeType)) {
+            contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        } else {
+            // ?
+            contentUri = MediaStore.Files.getContentUri("external");
+        }
+
+        Uri uri = ContentUris.withAppendedId(contentUri, id);
+        return uri;
     }
 
     @Override
