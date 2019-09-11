@@ -47,14 +47,14 @@ public class Album implements Parcelable {
     private final String mDisplayName;
     private long mCount;
 
-    Album(String id, String coverPath, String albumName, long count) {
+    public Album(String id, String coverPath, String albumName, long count) {
         mId = id;
         mCoverPath = coverPath;
         mDisplayName = albumName;
         mCount = count;
     }
 
-    Album(Parcel source) {
+    private Album(Parcel source) {
         mId = source.readString();
         mCoverPath = source.readString();
         mDisplayName = source.readString();
