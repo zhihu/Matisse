@@ -22,6 +22,7 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+
 import androidx.loader.content.CursorLoader;
 
 import com.zhihu.matisse.internal.entity.Album;
@@ -95,13 +96,16 @@ public class AlbumLoader extends CursorLoader {
         String[] selectionArgs;
         if (SelectionSpec.getInstance().onlyShowGif()) {
             selection = SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE;
-            selectionArgs = getSelectionArgsForSingleMediaGifType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
-        }else if (SelectionSpec.getInstance().onlyShowImages()) {
+            selectionArgs = getSelectionArgsForSingleMediaGifType(
+                    MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+        } else if (SelectionSpec.getInstance().onlyShowImages()) {
             selection = SELECTION_FOR_SINGLE_MEDIA_TYPE;
-            selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+            selectionArgs = getSelectionArgsForSingleMediaType(
+                    MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
         } else if (SelectionSpec.getInstance().onlyShowVideos()) {
             selection = SELECTION_FOR_SINGLE_MEDIA_TYPE;
-            selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+            selectionArgs = getSelectionArgsForSingleMediaType(
+                    MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
         } else {
             selection = SELECTION;
             selectionArgs = SELECTION_ARGS;
