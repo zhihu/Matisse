@@ -163,8 +163,7 @@ public class AlbumMediaAdapter extends
             if (mOnMediaClickListener != null) {
                 mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
             }
-        }
-        else {
+        } else {
             updateSelectedItem(item, holder);
         }
     }
