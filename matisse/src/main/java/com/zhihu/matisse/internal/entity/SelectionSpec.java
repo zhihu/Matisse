@@ -56,6 +56,7 @@ public final class SelectionSpec {
     public boolean autoHideToobar;
     public int originalMaxSize;
     public OnCheckedListener onCheckedListener;
+    public boolean showPreview;
 
     private SelectionSpec() {
     }
@@ -91,6 +92,7 @@ public final class SelectionSpec {
         originalable = false;
         autoHideToobar = false;
         originalMaxSize = Integer.MAX_VALUE;
+        showPreview = true;
     }
 
     public boolean singleSelectionModeEnabled() {
