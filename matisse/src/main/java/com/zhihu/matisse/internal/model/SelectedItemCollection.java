@@ -253,4 +253,8 @@ public class SelectedItemCollection {
         int index = new ArrayList<>(mItems).indexOf(item);
         return index == -1 ? CheckView.UNCHECKED : index + 1;
     }
+
+    public void clear() {
+        mItems.clear();
+    }
 }

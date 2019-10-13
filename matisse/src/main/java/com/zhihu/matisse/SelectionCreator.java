@@ -213,6 +213,17 @@ public final class SelectionCreator {
         return this;
     }
 
+    /**
+     * Enable single checked mode
+     *
+     * @param singleChecked Whether to enable single checked or not
+     * @return {@link SelectionCreator} for fluent API.
+     */
+    public SelectionCreator singleChecked(boolean singleChecked) {
+        mSelectionSpec.singleChecked = singleChecked;
+        return this;
+    }
+
 
     /**
      * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
