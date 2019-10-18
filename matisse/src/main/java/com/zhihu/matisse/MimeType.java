@@ -19,7 +19,9 @@ package com.zhihu.matisse;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.text.TextUtils;
+
 import androidx.collection.ArraySet;
+
 import android.webkit.MimeTypeMap;
 
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
@@ -114,7 +116,7 @@ public enum MimeType {
         return EnumSet.of(GIF);
     }
 
-    public static Set<MimeType> ofGif(){
+    public static Set<MimeType> ofGif() {
         return ofImage(true);
     }
 

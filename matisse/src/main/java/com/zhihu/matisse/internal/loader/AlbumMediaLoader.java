@@ -151,7 +151,8 @@ public class AlbumMediaLoader extends CursorLoader {
         } else {
             if (SelectionSpec.getInstance().onlyShowGif()) {
                 selection = SELECTION_ALBUM_FOR_GIF;
-                selectionArgs = getSelectionAlbumArgsForGifType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE, album.getId());
+                selectionArgs = getSelectionAlbumArgsForGifType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
+                        album.getId());
             } else if (SelectionSpec.getInstance().onlyShowImages()) {
                 selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
                 selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,

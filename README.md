@@ -66,6 +66,7 @@ Matisse.from(MainActivity.this)
         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         .thumbnailScale(0.85f)
         .imageEngine(new GlideEngine())
+        .showPreview(false) // Default is `true`
         .forResult(REQUEST_CODE_CHOOSE);
 ```
  

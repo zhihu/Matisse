@@ -159,13 +159,21 @@ public class AlbumMediaAdapter extends
 
     @Override
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
-        if (mOnMediaClickListener != null) {
-            mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+        if (mSelectionSpec.showPreview) {
+            if (mOnMediaClickListener != null) {
+                mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+            }
+        } else {
+            updateSelectedItem(item, holder);
         }
     }
 
     @Override
     public void onCheckViewClicked(CheckView checkView, Item item, RecyclerView.ViewHolder holder) {
+        updateSelectedItem(item, holder);
+    }
+
+    private void updateSelectedItem(Item item, RecyclerView.ViewHolder holder) {
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum == CheckView.UNCHECKED) {
