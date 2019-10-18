@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.zhihu.android:matisse:$latest_version'
+    implementation 'com.zhihu.android:matisse:$latest_version'
 }
 ```
 
@@ -92,16 +92,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 }
 ```
-
-#### For Glide V4
-
-To be honest,the library can't supply GlideEngine for Glide both v3 and v4 at the same time. (Anyone who
- have good idea to achieve this. PR is welcomed) 
- 
-GlideEngine with Glide v3 is default.
-
-So if your project's glide version is 4.0+ ,then you must realize GlideEngine by yourself. More details
-could refer with [Glide4Engine](https://github.com/zhihu/Matisse/blob/master/sample/src/main/java/com/zhihu/matisse/sample/Glide4Engine.java) in the sample.
 
 #### More
 Find more details about Matisse in [wiki](https://github.com/zhihu/Matisse/wiki).
