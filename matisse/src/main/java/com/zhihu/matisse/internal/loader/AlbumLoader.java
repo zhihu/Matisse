@@ -40,11 +40,13 @@ import java.util.Set;
  * Load all albums (grouped by bucket_id) into a single cursor.
  */
 public class AlbumLoader extends CursorLoader {
+
     private static final String COLUMN_BUCKET_ID = "bucket_id";
     private static final String COLUMN_BUCKET_DISPLAY_NAME = "bucket_display_name";
     public static final String COLUMN_URI = "uri";
     public static final String COLUMN_COUNT = "count";
     private static final Uri QUERY_URI = MediaStore.Files.getContentUri("external");
+
     private static final String[] COLUMNS = {
             MediaStore.Files.FileColumns._ID,
             COLUMN_BUCKET_ID,
@@ -52,6 +54,7 @@ public class AlbumLoader extends CursorLoader {
             MediaStore.MediaColumns.MIME_TYPE,
             COLUMN_URI,
             COLUMN_COUNT};
+
     private static final String[] PROJECTION = {
             MediaStore.Files.FileColumns._ID,
             COLUMN_BUCKET_ID,
@@ -119,7 +122,7 @@ public class AlbumLoader extends CursorLoader {
         super(
                 context,
                 QUERY_URI,
-                android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ? PROJECTION : PROJECTION_29,
+                beforeAndroidTen() ? PROJECTION : PROJECTION_29,
                 selection,
                 selectionArgs,
                 BUCKET_ORDER_BY
@@ -130,16 +133,16 @@ public class AlbumLoader extends CursorLoader {
         String selection;
         String[] selectionArgs;
         if (SelectionSpec.getInstance().onlyShowGif()) {
-            selection = android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ? SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE : SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE_29;
+            selection = beforeAndroidTen() ? SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE : SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE_29;
             selectionArgs = getSelectionArgsForSingleMediaGifType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
         }else if (SelectionSpec.getInstance().onlyShowImages()) {
-            selection = android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ? SELECTION_FOR_SINGLE_MEDIA_TYPE : SELECTION_FOR_SINGLE_MEDIA_TYPE_29;
+            selection = beforeAndroidTen() ? SELECTION_FOR_SINGLE_MEDIA_TYPE : SELECTION_FOR_SINGLE_MEDIA_TYPE_29;
             selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
         } else if (SelectionSpec.getInstance().onlyShowVideos()) {
-            selection = android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ? SELECTION_FOR_SINGLE_MEDIA_TYPE : SELECTION_FOR_SINGLE_MEDIA_TYPE_29;
+            selection = beforeAndroidTen() ? SELECTION_FOR_SINGLE_MEDIA_TYPE : SELECTION_FOR_SINGLE_MEDIA_TYPE_29;
             selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
         } else {
-            selection = android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ? SELECTION : SELECTION_29;
+            selection = beforeAndroidTen() ? SELECTION : SELECTION_29;
             selectionArgs = SELECTION_ARGS;
         }
         return new AlbumLoader(context, selection, selectionArgs);
@@ -150,7 +153,7 @@ public class AlbumLoader extends CursorLoader {
         Cursor albums = super.loadInBackground();
         MatrixCursor allAlbum = new MatrixCursor(COLUMNS);        
 
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (beforeAndroidTen()) {
             int totalCount = 0;
             Uri allAlbumCoverUri = null;
             MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
@@ -255,5 +258,13 @@ public class AlbumLoader extends CursorLoader {
     @Override
     public void onContentChanged() {
         // FIXME a dirty way to fix loading multiple times
+    }
+
+    /**
+     *
+     * @return 是否是 Android 10 （Q） 之前的版本
+     */
+    private static boolean beforeAndroidTen() {
+        return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q;
     }
 }
