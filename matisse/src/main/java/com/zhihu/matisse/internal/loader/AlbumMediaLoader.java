@@ -136,13 +136,18 @@ public class AlbumMediaLoader extends CursorLoader {
         if (album.isAll()) {
             if (SelectionSpec.getInstance().onlyShowGif()) {
                 selection = SELECTION_ALL_FOR_GIF;
-                selectionArgs = getSelectionArgsForGifType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+                selectionArgs = getSelectionArgsForGifType(
+                        MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
             } else if (SelectionSpec.getInstance().onlyShowImages()) {
                 selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
+                selectionArgs =
+                        getSelectionArgsForSingleMediaType(
+                                MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE);
             } else if (SelectionSpec.getInstance().onlyShowVideos()) {
                 selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
+                selectionArgs =
+                        getSelectionArgsForSingleMediaType(
+                                MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO);
             } else {
                 selection = SELECTION_ALL;
                 selectionArgs = SELECTION_ALL_ARGS;
@@ -151,15 +156,19 @@ public class AlbumMediaLoader extends CursorLoader {
         } else {
             if (SelectionSpec.getInstance().onlyShowGif()) {
                 selection = SELECTION_ALBUM_FOR_GIF;
-                selectionArgs = getSelectionAlbumArgsForGifType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
-                        album.getId());
+                selectionArgs =
+                        getSelectionAlbumArgsForGifType(
+                                MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE, album.getId());
             } else if (SelectionSpec.getInstance().onlyShowImages()) {
                 selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
-                        album.getId());
+                selectionArgs =
+                        getSelectionAlbumArgsForSingleMediaType(
+                                MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE,
+                                album.getId());
             } else if (SelectionSpec.getInstance().onlyShowVideos()) {
                 selection = SELECTION_ALBUM_FOR_SINGLE_MEDIA_TYPE;
-                selectionArgs = getSelectionAlbumArgsForSingleMediaType(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO,
+                selectionArgs = getSelectionAlbumArgsForSingleMediaType(
+                        MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO,
                         album.getId());
             } else {
                 selection = SELECTION_ALBUM;
