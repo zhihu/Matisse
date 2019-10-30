@@ -126,6 +126,10 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
                         mCheckView.setChecked(false);
                     }
                 } else {
+                    if (mSpec.singleChecked) {
+                        mSelectedCollection.clear();
+                    }
+
                     if (assertAddSelection(item)) {
                         mSelectedCollection.add(item);
                         if (mSpec.countable) {

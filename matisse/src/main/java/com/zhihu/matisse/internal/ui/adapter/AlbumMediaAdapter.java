@@ -177,6 +177,10 @@ public class AlbumMediaAdapter extends
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum == CheckView.UNCHECKED) {
+                if (mSelectionSpec.singleChecked) {
+                    mSelectedCollection.clear();
+                }
+
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
                     notifyCheckStateChanged();
@@ -190,6 +194,10 @@ public class AlbumMediaAdapter extends
                 mSelectedCollection.remove(item);
                 notifyCheckStateChanged();
             } else {
+                if (mSelectionSpec.singleChecked) {
+                    mSelectedCollection.clear();
+                }
+
                 if (assertAddSelection(holder.itemView.getContext(), item)) {
                     mSelectedCollection.add(item);
                     notifyCheckStateChanged();
