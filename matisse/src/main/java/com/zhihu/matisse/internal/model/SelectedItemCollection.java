@@ -169,25 +169,12 @@ public class SelectedItemCollection {
     public IncapableCause isAcceptable(Item item) {
         if (maxSelectableReached()) {
             int maxSelectable = currentMaxSelectable();
-            String cause;
 
-            try {
-                cause = mContext.getResources().getQuantityString(
-                        R.plurals.error_over_count,
-                        maxSelectable,
-                        maxSelectable
-                );
-            } catch (Resources.NotFoundException e) {
-                cause = mContext.getString(
-                        R.string.error_over_count,
-                        maxSelectable
-                );
-            } catch (NoClassDefFoundError e) {
-                cause = mContext.getString(
-                        R.string.error_over_count,
-                        maxSelectable
-                );
-            }
+            String cause = mContext.getResources().getQuantityString(
+                    R.plurals.error_over_count,
+                    maxSelectable,
+                    maxSelectable
+            );
 
             return new IncapableCause(cause);
         } else if (typeConflict(item)) {

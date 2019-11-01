@@ -23,7 +23,10 @@
     <string name="button_ok">OK</string>
 
     <string name="error_over_count_default">Sie haben die maximale Anzahl an Medien ausgewählt.</string>
-    <string name="error_over_count">Sie können nur %1$d Medien auswählen</string>
+    <plurals name="error_over_count">
+        <item quantity="one">Sie können nur %1$d Medien auswählen</item>
+        <item quantity="other">Sie können nur %1$d Medien auswählen</item>
+    </plurals>
     <string name="error_under_quality">Unter Qualität</string>
     <string name="error_over_quality">Über Qualität</string>
     <string name="error_file_type">Dateityp nicht unterstützt</string>

@@ -26,7 +26,9 @@
     <string name="button_ok">我知道了</string>
 
     <string name="error_over_count_default">您已经达到最大选择数量</string>
-    <string name="error_over_count">最多只能选择 %1$d 个文件</string>
+    <plurals name="error_over_count">
+        <item quantity="other">最多只能选择 %1$d 个文件</item>
+    </plurals>
     <string name="error_under_quality">图片质量太低</string>
     <string name="error_over_quality">图片质量太高</string>
     <string name="error_file_type">不支持的文件类型</string>

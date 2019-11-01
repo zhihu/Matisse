@@ -26,7 +26,12 @@
     <string name="button_ok">OK</string>
 
     <string name="error_over_count_default">Osiągnąłeś limit wybieralnych elementów</string>
-    <string name="error_over_count">Możesz wybrać do %1$d plików</string>
+    <plurals name="error_over_count">
+        <item quantity="few">Możesz wybrać do %1$d plików</item>
+        <item quantity="many">Możesz wybrać do %1$d plików</item>
+        <item quantity="one">Możesz wybrać do %1$d plików</item>
+        <item quantity="other">Możesz wybrać do %1$d plików</item>
+    </plurals>
     <string name="error_under_quality">Poniżej jakości</string>
     <string name="error_over_quality">Powyżej jakości</string>
     <string name="error_file_type">Niewspierany typ pliku</string>
