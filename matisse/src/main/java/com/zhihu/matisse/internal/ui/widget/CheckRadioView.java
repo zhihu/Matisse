@@ -21,10 +21,13 @@ public class CheckRadioView extends AppCompatImageView {
         init();
     }
 
-
-
     public CheckRadioView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
+
+    public CheckRadioView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init();
     }
 
