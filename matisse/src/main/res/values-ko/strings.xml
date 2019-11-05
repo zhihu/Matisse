@@ -15,4 +15,9 @@
   <string name="error_under_quality">화질이 너무 낮습니다.</string>
   <string name="error_over_quality">화질이 너무 높습니다.</string>
   <string name="error_file_type">지원되지 않는 파일 유형입니다.</string>
+  <string name="error_over_original_size">%1$dMB보다 큰 이미지를 선택할 수 없습니다</string>
+  <string name="error_over_original_count">%1$d개의 이미지가 %2$dMB 이상입니다. 원본은 선택 취소됩니다</string>
+  <string name="button_original">원본</string>
+  <string name="button_sure_default">확인</string>
+  <string name="button_sure">확인(%1$d)</string>
 </resources>
