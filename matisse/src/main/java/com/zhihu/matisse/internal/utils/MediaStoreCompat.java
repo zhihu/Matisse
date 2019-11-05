@@ -142,4 +142,12 @@ public class MediaStoreCompat {
     public String getCurrentPhotoPath() {
         return mCurrentPhotoPath;
     }
+
+    public void setCurrentPhotoPath(String path) {
+        mCurrentPhotoPath = path;
+    }
+
+    public void setCurrentPhotoUri(Uri currentPhotoUri) {
+        this.mCurrentPhotoUri = currentPhotoUri;
+    }
 }
