@@ -31,6 +31,7 @@
         <item name="item.placeholder">@color/zhihu_item_placeholder</item>
         <item name="item.checkCircle.backgroundColor">@color/zhihu_item_checkCircle_backgroundColor</item>
         <item name="item.checkCircle.borderColor">@color/zhihu_item_checkCircle_borderColor</item>
+        <item name="item.checkCircle.textColor">@color/zhihu_item_checkCircle_textColor</item>
         <item name="page.bg">@color/zhihu_page_bg</item>
         <item name="bottomToolbar.bg">@color/zhihu_bottom_toolbar_bg</item>
         <item name="bottomToolbar.preview.textColor">@color/zhihu_bottom_toolbar_preview</item>
@@ -64,6 +65,7 @@
         <item name="item.placeholder">@color/dracula_item_placeholder</item>
         <item name="item.checkCircle.backgroundColor">@color/dracula_item_checkCircle_backgroundColor</item>
         <item name="item.checkCircle.borderColor">@color/dracula_item_checkCircle_borderColor</item>
+        <item name="item.checkCircle.textColor">@color/dracula_item_checkCircle_textColor</item>
         <item name="page.bg">@color/dracula_page_bg</item>
         <item name="bottomToolbar.bg">@color/dracula_bottom_toolbar_bg</item>
         <item name="bottomToolbar.preview.textColor">@color/dracula_bottom_toolbar_preview</item>
