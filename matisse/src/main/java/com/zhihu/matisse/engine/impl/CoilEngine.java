@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.zhihu.matisse.engine.ImageEngine;
@@ -25,7 +26,7 @@ public class CoilEngine implements ImageEngine {
     private ImageLoader imageLoader;
     private boolean supportsGifs = false;
 
-    public CoilEngine(Context context) {
+    public CoilEngine(@NonNull Context context) {
         checkIfSupportsGifs();
 
         ImageLoaderBuilder builder = new ImageLoaderBuilder(context);
@@ -41,7 +42,7 @@ public class CoilEngine implements ImageEngine {
         imageLoader = builder.build();
     }
 
-    public CoilEngine(ImageLoader imageLoader) {
+    public CoilEngine(@NonNull ImageLoader imageLoader) {
         checkIfSupportsGifs();
         this.imageLoader = imageLoader;
     }
