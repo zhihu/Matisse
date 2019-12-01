@@ -23,14 +23,14 @@ import static android.os.Build.VERSION_CODES.P;
 
 public class CoilEngine implements ImageEngine {
 
-    private ImageLoader imageLoader;
-    private boolean supportsGifs = false;
+    private ImageLoader mImageLoader;
+    private boolean mSupportsGifs = false;
 
     public CoilEngine(@NonNull Context context) {
         checkIfSupportsGifs();
 
         ImageLoaderBuilder builder = new ImageLoaderBuilder(context);
-        if (supportsGifs) {
+        if (mSupportsGifs) {
             ComponentRegistry.Builder registryBuilder = new ComponentRegistry.Builder();
             if (SDK_INT >= P) {
                 registryBuilder.add(new ImageDecoderDecoder());
@@ -39,19 +39,19 @@ public class CoilEngine implements ImageEngine {
             }
             builder.componentRegistry(registryBuilder.build());
         }
-        imageLoader = builder.build();
+        mImageLoader = builder.build();
     }
 
     public CoilEngine(@NonNull ImageLoader imageLoader) {
         checkIfSupportsGifs();
-        this.imageLoader = imageLoader;
+        this.mImageLoader = imageLoader;
     }
 
     private void checkIfSupportsGifs() {
         try {
             Class.forName(GifDecoder.class.getName());
-            supportsGifs = true;
-        } catch (Exception ignored) {}
+            mSupportsGifs = true;
+        } catch (Exception ignored) { }
     }
 
     @Override
@@ -74,18 +74,19 @@ public class CoilEngine implements ImageEngine {
         load(context, imageView, uri, null, resizeX, resizeY);
     }
 
-    private void load(Context context, ImageView imageView, Uri uri, @Nullable Drawable placeholder, int width, int height) {
-        LoadRequest request = ImageLoaders.newLoadBuilder(imageLoader, context)
+    private void load(Context context, ImageView imageView, Uri uri, @Nullable Drawable placeholder,
+                      int width, int height) {
+        LoadRequest request = ImageLoaders.newLoadBuilder(mImageLoader, context)
                 .data(uri)
                 .size(width, height)
                 .placeholder(placeholder)
                 .target(imageView)
                 .build();
-        imageLoader.load(request);
+        mImageLoader.load(request);
     }
 
     @Override
     public boolean supportAnimatedGif() {
-        return supportsGifs;
+        return mSupportsGifs;
     }
 }
