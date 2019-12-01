@@ -24,7 +24,7 @@ import static android.os.Build.VERSION_CODES.P;
 public class CoilEngine implements ImageEngine {
 
     private ImageLoader mImageLoader;
-    private boolean mSupportsGifs = false;
+    private boolean mSupportsGifs;
 
     public CoilEngine(@NonNull Context context) {
         checkIfSupportsGifs();
@@ -51,7 +51,9 @@ public class CoilEngine implements ImageEngine {
         try {
             Class.forName(GifDecoder.class.getName());
             mSupportsGifs = true;
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+            mSupportsGifs = false;
+        }
     }
 
     @Override
