@@ -31,10 +31,10 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.Album;
 import com.zhihu.matisse.internal.entity.SelectionSpec;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Load all albums (grouped by bucket_id) into a single cursor.
@@ -197,6 +197,8 @@ public class AlbumLoader extends CursorLoader {
             int totalCount = 0;
             Uri allAlbumCoverUri = null;
 
+            List<Integer> firstIndexes = new ArrayList<>();
+            int index = 0;
             // Pseudo GROUP BY
             Map<Long, Long> countMap = new HashMap<>();
             if (albums != null) {
@@ -206,48 +208,39 @@ public class AlbumLoader extends CursorLoader {
                     Long count = countMap.get(bucketId);
                     if (count == null) {
                         count = 1L;
+                        firstIndexes.add(index);
                     } else {
                         count++;
                     }
                     countMap.put(bucketId, count);
+                    index++;
                 }
             }
 
+            if (albums.moveToFirst()) {
+                allAlbumCoverUri = getUri(albums);
+            }
+
             MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
-            if (albums != null) {
-                if (albums.moveToFirst()) {
-                    allAlbumCoverUri = getUri(albums);
-
-                    Set<Long> done = new HashSet<>();
-
-                    do {
-                        long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
-
-                        if (done.contains(bucketId)) {
-                            continue;
-                        }
-
-                        long fileId = albums.getLong(
-                                albums.getColumnIndex(MediaStore.Files.FileColumns._ID));
-                        String bucketDisplayName = albums.getString(
-                                albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
-                        String mimeType = albums.getString(
-                                albums.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
-                        Uri uri = getUri(albums);
-                        long count = countMap.get(bucketId);
-
-                        otherAlbums.addRow(new String[]{
-                                Long.toString(fileId),
-                                Long.toString(bucketId),
-                                bucketDisplayName,
-                                mimeType,
-                                uri.toString(),
-                                String.valueOf(count)});
-                        done.add(bucketId);
-
-                        totalCount += count;
-                    } while (albums.moveToNext());
-                }
+            for (int firstIndex : firstIndexes) {
+                albums.moveToPosition(firstIndex);
+                long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
+                long fileId = albums.getLong(
+                        albums.getColumnIndex(MediaStore.Files.FileColumns._ID));
+                String bucketDisplayName = albums.getString(
+                        albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
+                String mimeType = albums.getString(
+                        albums.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
+                Uri uri = getUri(albums);
+                long count = countMap.get(bucketId);
+                otherAlbums.addRow(new String[]{
+                        Long.toString(fileId),
+                        Long.toString(bucketId),
+                        bucketDisplayName,
+                        mimeType,
+                        uri.toString(),
+                        String.valueOf(count)});
+                totalCount += count;
             }
 
             allAlbum.addRow(new String[]{
