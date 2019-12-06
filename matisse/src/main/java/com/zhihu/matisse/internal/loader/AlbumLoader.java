@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 
-import androidx.collection.ArraySet;
 import androidx.loader.content.CursorLoader;
 
 import com.zhihu.matisse.MimeType;
@@ -34,10 +33,8 @@ import com.zhihu.matisse.internal.entity.SelectionSpec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Load all albums (grouped by bucket_id) into a single cursor.
