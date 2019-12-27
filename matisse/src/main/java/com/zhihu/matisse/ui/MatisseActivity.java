@@ -15,6 +15,7 @@
  */
 package com.zhihu.matisse.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -26,18 +27,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.fragment.app.Fragment;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.Album;
@@ -57,8 +64,9 @@ import com.zhihu.matisse.internal.ui.widget.IncapableDialog;
 import com.zhihu.matisse.internal.utils.MediaStoreCompat;
 import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
-
 import com.zhihu.matisse.internal.utils.SingleMediaScanner;
+import com.zhihu.matisse.permission.PermissionUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -70,6 +78,9 @@ public class MatisseActivity extends AppCompatActivity implements
         MediaSelectionFragment.SelectionProvider, View.OnClickListener,
         AlbumMediaAdapter.CheckStateListener, AlbumMediaAdapter.OnMediaClickListener,
         AlbumMediaAdapter.OnPhotoCapture {
+
+    private static final String PERMISSION_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    private static final int REQUEST_CODE_PERMISSION = 100;
 
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
     public static final String EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path";
@@ -152,8 +163,70 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumsSpinner.setAdapter(mAlbumsAdapter);
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
+        loadAlbumsWithPermissionCheck();
+    }
+
+    // <editor-fold desc="permission check">
+    private void loadAlbumsWithPermissionCheck() {
+        if (checkPermission()) {
+            loadAlbums();
+        } else {
+            if (PermissionUtils.shouldShowRequestPermissionRationale(this, PERMISSION_EXTERNAL_STORAGE)) {
+                new AlertDialog.Builder(this)
+                        .setMessage("Storage permission was denied. Please consider granting it in order to access the photos!")
+                        .setPositiveButton("allow", (dialog, button) -> requestPermission())
+                        .setNegativeButton("deny", (dialog, button) -> showPermissionDenied())
+                        .show();
+            } else {
+                requestPermission();
+            }
+        }
+    }
+
+    private boolean checkPermission() {
+        return PermissionChecker.checkSelfPermission(this, PERMISSION_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{PERMISSION_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
+    }
+
+    private void showPermissionDenied() {
+        Toast.makeText(this, "Storage permission was denied. Please consider granting it in order to access the photos!", Toast.LENGTH_LONG).show();
+    }
+
+    private void showPermissionNeverAskAgain() {
+        new AlertDialog.Builder(this)
+                .setMessage("Open Settings, then tap Permissions and turn on Storage")
+                .setPositiveButton("Open Settings", ((dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                }))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> {})
+                .show();
+    }
+
+    private void loadAlbums() {
         mAlbumCollection.loadAlbums();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (PermissionUtils.verifyPermissions(grantResults)) {
+                loadAlbums();
+            } else {
+                if (!PermissionUtils.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    showPermissionNeverAskAgain();
+                } else {
+                    showPermissionDenied();
+                }
+            }
+        }
+    }
+    // </editor-fold>
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -239,7 +312,8 @@ public class MatisseActivity extends AppCompatActivity implements
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             new SingleMediaScanner(this.getApplicationContext(), path, new SingleMediaScanner.ScanListener() {
-                @Override public void onScanFinish() {
+                @Override
+                public void onScanFinish() {
                     Log.i("SingleMediaScanner", "scan finish!");
                 }
             });
@@ -433,5 +507,6 @@ public class MatisseActivity extends AppCompatActivity implements
             mMediaStoreCompat.dispatchCaptureIntent(this, REQUEST_CODE_CAPTURE);
         }
     }
+
 
 }
