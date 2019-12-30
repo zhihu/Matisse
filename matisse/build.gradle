@@ -44,8 +44,8 @@ dependencies {
 
     compileOnly 'com.github.bumptech.glide:glide:4.9.0'
     compileOnly 'com.squareup.picasso:picasso:2.5.2'
-    compileOnly 'io.coil-kt:coil:0.8.0'
-    compileOnly 'io.coil-kt:coil-gif:0.8.0'
+    compileOnly 'io.coil-kt:coil-base:0.9.1'
+    compileOnly 'io.coil-kt:coil-gif:0.9.1'
 }
 
 // jcenter configuration for novoda's bintray-release
