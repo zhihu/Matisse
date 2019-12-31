@@ -44,7 +44,7 @@ public class CoilEngine implements ImageEngine {
 
     public CoilEngine(@NonNull ImageLoader imageLoader) {
         checkIfSupportsGifs();
-        this.mImageLoader = imageLoader;
+        mImageLoader = imageLoader;
     }
 
     private void checkIfSupportsGifs() {
