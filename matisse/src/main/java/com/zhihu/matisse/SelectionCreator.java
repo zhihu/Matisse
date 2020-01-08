@@ -19,7 +19,6 @@ package com.zhihu.matisse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.provider.MediaStore;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -329,15 +328,7 @@ public final class SelectionCreator {
      * @return
      */
     public SelectionCreator albumOrder(String sortBy){
-        if (sortBy.equals("taken")){
-            mSelectionSpec.orderCondition = MediaStore.Images.Media.DATE_TAKEN + " DESC";
-        }else if (sortBy.equals("added")){
-            mSelectionSpec.orderCondition = MediaStore.Images.Media.DATE_ADDED + " DESC";
-        }else if (sortBy.equals("size")){
-            mSelectionSpec.orderCondition = MediaStore.Images.Media.SIZE + " DESC";
-        }else{
-            mSelectionSpec.orderCondition = MediaStore.Images.Media.DEFAULT_SORT_ORDER + " DESC";
-        }
+        mSelectionSpec.setOrderCondition(sortBy);
         return this;
     }
 

@@ -17,6 +17,7 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
+import android.provider.MediaStore;
 
 import androidx.annotation.StyleRes;
 
@@ -121,5 +122,17 @@ public final class SelectionSpec {
 
     private static final class InstanceHolder {
         private static final SelectionSpec INSTANCE = new SelectionSpec();
+    }
+
+    public void setOrderCondition(String condition){
+        if (condition.equals("taken")){
+            this.orderCondition = MediaStore.Images.Media.DATE_TAKEN + " DESC";
+        }else if (condition.equals("added")){
+            this.orderCondition = MediaStore.Images.Media.DATE_ADDED + " DESC";
+        }else if (condition.equals("size")){
+            this.orderCondition = MediaStore.Images.Media.SIZE + " DESC";
+        }else{
+            this.orderCondition = MediaStore.Images.Media.DEFAULT_SORT_ORDER + " DESC";
+        }
     }
 }
