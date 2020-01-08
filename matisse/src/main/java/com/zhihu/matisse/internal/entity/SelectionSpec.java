@@ -32,7 +32,10 @@ import com.zhihu.matisse.listener.OnSelectedListener;
 import java.util.List;
 import java.util.Set;
 
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DATE_TAKEN;
 import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DEFAULT;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_MEDIA_ADDED;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_SIZE;
 
 public final class SelectionSpec {
 
@@ -125,14 +128,17 @@ public final class SelectionSpec {
     }
 
     public void setOrderCondition(String condition){
-        if (condition.equals("taken")){
-            this.orderCondition = MediaStore.Images.Media.DATE_TAKEN + " DESC";
-        }else if (condition.equals("added")){
-            this.orderCondition = MediaStore.Images.Media.DATE_ADDED + " DESC";
-        }else if (condition.equals("size")){
-            this.orderCondition = MediaStore.Images.Media.SIZE + " DESC";
-        }else{
-            this.orderCondition = MediaStore.Images.Media.DEFAULT_SORT_ORDER + " DESC";
+        switch (condition){
+            case "default":
+                this.orderCondition = ORDER_BY_DEFAULT;
+            case "taken":
+                this.orderCondition = ORDER_BY_DATE_TAKEN;
+            case "added":
+                this.orderCondition = ORDER_BY_MEDIA_ADDED;
+            case "size":
+                this.orderCondition = ORDER_BY_SIZE;
+            default:
+                this.orderCondition = ORDER_BY_DEFAULT;
         }
     }
 }

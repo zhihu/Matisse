@@ -159,21 +159,17 @@ public class AlbumLoader extends CursorLoader {
         }
 
         switch (SelectionSpec.getInstance().orderCondition) {
-            case ORDER_BY_DEFAULT:{
+            case "default":
                 order = ORDER_BY_DEFAULT;
-            }
-            case ORDER_BY_DATE_TAKEN:{
+            case "taken":
                 order = ORDER_BY_DATE_TAKEN;
-            }
-            case ORDER_BY_MEDIA_ADDED:{
+            case "added":
                 order = ORDER_BY_MEDIA_ADDED;
-            }
-            case ORDER_BY_SIZE:{
+            case "size":
                 order = ORDER_BY_SIZE;
-            }
-            default:{
+            default:
                 order = ORDER_BY_DEFAULT;
-            }
+
         }
         return new AlbumLoader(context, selection, selectionArgs, order);
     }
