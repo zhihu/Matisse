@@ -17,7 +17,6 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
-import android.provider.MediaStore;
 
 import androidx.annotation.StyleRes;
 
@@ -127,8 +126,8 @@ public final class SelectionSpec {
         private static final SelectionSpec INSTANCE = new SelectionSpec();
     }
 
-    public void setOrderCondition(String condition){
-        switch (condition){
+    public void setOrderCondition(String condition) {
+        switch (condition) {
             case "default":
                 this.orderCondition = ORDER_BY_DEFAULT;
             case "taken":

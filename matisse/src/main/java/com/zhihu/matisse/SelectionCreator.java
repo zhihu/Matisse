@@ -164,7 +164,7 @@ public final class SelectionCreator {
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return  {@link SelectionCreator} for fluent API.
+     * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
         if (maxImageSelectable < 1 || maxVideoSelectable < 1)
@@ -217,6 +217,7 @@ public final class SelectionCreator {
 
     /**
      * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     *
      * @param enable
      * @return {@link SelectionCreator} for fluent API.
      */
@@ -327,7 +328,7 @@ public final class SelectionCreator {
      * @param sortBy
      * @return
      */
-    public SelectionCreator albumOrder(String sortBy){
+    public SelectionCreator albumOrder(String sortBy) {
         mSelectionSpec.setOrderCondition(sortBy);
         return this;
     }

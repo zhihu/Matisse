@@ -169,7 +169,6 @@ public class AlbumLoader extends CursorLoader {
                 order = ORDER_BY_SIZE;
             default:
                 order = ORDER_BY_DEFAULT;
-
         }
         return new AlbumLoader(context, selection, selectionArgs, order);
     }
