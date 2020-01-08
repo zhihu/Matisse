@@ -120,15 +120,18 @@ public class AlbumMediaLoader extends CursorLoader {
     }
     // ===============================================================
 
-    private static final String ORDER_BY = MediaStore.Images.Media.DATE_TAKEN + " DESC";
+    public static final String ORDER_BY_DEFAULT = MediaStore.Images.Media.DEFAULT_SORT_ORDER + " DESC";
+    public static final String ORDER_BY_DATE_TAKEN = MediaStore.Images.Media.DATE_TAKEN + " DESC";
+    public static final String ORDER_BY_MEDIA_ADDED = MediaStore.Images.Media.DATE_ADDED + " DESC";
+    public static final String ORDER_BY_SIZE = MediaStore.Images.Media.SIZE + " DESC";
     private final boolean mEnableCapture;
 
-    private AlbumMediaLoader(Context context, String selection, String[] selectionArgs, boolean capture) {
-        super(context, QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY);
+    private AlbumMediaLoader(Context context, String selection, String[] selectionArgs, boolean capture, String orderCondition) {
+        super(context, QUERY_URI, PROJECTION, selection, selectionArgs, orderCondition);
         mEnableCapture = capture;
     }
 
-    public static CursorLoader newInstance(Context context, Album album, boolean capture) {
+    public static CursorLoader newInstance(Context context, Album album, boolean capture, String orderCondition) {
         String selection;
         String[] selectionArgs;
         boolean enableCapture;
@@ -176,7 +179,7 @@ public class AlbumMediaLoader extends CursorLoader {
             }
             enableCapture = false;
         }
-        return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture);
+        return new AlbumMediaLoader(context, selection, selectionArgs, enableCapture, orderCondition);
     }
 
     @Override

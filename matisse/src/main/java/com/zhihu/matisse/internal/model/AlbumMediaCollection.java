@@ -30,10 +30,13 @@ import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 
 import java.lang.ref.WeakReference;
 
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DEFAULT;
+
 public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_ID = 2;
     private static final String ARGS_ALBUM = "args_album";
     private static final String ARGS_ENABLE_CAPTURE = "args_enable_capture";
+    private static final String ARGS_SORT_ORDER = "args_album_sort_order";
     private WeakReference<Context> mContext;
     private LoaderManager mLoaderManager;
     private AlbumMediaCallbacks mCallbacks;
@@ -51,7 +54,7 @@ public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Curso
         }
 
         return AlbumMediaLoader.newInstance(context, album,
-                album.isAll() && args.getBoolean(ARGS_ENABLE_CAPTURE, false));
+                album.isAll() && args.getBoolean(ARGS_ENABLE_CAPTURE, false), args.getString(ARGS_SORT_ORDER));
     }
 
     @Override
@@ -88,13 +91,14 @@ public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Curso
     }
 
     public void load(@Nullable Album target) {
-        load(target, false);
+        load(target, false, ORDER_BY_DEFAULT);
     }
 
-    public void load(@Nullable Album target, boolean enableCapture) {
+    public void load(@Nullable Album target, boolean enableCapture, String order) {
         Bundle args = new Bundle();
         args.putParcelable(ARGS_ALBUM, target);
         args.putBoolean(ARGS_ENABLE_CAPTURE, enableCapture);
+        args.putString(ARGS_SORT_ORDER, order);
         mLoaderManager.initLoader(LOADER_ID, args, this);
     }
 
