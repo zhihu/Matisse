@@ -36,6 +36,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DATE_TAKEN;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DEFAULT;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_MEDIA_ADDED;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_SIZE;
+
 /**
  * Load all albums (grouped by bucket_id) into a single cursor.
  */
@@ -118,20 +123,21 @@ public class AlbumLoader extends CursorLoader {
 
     private static final String BUCKET_ORDER_BY = "datetaken DESC";
 
-    private AlbumLoader(Context context, String selection, String[] selectionArgs) {
+    private AlbumLoader(Context context, String selection, String[] selectionArgs, String orderBy) {
         super(
                 context,
                 QUERY_URI,
                 beforeAndroidTen() ? PROJECTION : PROJECTION_29,
                 selection,
                 selectionArgs,
-                BUCKET_ORDER_BY
+                orderBy
         );
     }
 
     public static CursorLoader newInstance(Context context) {
         String selection;
         String[] selectionArgs;
+        String order;
         if (SelectionSpec.getInstance().onlyShowGif()) {
             selection = beforeAndroidTen()
                     ? SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE : SELECTION_FOR_SINGLE_MEDIA_GIF_TYPE_29;
@@ -151,7 +157,20 @@ public class AlbumLoader extends CursorLoader {
             selection = beforeAndroidTen() ? SELECTION : SELECTION_29;
             selectionArgs = SELECTION_ARGS;
         }
-        return new AlbumLoader(context, selection, selectionArgs);
+
+        switch (SelectionSpec.getInstance().orderCondition) {
+            case "default":
+                order = ORDER_BY_DEFAULT;
+            case "taken":
+                order = ORDER_BY_DATE_TAKEN;
+            case "added":
+                order = ORDER_BY_MEDIA_ADDED;
+            case "size":
+                order = ORDER_BY_SIZE;
+            default:
+                order = ORDER_BY_DEFAULT;
+        }
+        return new AlbumLoader(context, selection, selectionArgs, order);
     }
 
     @Override

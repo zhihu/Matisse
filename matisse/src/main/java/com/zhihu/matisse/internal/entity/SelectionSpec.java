@@ -31,11 +31,17 @@ import com.zhihu.matisse.listener.OnSelectedListener;
 import java.util.List;
 import java.util.Set;
 
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DATE_TAKEN;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_DEFAULT;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_MEDIA_ADDED;
+import static com.zhihu.matisse.internal.loader.AlbumMediaLoader.ORDER_BY_SIZE;
+
 public final class SelectionSpec {
 
     public Set<MimeType> mimeTypeSet;
     public boolean mediaTypeExclusive;
     public boolean showSingleMediaType;
+    public String orderCondition;
     @StyleRes
     public int themeId;
     public int orientation;
@@ -93,6 +99,7 @@ public final class SelectionSpec {
         autoHideToobar = false;
         originalMaxSize = Integer.MAX_VALUE;
         showPreview = true;
+        orderCondition = ORDER_BY_DEFAULT;
     }
 
     public boolean singleSelectionModeEnabled() {
@@ -117,5 +124,20 @@ public final class SelectionSpec {
 
     private static final class InstanceHolder {
         private static final SelectionSpec INSTANCE = new SelectionSpec();
+    }
+
+    public void setOrderCondition(String condition) {
+        switch (condition) {
+            case "default":
+                this.orderCondition = ORDER_BY_DEFAULT;
+            case "taken":
+                this.orderCondition = ORDER_BY_DATE_TAKEN;
+            case "added":
+                this.orderCondition = ORDER_BY_MEDIA_ADDED;
+            case "size":
+                this.orderCondition = ORDER_BY_SIZE;
+            default:
+                this.orderCondition = ORDER_BY_DEFAULT;
+        }
     }
 }

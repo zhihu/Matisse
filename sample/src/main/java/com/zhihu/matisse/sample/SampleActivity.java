@@ -104,6 +104,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .setOnCheckedListener(isChecked -> {
                             Log.e("isChecked", "onCheck: isChecked=" + isChecked);
                         })
+                        .albumOrder("added")
                         .forResult(REQUEST_CODE_CHOOSE);
                 break;
             case R.id.dracula:

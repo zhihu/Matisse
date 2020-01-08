@@ -19,6 +19,7 @@ package com.zhihu.matisse;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -163,7 +164,7 @@ public final class SelectionCreator {
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return  {@link SelectionCreator} for fluent API.
+     * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
         if (maxImageSelectable < 1 || maxVideoSelectable < 1)
@@ -216,6 +217,7 @@ public final class SelectionCreator {
 
     /**
      * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     *
      * @param enable
      * @return {@link SelectionCreator} for fluent API.
      */
@@ -314,6 +316,20 @@ public final class SelectionCreator {
      */
     public SelectionCreator imageEngine(ImageEngine imageEngine) {
         mSelectionSpec.imageEngine = imageEngine;
+        return this;
+    }
+
+    /***
+     * Set a Album sort order
+     * taken : Sort by date taken
+     * added : Sort by date added
+     * size : Sort by file size
+     * default value : Sort by album default order
+     * @param sortBy
+     * @return
+     */
+    public SelectionCreator albumOrder(String sortBy) {
+        mSelectionSpec.setOrderCondition(sortBy);
         return this;
     }
 
