@@ -335,7 +335,7 @@ public final class SelectionCreator {
     /**
      * Set listener for callback immediately when user check or uncheck original.
      *
-     * @param listener {@link OnSelectedListener}
+     * @param listener {@link OnCheckedListener}
      * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator setOnCheckedListener(@Nullable OnCheckedListener listener) {
