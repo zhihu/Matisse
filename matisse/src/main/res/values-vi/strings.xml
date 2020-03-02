@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_over_original_size">Không thể chọn hình ảnh lớn hơn %1$d MB</string>
+    <string name="album_name_all">Tất cả</string>
+    <string name="button_apply">Áp dụng(%1$d)</string>
+    <string name="button_apply_default">Áp dụng</string>
+    <string name="button_back">Về</string>
+    <string name="button_ok">Đồng ý</string>
+    <string name="button_original">Bản gốc</string>
+    <string name="button_preview">Xem trước</string>
+    <string name="button_sure">Đồng ý(%1$d)</string>
+    <string name="button_sure_default">Đồng ý</string>
+    <string name="empty_text">Chưa có dữ liệu</string>
+    <string name="error_file_type">Không hỗ trợ loại tệp này</string>
+    <string name="error_no_video_activity">Không tìm thấy ứng dụng nào hỗ trợ xem trước video</string>
+    <string name="error_over_count">Bạn chỉ có thể chọn tối đa %1$d tệp</string>
+    <string name="error_over_count_default">Bạn đã đạt đến mức tối đa có thể lựa chọn</string>
+    <string name="error_over_original_count">%1$d hình ảnh trên %2$d MB. Bản gốc sẽ được bỏ chọn</string>
+    <string name="error_over_quality">Chất lượng quá cao</string>
+    <string name="error_type_conflict">Không thể chọn hình ảnh và video cùng một lúc</string>
+    <string name="error_under_quality">Chất lượng thấp</string>
+    <string name="photo_grid_capture">Camera</string>
+</resources>

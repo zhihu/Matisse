@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Zhihu Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +14,56 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/white"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:orientation="vertical">
+
+        <Button
+            android:id="@+id/zhihu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/item_margin_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="@dimen/item_margin_horizontal"
+            android:minHeight="56dp"
+            android:text="Zhihu"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:theme="@style/ZhihuOverlay" />
+
+        <Button
+            android:id="@+id/dracula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/item_margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="@dimen/item_margin_horizontal"
+            android:minHeight="56dp"
+            android:text="Dracula"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:theme="@style/DraculaOverlay" />
+
+        <Button
+            android:id="@+id/only_gif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/item_margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="@dimen/item_margin_horizontal"
+            android:layout_marginBottom="32dp"
+            android:minHeight="56dp"
+            android:text="OnlyGif"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:theme="@style/ZhihuOverlay" />
 
         <TextView
             android:layout_width="match_parent"
@@ -33,46 +72,19 @@
             android:paddingLeft="@dimen/item_margin_horizontal"
             android:text="@string/app_name"
             android:textColor="@android:color/black"
-            android:textSize="22sp"/>
-
-        <Button
-            android:id="@+id/zhihu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/item_margin_horizontal"
-            android:layout_marginRight="@dimen/item_margin_horizontal"
-            android:layout_marginTop="8dp"
-            android:minHeight="56dp"
-            android:text="Zhihu"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:theme="@style/ZhihuOverlay"/>
-
-        <Button
-            android:id="@+id/dracula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="@dimen/item_margin_horizontal"
-            android:layout_marginRight="@dimen/item_margin_horizontal"
-            android:layout_marginTop="16dp"
-            android:minHeight="56dp"
-            android:text="Dracula"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:theme="@style/DraculaOverlay"/>
+            android:textSize="22sp" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/list_bg"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

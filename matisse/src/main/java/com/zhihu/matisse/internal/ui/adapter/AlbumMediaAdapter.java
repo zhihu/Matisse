@@ -20,8 +20,8 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,13 +159,21 @@ public class AlbumMediaAdapter extends
 
     @Override
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
-        if (mOnMediaClickListener != null) {
-            mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+        if (mSelectionSpec.showPreview) {
+            if (mOnMediaClickListener != null) {
+                mOnMediaClickListener.onMediaClick(null, item, holder.getAdapterPosition());
+            }
+        } else {
+            updateSelectedItem(item, holder);
         }
     }
 
     @Override
     public void onCheckViewClicked(CheckView checkView, Item item, RecyclerView.ViewHolder holder) {
+        updateSelectedItem(item, holder);
+    }
+
+    private void updateSelectedItem(Item item, RecyclerView.ViewHolder holder) {
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum == CheckView.UNCHECKED) {
