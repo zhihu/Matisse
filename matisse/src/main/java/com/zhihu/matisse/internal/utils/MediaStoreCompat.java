@@ -84,7 +84,7 @@ public class MediaStoreCompat {
 
             if (photoFile != null) {
                 mCurrentPhotoPath = photoFile.getAbsolutePath();
-                if (mCaptureStrategy.isPublic && Platform.hasAndroidQ()){
+                if (mCaptureStrategy.isPublic && Platform.hasAndroidQ()) {
                     mCurrentPhotoUri = createImageUri();
                 } else {
                     mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
