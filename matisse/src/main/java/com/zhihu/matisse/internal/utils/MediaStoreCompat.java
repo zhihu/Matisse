@@ -16,6 +16,7 @@
 package com.zhihu.matisse.internal.utils;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -83,8 +84,12 @@ public class MediaStoreCompat {
 
             if (photoFile != null) {
                 mCurrentPhotoPath = photoFile.getAbsolutePath();
-                mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
-                        mCaptureStrategy.authority, photoFile);
+                if (mCaptureStrategy.isPublic && Platform.hasAndroidQ()){
+                    mCurrentPhotoUri = createImageUri();
+                } else {
+                    mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
+                            mCaptureStrategy.authority, photoFile);
+                }
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -133,6 +138,12 @@ public class MediaStoreCompat {
         }
 
         return tempFile;
+    }
+
+    private Uri createImageUri() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DATA, mCurrentPhotoPath);
+        return mContext.get().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     public Uri getCurrentPhotoUri() {
