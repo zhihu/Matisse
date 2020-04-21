@@ -13,4 +13,8 @@ public class Platform {
     public static boolean hasKitKat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
+
+    public static boolean hasAndroidQ() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
 }

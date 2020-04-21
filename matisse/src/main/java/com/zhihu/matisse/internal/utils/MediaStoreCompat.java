@@ -15,7 +15,9 @@
  */
 package com.zhihu.matisse.internal.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -74,17 +76,25 @@ public class MediaStoreCompat {
     public void dispatchCaptureIntent(Context context, int requestCode) {
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (captureIntent.resolveActivity(context.getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if (mCaptureStrategy.isPublic && Platform.hasAndroidQ()) {
+                mCurrentPhotoUri = createImageUri();
+                if (mCurrentPhotoUri != null)
+                    mCurrentPhotoPath = PathUtils.getPath(mContext.get(), mCurrentPhotoUri);
+            } else {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            if (photoFile != null) {
-                mCurrentPhotoPath = photoFile.getAbsolutePath();
-                mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
-                        mCaptureStrategy.authority, photoFile);
+                if (photoFile != null) {
+                    mCurrentPhotoPath = photoFile.getAbsolutePath();
+                    mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
+                            mCaptureStrategy.authority, photoFile);
+                }
+            }
+            if (mCurrentPhotoUri != null) {
                 captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
                 captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -133,6 +143,21 @@ public class MediaStoreCompat {
         }
 
         return tempFile;
+    }
+
+    @TargetApi(Build.VERSION_CODES.Q)
+    private Uri createImageUri() {
+        String relativePath = Environment.DIRECTORY_PICTURES;
+        if (mCaptureStrategy.directory != null) {
+            relativePath += File.separator + mCaptureStrategy.directory;
+        }
+        String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = String.format("JPEG_%s.jpg", timeStamp);
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, imageFileName);
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath);
+        return mContext.get().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     public Uri getCurrentPhotoUri() {
