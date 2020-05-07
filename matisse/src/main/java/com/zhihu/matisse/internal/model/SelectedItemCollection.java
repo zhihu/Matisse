@@ -240,6 +240,10 @@ public class SelectedItemCollection {
      * while {@link SelectionSpec#mediaTypeExclusive} is set to false.
      */
     public boolean typeConflict(Item item) {
+        if(SelectionSpec.getInstance().mixedSelection){
+            return false;
+        }
+
         return SelectionSpec.getInstance().mediaTypeExclusive
                 && ((item.isImage() && (mCollectionType == COLLECTION_VIDEO || mCollectionType == COLLECTION_MIXED))
                 || (item.isVideo() && (mCollectionType == COLLECTION_IMAGE || mCollectionType == COLLECTION_MIXED)));
