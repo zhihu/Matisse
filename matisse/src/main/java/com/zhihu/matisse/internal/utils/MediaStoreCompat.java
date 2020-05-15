@@ -16,6 +16,7 @@
 package com.zhihu.matisse.internal.utils;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -74,34 +75,50 @@ public class MediaStoreCompat {
     public void dispatchCaptureIntent(Context context, int requestCode) {
         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (captureIntent.resolveActivity(context.getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            if (photoFile != null) {
-                mCurrentPhotoPath = photoFile.getAbsolutePath();
-                mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
-                        mCaptureStrategy.authority, photoFile);
-                captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
-                captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    List<ResolveInfo> resInfoList = context.getPackageManager()
-                            .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                    for (ResolveInfo resolveInfo : resInfoList) {
-                        String packageName = resolveInfo.activityInfo.packageName;
-                        context.grantUriPermission(packageName, mCurrentPhotoUri,
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    }
+            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                //Android 10创建uri的方式和使用uri加载图片的方式在10以下的手机是同样适用的
+                mCurrentPhotoUri = createImageUri(context);
+            } else {//<Q
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                if (mFragment != null) {
-                    mFragment.get().startActivityForResult(captureIntent, requestCode);
-                } else {
-                    mContext.get().startActivityForResult(captureIntent, requestCode);
+                if (photoFile != null) {
+                    mCurrentPhotoPath = photoFile.getAbsolutePath();
+                    mCurrentPhotoUri = FileProvider.getUriForFile(mContext.get(),
+                            mCaptureStrategy.authority, photoFile);
+
                 }
             }
+            captureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoUri);
+            captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                List<ResolveInfo> resInfoList = context.getPackageManager()
+                        .queryIntentActivities(captureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    context.grantUriPermission(packageName, mCurrentPhotoUri,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+            }
+            if (mFragment != null) {
+                mFragment.get().startActivityForResult(captureIntent, requestCode);
+            } else {
+                mContext.get().startActivityForResult(captureIntent, requestCode);
+            }
+        }
+    }
+
+    /**create photo uri in Android 10 */
+    private Uri createImageUri(Context context) {
+        String status = Environment.getExternalStorageState();
+        if (status.equals(Environment.MEDIA_MOUNTED)) {
+            return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        } else {
+            return context.getContentResolver().insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, new ContentValues());
         }
     }
 
