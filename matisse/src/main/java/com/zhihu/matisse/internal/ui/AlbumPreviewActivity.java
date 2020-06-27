@@ -72,11 +72,7 @@ public class AlbumPreviewActivity extends BasePreviewActivity implements
             items.add(Item.valueOf(cursor));
         }
 //        cursor.close();
-
-        if (items.isEmpty()) {
-            return;
-        }
-
+        if (items.isEmpty()) { return; }
         PreviewPagerAdapter adapter = (PreviewPagerAdapter) mPager.getAdapter();
         adapter.addAll(items);
         adapter.notifyDataSetChanged();
