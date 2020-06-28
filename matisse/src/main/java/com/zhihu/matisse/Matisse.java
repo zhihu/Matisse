@@ -18,8 +18,9 @@ package com.zhihu.matisse;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.zhihu.matisse.ui.MatisseActivity;
 
@@ -51,7 +52,7 @@ public final class Matisse {
     /**
      * Start Matisse from an Activity.
      * <p>
-     * This Activity's {@link Activity#onActivityResult(int, int, Intent)} will be called when user
+     * This Activity's  will be called when user
      * finishes selecting.
      *
      * @param activity Activity instance.
@@ -77,7 +78,7 @@ public final class Matisse {
     /**
      * Obtain user selected media' {@link Uri} list in the starting Activity or Fragment.
      *
-     * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
+     * @param data Intent passed by  or
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
      * @return User selected media' {@link Uri} list.
      */
@@ -88,7 +89,7 @@ public final class Matisse {
     /**
      * Obtain user selected media path list in the starting Activity or Fragment.
      *
-     * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
+     * @param data Intent passed by  or
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
      * @return User selected media path list.
      */
@@ -99,7 +100,7 @@ public final class Matisse {
     /**
      * Obtain state whether user decide to use selected media in original
      *
-     * @param data Intent passed by {@link Activity#onActivityResult(int, int, Intent)} or
+     * @param data Intent passed by  or
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
      * @return Whether use original photo
      */

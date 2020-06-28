@@ -39,4 +39,10 @@
     <string name="button_original">Original</string>
     <string name="button_sure_default">Sure</string>
     <string name="button_sure">Sure(%1$d)</string>
+    <plurals name="error_over_count">
+        <item quantity="one">Можливо обрати не більше %1$d файла</item>
+        <item quantity="few">Можливо обрати не більше %1$d файлів</item>
+        <item quantity="many">Можливо обрати не більше %1$d файлів</item>
+        <item quantity="other">Можливо обрати не більше %1$d файлів</item>
+    </plurals>
 </resources>

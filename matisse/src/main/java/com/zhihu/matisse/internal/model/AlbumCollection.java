@@ -19,9 +19,10 @@ package com.zhihu.matisse.internal.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.zhihu.matisse.internal.loader.AlbumLoader;
 
@@ -49,10 +50,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Context context = mContext.get();
-        if (context == null) {
-            return;
-        }
-
+        if (context == null) { return; }
         if (!mLoadFinished) {
             mLoadFinished = true;
             mCallbacks.onAlbumLoad(data);
@@ -65,13 +63,12 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
         if (context == null) {
             return;
         }
-
         mCallbacks.onAlbumReset();
     }
 
     public void onCreate(FragmentActivity activity, AlbumCallbacks callbacks) {
         mContext = new WeakReference<Context>(activity);
-        mLoaderManager = activity.getSupportLoaderManager();
+        mLoaderManager =  LoaderManager.getInstance(activity);
         mCallbacks = callbacks;
     }
 
