@@ -344,6 +344,17 @@ public final class SelectionCreator {
     }
 
     /**
+     * Set if selection should change on case where maxSelectable is 1
+     * 
+     * @param changeSelectionOnSelectingOne
+     * @return {@link SelectionCreator} for fluent API. 
+     */
+    public SelectionCreator setChangeSelectionOnSelectingOne(boolean changeSelectionOnSelectingOne) {
+        mSelectionSpec.changeSelectionOnSelectingOne = changeSelectionOnSelectingOne;
+        return this;
+    }
+
+    /**
      * Start to select media and wait for result.
      *
      * @param requestCode Identity of the request Activity or Fragment.
