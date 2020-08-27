@@ -19,6 +19,7 @@ package com.zhihu.matisse.internal.model;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
@@ -70,8 +71,8 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     public void onCreate(FragmentActivity activity, AlbumCallbacks callbacks) {
-        mContext = new WeakReference<Context>(activity);
-        mLoaderManager = activity.getSupportLoaderManager();
+        mContext = new WeakReference<>(activity);
+        mLoaderManager = LoaderManager.getInstance(activity);
         mCallbacks = callbacks;
     }
 
