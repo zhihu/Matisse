@@ -158,11 +158,11 @@ public class AlbumLoader extends CursorLoader {
     public Cursor loadInBackground() {
         Cursor albums = super.loadInBackground();
         MatrixCursor allAlbum = new MatrixCursor(COLUMNS);
+        MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
+        int totalCount = 0;
+        Uri allAlbumCoverUri = null;
 
         if (beforeAndroidTen()) {
-            int totalCount = 0;
-            Uri allAlbumCoverUri = null;
-            MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
             if (albums != null) {
                 while (albums.moveToNext()) {
                     long fileId = albums.getLong(
@@ -192,17 +192,17 @@ public class AlbumLoader extends CursorLoader {
                     allAlbumCoverUri == null ? null : allAlbumCoverUri.toString(),
                     String.valueOf(totalCount)});
 
-            return new MergeCursor(new Cursor[]{allAlbum, otherAlbums});
         } else {
-            int totalCount = 0;
-            Uri allAlbumCoverUri = null;
-
             // Pseudo GROUP BY
             Map<Long, Long> countMap = new HashMap<>();
             if (albums != null) {
+                int idColumnIndex = albums.getColumnIndex(MediaStore.Files.FileColumns._ID);
+                int bucketIdColumnIndex = albums.getColumnIndex(COLUMN_BUCKET_ID);
+                int nameColumnIndex = albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME);
+                int typeColumnIndex = albums.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE);
                 while (albums.moveToNext()) {
-                    long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
-
+                    //获取各相册图片数量
+                    long bucketId = albums.getLong(bucketIdColumnIndex);
                     Long count = countMap.get(bucketId);
                     if (count == null) {
                         count = 1L;
@@ -210,54 +210,37 @@ public class AlbumLoader extends CursorLoader {
                         count++;
                     }
                     countMap.put(bucketId, count);
-                }
-            }
 
-            MatrixCursor otherAlbums = new MatrixCursor(COLUMNS);
-            if (albums != null) {
-                if (albums.moveToFirst()) {
+                    //获取各文件夹相册cursor数据
                     allAlbumCoverUri = getUri(albums);
-
                     Set<Long> done = new HashSet<>();
+                    if (done.contains(bucketId)) {
+                        continue;
+                    }
 
-                    do {
-                        long bucketId = albums.getLong(albums.getColumnIndex(COLUMN_BUCKET_ID));
+                    long fileId = albums.getLong(idColumnIndex);
+                    String bucketDisplayName = albums.getString(nameColumnIndex);
+                    String mimeType = albums.getString(typeColumnIndex);
+                    Uri uri = getUri(albums);
+                    otherAlbums.addRow(new String[]{
+                            Long.toString(fileId),
+                            Long.toString(bucketId),
+                            bucketDisplayName,
+                            mimeType,
+                            uri.toString(),
+                            String.valueOf(count)});
+                    done.add(bucketId);
 
-                        if (done.contains(bucketId)) {
-                            continue;
-                        }
-
-                        long fileId = albums.getLong(
-                                albums.getColumnIndex(MediaStore.Files.FileColumns._ID));
-                        String bucketDisplayName = albums.getString(
-                                albums.getColumnIndex(COLUMN_BUCKET_DISPLAY_NAME));
-                        String mimeType = albums.getString(
-                                albums.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
-                        Uri uri = getUri(albums);
-                        long count = countMap.get(bucketId);
-
-                        otherAlbums.addRow(new String[]{
-                                Long.toString(fileId),
-                                Long.toString(bucketId),
-                                bucketDisplayName,
-                                mimeType,
-                                uri.toString(),
-                                String.valueOf(count)});
-                        done.add(bucketId);
-
-                        totalCount += count;
-                    } while (albums.moveToNext());
+                    totalCount += count;
                 }
+                allAlbum.addRow(new String[]{
+                        Album.ALBUM_ID_ALL,
+                        Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, null,
+                        allAlbumCoverUri == null ? null : allAlbumCoverUri.toString(),
+                        String.valueOf(totalCount)});
             }
-
-            allAlbum.addRow(new String[]{
-                    Album.ALBUM_ID_ALL,
-                    Album.ALBUM_ID_ALL, Album.ALBUM_NAME_ALL, null,
-                    allAlbumCoverUri == null ? null : allAlbumCoverUri.toString(),
-                    String.valueOf(totalCount)});
-
-            return new MergeCursor(new Cursor[]{allAlbum, otherAlbums});
         }
+        return new MergeCursor(new Cursor[]{allAlbum, otherAlbums});
     }
 
     private static Uri getUri(Cursor cursor) {
