@@ -19,10 +19,9 @@ package com.zhihu.matisse;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import androidx.collection.ArraySet;
-
-import android.webkit.MimeTypeMap;
 
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
@@ -57,6 +56,12 @@ public enum MimeType {
     )),
     WEBP("image/webp", arraySetOf(
             "webp"
+    )),
+    HEIC("image/heic", arraySetOf(
+            "heic"
+    )),
+    HEIF("image/heif", arraySetOf(
+            "heif"
     )),
 
     // ============== videos ==============
@@ -109,7 +114,7 @@ public enum MimeType {
     }
 
     public static Set<MimeType> ofImage() {
-        return EnumSet.of(JPEG, PNG, GIF, BMP, WEBP);
+        return EnumSet.of(JPEG, PNG, GIF, BMP, WEBP, HEIC, HEIF);
     }
 
     public static Set<MimeType> ofImage(boolean onlyGif) {
