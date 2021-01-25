@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album_name_all">Tous les médias</string>
+    <string name="button_apply">Choisir (%1$d)</string>
+    <string name="button_apply_default">Choisir</string>
+    <string name="button_back">Retour</string>
+    <string name="button_ok">Ok</string>
+    <string name="button_original">Original</string>
+    <string name="button_preview">Aperçu</string>
+    <string name="button_sure">Sûr (%1$d)</string>
+    <string name="button_sure_default">Sûr</string>
+    <string name="empty_text">Aucun média pour le moment</string>
+    <string name="error_file_type">Type de média non supporté</string>
+    <string name="error_no_video_activity">Aucune application trouvée supportant l\'aperçu vidéo</string>
+    <string name="error_over_count">Vous pouvez seulement sélectionner %1$d médias</string>
+    <string name="error_over_count_default">Vous avez atteint la limite de sélection</string>
+    <string name="error_over_original_count">%1$d images au dessus de %2$d MB. Les originaux seront décochés</string>
+    <string name="error_over_original_size">Vous ne pouvez pas sélectionner des images plus grosse que %1$d MB</string>
+    <string name="error_over_quality">Qualité trop élevée</string>
+    <string name="error_type_conflict">Vous ne pouvez pas sélectionner des images et des vidéos en même temps</string>
+    <string name="error_under_quality">Mauvaise qualité</string>
+    <string name="photo_grid_capture">Appareil photo</string>
+</resources>
