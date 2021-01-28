@@ -39,7 +39,9 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.internal.entity.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SampleActivity extends AppCompatActivity implements View.OnClickListener {
@@ -104,7 +106,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                         .setOnCheckedListener(isChecked -> {
                             Log.e("isChecked", "onCheck: isChecked=" + isChecked);
                         })
-                        .forResult(REQUEST_CODE_CHOOSE);
+                        .forResult(REQUEST_CODE_CHOOSE,selections);
                 break;
             case R.id.dracula:
                 Matisse.from(SampleActivity.this)
@@ -141,11 +143,15 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         mAdapter.setData(null, null);
     }
 
+    private ArrayList<Item> selections = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
+            selections.clear();
+            selections.addAll(Matisse.obtainListResult(data));
             Log.e("OnActivityResult ", String.valueOf(Matisse.obtainOriginalState(data)));
         }
     }
