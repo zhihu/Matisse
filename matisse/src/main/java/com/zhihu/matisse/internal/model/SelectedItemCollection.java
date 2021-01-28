@@ -76,6 +76,10 @@ public class SelectedItemCollection {
         mItems.addAll(uris);
     }
 
+    public void addSelections(List<Item> uris) {
+        mItems.addAll(uris);
+    }
+
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(STATE_SELECTION, new ArrayList<>(mItems));
         outState.putInt(STATE_COLLECTION_TYPE, mCollectionType);
@@ -139,6 +143,10 @@ public class SelectedItemCollection {
 
 
     public List<Item> asList() {
+        return new ArrayList<>(mItems);
+    }
+
+    public ArrayList<Item> asArrayList() {
         return new ArrayList<>(mItems);
     }
 
