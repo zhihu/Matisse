@@ -2,6 +2,7 @@
 
 # Matisse
 [![Build Status](https://travis-ci.org/zhihu/Matisse.svg)](https://travis-ci.org/zhihu/Matisse) [ ![Download](https://api.bintray.com/packages/zhihu/maven/matisse/images/download.svg) ](https://bintray.com/zhihu/maven/matisse/_latestVersion)
+[![Maintainability](https://cloud.quality-gate.com/dashboard/api/badge?projectName=zhihu_Matisse&branchName=master)](https://cloud.quality-gate.com/dashboard/branches/26395#overview)
 
 Matisse is a well-designed local image and video selector for Android. You can  
 - Use it in Activity or Fragment
