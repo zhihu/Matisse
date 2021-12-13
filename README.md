@@ -34,13 +34,13 @@ Check out [Matisse releases](https://github.com/zhihu/Matisse/releases) to see m
 If you use [Glide](https://github.com/bumptech/glide) as your image engine, add rules as Glide's README says.  
 And add extra rule:
 ```pro
--dontwarn com.squareup.picasso.**
+-dontwarn com.bumptech.glide.**
 ```
 
 If you use [Picasso](https://github.com/square/picasso) as your image engine, add rules as Picasso's README says.  
 And add extra rule:
 ```pro
--dontwarn com.bumptech.glide.**
+-dontwarn com.squareup.picasso.**
 ```
 **Attention**: The above progurad rules are correct.
 
@@ -117,5 +117,3 @@ This library is inspired by [Laevatein](https://github.com/nohana/Laevatein) and
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
