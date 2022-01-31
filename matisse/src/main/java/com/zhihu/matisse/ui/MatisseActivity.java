@@ -59,6 +59,8 @@ import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import com.zhihu.matisse.internal.utils.SingleMediaScanner;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -92,6 +94,8 @@ public class MatisseActivity extends AppCompatActivity implements
     private LinearLayout mOriginalLayout;
     private CheckRadioView mOriginal;
     private boolean mOriginalEnable;
+
+    private WeakReference<Fragment> fragmentRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -393,7 +397,17 @@ public class MatisseActivity extends AppCompatActivity implements
         } else {
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
+
+            if (fragmentRef != null && fragmentRef.get() != null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(fragmentRef.get())
+                        .commitAllowingStateLoss();
+            }
+
             Fragment fragment = MediaSelectionFragment.newInstance(album);
+            fragmentRef = new WeakReference<>(fragment);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
