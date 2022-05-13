@@ -27,12 +27,12 @@
 
     <string name="error_over_count_default">您已經達到最大選擇數量</string>
     <string name="error_over_count">最多只能選擇 %1$d 個文件</string>
-    <string name="error_under_quality">圖片質量太低</string>
-    <string name="error_over_quality">圖片質量太高</string>
+    <string name="error_under_quality">圖片畫質太低</string>
+    <string name="error_over_quality">圖片畫質太高</string>
     <string name="error_file_type">不支援的文件類型</string>
     <string name="error_type_conflict">不能同時選擇圖片和影片</string>
     <string name="error_no_video_activity">沒有支持影片預覽的應用程式</string>
     <string name="button_original">原圖</string>
-    <string name="button_sure_default">确定</string>
-    <string name="button_sure">确定(%1$d)</string>
+    <string name="button_sure_default">確定</string>
+    <string name="button_sure">確定(%1$d)</string>
 </resources>
