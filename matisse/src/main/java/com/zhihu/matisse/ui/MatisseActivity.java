@@ -386,6 +386,8 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumsAdapter.swapCursor(null);
     }
 
+    private Fragment fragment;
+
     private void onAlbumSelected(Album album) {
         if (album.isAll() && album.isEmpty()) {
             mContainer.setVisibility(View.GONE);
@@ -393,10 +395,16 @@ public class MatisseActivity extends AppCompatActivity implements
         } else {
             mContainer.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
-            Fragment fragment = MediaSelectionFragment.newInstance(album);
+            if (fragment != null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(fragment)
+                        .commitAllowingStateLoss();
+            }
+            fragment = MediaSelectionFragment.newInstance(album);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
+                    .add(R.id.container, fragment, MediaSelectionFragment.class.getSimpleName())
                     .commitAllowingStateLoss();
         }
     }
