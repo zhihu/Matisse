@@ -19,15 +19,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.zhihu.matisse.R;
 import com.zhihu.matisse.internal.entity.IncapableCause;
@@ -43,7 +44,7 @@ import com.zhihu.matisse.internal.utils.Platform;
 import com.zhihu.matisse.listener.OnFragmentInteractionListener;
 
 public abstract class BasePreviewActivity extends AppCompatActivity implements View.OnClickListener,
-        ViewPager.OnPageChangeListener, OnFragmentInteractionListener {
+        OnFragmentInteractionListener {
 
     public static final String EXTRA_DEFAULT_BUNDLE = "extra_default_bundle";
     public static final String EXTRA_RESULT_BUNDLE = "extra_result_bundle";
@@ -53,7 +54,7 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
 
     protected final SelectedItemCollection mSelectedCollection = new SelectedItemCollection(this);
     protected SelectionSpec mSpec;
-    protected ViewPager mPager;
+    protected ViewPager2 mPager;
 
     protected PreviewPagerAdapter mAdapter;
 
@@ -104,9 +105,37 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         mButtonBack.setOnClickListener(this);
         mButtonApply.setOnClickListener(this);
 
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.addOnPageChangeListener(this);
-        mAdapter = new PreviewPagerAdapter(getSupportFragmentManager(), null);
+        mPager = findViewById(R.id.pager);
+        mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                PreviewPagerAdapter adapter = (PreviewPagerAdapter) mPager.getAdapter();
+                if (mPreviousPos != -1 && mPreviousPos != position) {
+
+                    Item item = adapter.getMediaItem(position);
+                    if (mSpec.countable) {
+                        int checkedNum = mSelectedCollection.checkedNumOf(item);
+                        mCheckView.setCheckedNum(checkedNum);
+                        if (checkedNum > 0) {
+                            mCheckView.setEnabled(true);
+                        } else {
+                            mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
+                        }
+                    } else {
+                        boolean checked = mSelectedCollection.isSelected(item);
+                        mCheckView.setChecked(checked);
+                        if (checked) {
+                            mCheckView.setEnabled(true);
+                        } else {
+                            mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
+                        }
+                    }
+                    updateSize(item);
+                }
+                mPreviousPos = position;
+            }
+        });
+        mAdapter = new PreviewPagerAdapter(getBaseContext(), this);
         mPager.setAdapter(mAdapter);
         mCheckView = (CheckView) findViewById(R.id.check_view);
         mCheckView.setCountable(mSpec.countable);
@@ -226,45 +255,6 @@ public abstract class BasePreviewActivity extends AppCompatActivity implements V
         }
 
         mIsToolbarHide = !mIsToolbarHide;
-
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        PreviewPagerAdapter adapter = (PreviewPagerAdapter) mPager.getAdapter();
-        if (mPreviousPos != -1 && mPreviousPos != position) {
-            ((PreviewItemFragment) adapter.instantiateItem(mPager, mPreviousPos)).resetView();
-
-            Item item = adapter.getMediaItem(position);
-            if (mSpec.countable) {
-                int checkedNum = mSelectedCollection.checkedNumOf(item);
-                mCheckView.setCheckedNum(checkedNum);
-                if (checkedNum > 0) {
-                    mCheckView.setEnabled(true);
-                } else {
-                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
-                }
-            } else {
-                boolean checked = mSelectedCollection.isSelected(item);
-                mCheckView.setChecked(checked);
-                if (checked) {
-                    mCheckView.setEnabled(true);
-                } else {
-                    mCheckView.setEnabled(!mSelectedCollection.maxSelectableReached());
-                }
-            }
-            updateSize(item);
-        }
-        mPreviousPos = position;
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
 
     }
 
