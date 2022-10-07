@@ -15,10 +15,15 @@
  */
 package com.zhihu.matisse.internal.ui.adapter;
 
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import android.view.ViewGroup;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.zhihu.matisse.internal.entity.Item;
 import com.zhihu.matisse.internal.ui.PreviewItemFragment;
@@ -26,45 +31,52 @@ import com.zhihu.matisse.internal.ui.PreviewItemFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreviewPagerAdapter extends FragmentPagerAdapter {
-
+public class PreviewPagerAdapter extends FragmentStateAdapter {
     private ArrayList<Item> mItems = new ArrayList<>();
-    private OnPrimaryItemSetListener mListener;
+    private Context mContext;
+    private FragmentManager mFragmentManager;
 
-    public PreviewPagerAdapter(FragmentManager manager, OnPrimaryItemSetListener listener) {
-        super(manager);
-        mListener = listener;
+    public PreviewPagerAdapter(@NonNull Context context, @NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
+        this.mContext = context;
+        this.mFragmentManager = fragmentActivity.getSupportFragmentManager();
+    }
+
+    public PreviewPagerAdapter(@NonNull Context context, @NonNull Fragment fragment) {
+        super(fragment);
+        this.mContext = context;
+        this.mFragmentManager = fragment.getChildFragmentManager();
+    }
+
+    public PreviewPagerAdapter(@NonNull Context context,
+                               @NonNull FragmentManager fragmentManager,
+                               @NonNull Lifecycle lifecycle) {
+        super(fragmentManager, lifecycle);
+        this.mContext = context;
+        this.mFragmentManager = fragmentManager;
+    }
+
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        Fragment bizContainer = mFragmentManager.getFragmentFactory().instantiate(mContext.getClassLoader(),
+                PreviewItemFragment.class.getName());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PreviewItemFragment.ARGS_ITEM, mItems.get(position));
+        bizContainer.setArguments(bundle);
+        return bizContainer;
     }
 
     @Override
-    public Fragment getItem(int position) {
-        return PreviewItemFragment.newInstance(mItems.get(position));
-    }
-
-    @Override
-    public int getCount() {
-        return mItems.size();
-    }
-
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        super.setPrimaryItem(container, position, object);
-        if (mListener != null) {
-            mListener.onPrimaryItemSet(position);
-        }
-    }
-
-    public Item getMediaItem(int position) {
-        return mItems.get(position);
+    public int getItemCount() {
+        return mItems == null ? 0 : mItems.size();
     }
 
     public void addAll(List<Item> items) {
         mItems.addAll(items);
     }
 
-    interface OnPrimaryItemSetListener {
-
-        void onPrimaryItemSet(int position);
+    public Item getMediaItem(int position) {
+        return mItems.get(position);
     }
-
 }

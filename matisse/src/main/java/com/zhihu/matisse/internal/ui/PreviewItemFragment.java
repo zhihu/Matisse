@@ -38,7 +38,7 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
 public class PreviewItemFragment extends Fragment {
 
-    private static final String ARGS_ITEM = "args_item";
+    public static final String ARGS_ITEM = "args_item";
     private OnFragmentInteractionListener mListener;
 
     public static PreviewItemFragment newInstance(Item item) {
@@ -102,13 +102,6 @@ public class PreviewItemFragment extends Fragment {
                     item.getContentUri());
         }
     }
-
-    public void resetView() {
-        if (getView() != null) {
-            ((ImageViewTouch) getView().findViewById(R.id.image_view)).resetMatrix();
-        }
-    }
-
 
     @Override
     public void onAttach(Context context) {
