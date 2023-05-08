@@ -31,7 +31,7 @@ import com.zhihu.matisse.internal.loader.AlbumMediaLoader;
 import java.lang.ref.WeakReference;
 
 public class AlbumMediaCollection implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final int LOADER_ID = 2;
+    private static final int LOADER_ID = hashCode();
     private static final String ARGS_ALBUM = "args_album";
     private static final String ARGS_ENABLE_CAPTURE = "args_enable_capture";
     private WeakReference<Context> mContext;
