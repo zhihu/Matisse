@@ -17,6 +17,7 @@
 package com.zhihu.matisse.internal.entity;
 
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 
 import androidx.annotation.StyleRes;
 
@@ -28,6 +29,7 @@ import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -57,6 +59,7 @@ public final class SelectionSpec {
     public int originalMaxSize;
     public OnCheckedListener onCheckedListener;
     public boolean showPreview;
+    public ArrayList<Uri> selectedPictureUris;
 
     private SelectionSpec() {
     }
@@ -93,6 +96,7 @@ public final class SelectionSpec {
         autoHideToobar = false;
         originalMaxSize = Integer.MAX_VALUE;
         showPreview = true;
+        selectedPictureUris = null;
     }
 
     public boolean singleSelectionModeEnabled() {

@@ -20,8 +20,13 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +41,9 @@ import com.zhihu.matisse.internal.entity.IncapableCause;
 import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.MediaGrid;
+
+import java.io.File;
+import java.util.Objects;
 
 public class AlbumMediaAdapter extends
         RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements
@@ -121,11 +129,13 @@ public class AlbumMediaAdapter extends
             ));
             mediaViewHolder.mMediaGrid.bindMedia(item);
             mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
+            setSelectedItems(item);
             setCheckStatus(item, mediaViewHolder.mMediaGrid);
         }
     }
 
     private void setCheckStatus(Item item, MediaGrid mediaGrid) {
+
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum > 0) {
@@ -155,6 +165,24 @@ public class AlbumMediaAdapter extends
                 }
             }
         }
+    }
+
+    /**
+     * 初始化外部传入上次选中的图片
+     */
+    private void setSelectedItems(Item item) {
+        if (mSelectionSpec.selectedPictureUris == null || mSelectionSpec.selectedPictureUris.size() == 0)
+            return;
+
+        for (int index = 0; index < mSelectionSpec.selectedPictureUris.size(); ++index) {
+            Uri uri = mSelectionSpec.selectedPictureUris.get(index);
+            if (uri != null &&
+                    Objects.equals(uri.toString(), item.getContentUri().toString())) {
+                mSelectedCollection.add(item);
+                mSelectionSpec.selectedPictureUris.set(index, null);
+            }
+        }
+
     }
 
     @Override

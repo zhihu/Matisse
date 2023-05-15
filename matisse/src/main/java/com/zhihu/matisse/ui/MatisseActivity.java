@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
@@ -59,6 +60,7 @@ import com.zhihu.matisse.internal.utils.PathUtils;
 import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 
 import com.zhihu.matisse.internal.utils.SingleMediaScanner;
+
 import java.util.ArrayList;
 
 /**
@@ -153,6 +155,28 @@ public class MatisseActivity extends AppCompatActivity implements
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
+        initDefaultSelectedPictures();
+    }
+
+
+    private void initDefaultSelectedPictures() {
+
+        SelectionSpec selectionSpec = SelectionSpec.getInstance();
+
+        if (selectionSpec.selectedPictureUris == null || selectionSpec.selectedPictureUris.size() == 0)
+            return;
+
+        int selectedCount = 0;
+        for (int index = 0; index < selectionSpec.selectedPictureUris.size(); ++index) {
+
+            if (selectionSpec.selectedPictureUris.get(index) != null) ++selectedCount;
+        }
+
+        if(selectedCount > 0){
+            mButtonPreview.setEnabled(true);
+            mButtonApply.setEnabled(true);
+            mButtonApply.setText(getString(R.string.button_apply, selectedCount));
+        }
     }
 
     @Override
@@ -239,7 +263,8 @@ public class MatisseActivity extends AppCompatActivity implements
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             new SingleMediaScanner(this.getApplicationContext(), path, new SingleMediaScanner.ScanListener() {
-                @Override public void onScanFinish() {
+                @Override
+                public void onScanFinish() {
                     Log.i("SingleMediaScanner", "scan finish!");
                 }
             });
