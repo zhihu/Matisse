@@ -49,6 +49,7 @@ public class AlbumMediaAdapter extends
         RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements
         MediaGrid.OnMediaGridClickListener {
 
+    private Context mContext;
     private static final int VIEW_TYPE_CAPTURE = 0x01;
     private static final int VIEW_TYPE_MEDIA = 0x02;
     private final SelectedItemCollection mSelectedCollection;
@@ -61,6 +62,8 @@ public class AlbumMediaAdapter extends
 
     public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView) {
         super(null);
+
+        mContext = context;
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = selectedCollection;
 
@@ -171,20 +174,31 @@ public class AlbumMediaAdapter extends
      * 初始化外部传入上次选中的图片
      */
     private void setSelectedItems(Item item) {
-        if (mSelectionSpec.selectedPictureUris == null || mSelectionSpec.selectedPictureUris.size() == 0)
+        if (mSelectionSpec.selectedFilePath == null || mSelectionSpec.selectedFilePath.size() == 0)
             return;
 
-        for (int index = 0; index < mSelectionSpec.selectedPictureUris.size(); ++index) {
-            Uri uri = mSelectionSpec.selectedPictureUris.get(index);
-            if (uri != null &&
-                    Objects.equals(uri.toString(), item.getContentUri().toString())) {
+        for (int index = 0; index < mSelectionSpec.selectedFilePath.size(); ++index) {
+            String filePath = mSelectionSpec.selectedFilePath.get(index);
+            if (filePath != null &&
+                    Objects.equals(filePath, getRealPathFromUri(item.uri))) {
                 mSelectedCollection.add(item);
-                mSelectionSpec.selectedPictureUris.set(index, null);
+                mSelectionSpec.selectedFilePath.set(index, null);
             }
         }
 
     }
-
+    private String getRealPathFromUri(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = mContext.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+        return filePath;
+    }
     @Override
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
         if (mSelectionSpec.showPreview) {

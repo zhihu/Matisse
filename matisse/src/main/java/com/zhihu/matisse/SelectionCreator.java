@@ -267,8 +267,8 @@ public final class SelectionCreator {
      * set last choose uris to make these pictures be selected by default.
      * id is cursor id. not support crop picture
      */
-    public SelectionCreator setSelectedItems(ArrayList<Uri> list) {
-        mSelectionSpec.selectedPictureUris = list;
+    public SelectionCreator setSelectedItems(ArrayList<String> list) {
+        mSelectionSpec.selectedFilePath = list;
         return this;
     }
 

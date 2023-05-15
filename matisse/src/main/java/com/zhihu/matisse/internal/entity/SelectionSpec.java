@@ -59,7 +59,7 @@ public final class SelectionSpec {
     public int originalMaxSize;
     public OnCheckedListener onCheckedListener;
     public boolean showPreview;
-    public ArrayList<Uri> selectedPictureUris;
+    public ArrayList<String> selectedFilePath;
 
     private SelectionSpec() {
     }
@@ -96,7 +96,7 @@ public final class SelectionSpec {
         autoHideToobar = false;
         originalMaxSize = Integer.MAX_VALUE;
         showPreview = true;
-        selectedPictureUris = null;
+        selectedFilePath = null;
     }
 
     public boolean singleSelectionModeEnabled() {

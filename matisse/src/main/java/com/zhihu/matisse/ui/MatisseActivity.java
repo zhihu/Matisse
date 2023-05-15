@@ -163,13 +163,13 @@ public class MatisseActivity extends AppCompatActivity implements
 
         SelectionSpec selectionSpec = SelectionSpec.getInstance();
 
-        if (selectionSpec.selectedPictureUris == null || selectionSpec.selectedPictureUris.size() == 0)
+        if (selectionSpec.selectedFilePath == null || selectionSpec.selectedFilePath.size() == 0)
             return;
 
         int selectedCount = 0;
-        for (int index = 0; index < selectionSpec.selectedPictureUris.size(); ++index) {
+        for (int index = 0; index < selectionSpec.selectedFilePath.size(); ++index) {
 
-            if (selectionSpec.selectedPictureUris.get(index) != null) ++selectedCount;
+            if (selectionSpec.selectedFilePath.get(index) != null) ++selectedCount;
         }
 
         if(selectedCount > 0){

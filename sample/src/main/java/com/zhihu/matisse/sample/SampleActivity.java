@@ -143,13 +143,13 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         mAdapter.setData(null, null);
     }
 
-    private ArrayList<Uri> selectedList = new ArrayList<>();
+    private ArrayList<String> selectedList = new ArrayList<>();
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             selectedList.clear();
-            selectedList.addAll(Matisse.obtainResult(data));
+            selectedList.addAll(Matisse.obtainPathResult(data));
             mAdapter.setData(Matisse.obtainResult(data), Matisse.obtainPathResult(data));
             Log.e("OnActivityResult ", String.valueOf(Matisse.obtainOriginalState(data)));
         }
