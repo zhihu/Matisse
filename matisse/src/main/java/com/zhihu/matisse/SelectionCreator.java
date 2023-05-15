@@ -18,7 +18,9 @@ package com.zhihu.matisse;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -163,7 +165,7 @@ public final class SelectionCreator {
      *
      * @param maxImageSelectable Maximum selectable count for image.
      * @param maxVideoSelectable Maximum selectable count for video.
-     * @return  {@link SelectionCreator} for fluent API.
+     * @return {@link SelectionCreator} for fluent API.
      */
     public SelectionCreator maxSelectablePerMediaType(int maxImageSelectable, int maxVideoSelectable) {
         if (maxImageSelectable < 1 || maxVideoSelectable < 1)
@@ -216,6 +218,7 @@ public final class SelectionCreator {
 
     /**
      * Determines Whether to hide top and bottom toolbar in PreView mode ,when user tap the picture
+     *
      * @param enable
      * @return {@link SelectionCreator} for fluent API.
      */
@@ -257,6 +260,15 @@ public final class SelectionCreator {
      */
     public SelectionCreator restrictOrientation(@ScreenOrientation int orientation) {
         mSelectionSpec.orientation = orientation;
+        return this;
+    }
+
+    /**
+     * set last choose uris to make these pictures be selected by default.
+     * id is cursor id. not support crop picture
+     */
+    public SelectionCreator setSelectedItems(ArrayList<String> list) {
+        mSelectionSpec.selectedFilePath = list;
         return this;
     }
 

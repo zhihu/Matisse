@@ -20,8 +20,13 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +42,14 @@ import com.zhihu.matisse.internal.model.SelectedItemCollection;
 import com.zhihu.matisse.internal.ui.widget.CheckView;
 import com.zhihu.matisse.internal.ui.widget.MediaGrid;
 
+import java.io.File;
+import java.util.Objects;
+
 public class AlbumMediaAdapter extends
         RecyclerViewCursorAdapter<RecyclerView.ViewHolder> implements
         MediaGrid.OnMediaGridClickListener {
 
+    private Context mContext;
     private static final int VIEW_TYPE_CAPTURE = 0x01;
     private static final int VIEW_TYPE_MEDIA = 0x02;
     private final SelectedItemCollection mSelectedCollection;
@@ -53,6 +62,8 @@ public class AlbumMediaAdapter extends
 
     public AlbumMediaAdapter(Context context, SelectedItemCollection selectedCollection, RecyclerView recyclerView) {
         super(null);
+
+        mContext = context;
         mSelectionSpec = SelectionSpec.getInstance();
         mSelectedCollection = selectedCollection;
 
@@ -121,11 +132,13 @@ public class AlbumMediaAdapter extends
             ));
             mediaViewHolder.mMediaGrid.bindMedia(item);
             mediaViewHolder.mMediaGrid.setOnMediaGridClickListener(this);
+            setSelectedItems(item);
             setCheckStatus(item, mediaViewHolder.mMediaGrid);
         }
     }
 
     private void setCheckStatus(Item item, MediaGrid mediaGrid) {
+
         if (mSelectionSpec.countable) {
             int checkedNum = mSelectedCollection.checkedNumOf(item);
             if (checkedNum > 0) {
@@ -157,6 +170,35 @@ public class AlbumMediaAdapter extends
         }
     }
 
+    /**
+     * 初始化外部传入上次选中的图片
+     */
+    private void setSelectedItems(Item item) {
+        if (mSelectionSpec.selectedFilePath == null || mSelectionSpec.selectedFilePath.size() == 0)
+            return;
+
+        for (int index = 0; index < mSelectionSpec.selectedFilePath.size(); ++index) {
+            String filePath = mSelectionSpec.selectedFilePath.get(index);
+            if (filePath != null &&
+                    Objects.equals(filePath, getRealPathFromUri(item.uri))) {
+                mSelectedCollection.add(item);
+                mSelectionSpec.selectedFilePath.set(index, null);
+            }
+        }
+
+    }
+    private String getRealPathFromUri(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = mContext.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+        return filePath;
+    }
     @Override
     public void onThumbnailClicked(ImageView thumbnail, Item item, RecyclerView.ViewHolder holder) {
         if (mSelectionSpec.showPreview) {
